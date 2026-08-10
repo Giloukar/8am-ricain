@@ -165,12 +165,16 @@
   .ligne-moi{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;justify-content:center}
   .ligne-moi .nom{font-family:'Bodoni Moda',Georgia,serif;font-size:21px;color:var(--ivoire)}
   .ligne-moi .nom.actif{color:var(--or-pale)}
-  .main{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:calc(var(--ch) + 30px);padding-top:18px}
+  .main{position:relative;display:flex;justify-content:center;align-items:flex-end;
+    min-height:calc(var(--ch) + 60px);padding-top:26px;padding-bottom:32px}
   .main .carte{margin-left:-28px;transform-origin:50% 130%;
     transform:rotate(var(--rot)) translateY(var(--dy));z-index:var(--z)}
   .main .carte:first-child{margin-left:0}
+  /* La carte se lève sous le pointeur ; sans cette rallonge invisible vers le bas,
+     le pointeur sortirait de la cible et la carte battrait de haut en bas. */
+  .main .carte::after{content:"";position:absolute;left:0;right:0;top:-6px;bottom:-30px}
   .main .carte.jouable:hover,.main .carte.jouable:focus-visible{
-    transform:perspective(760px) rotate(0deg) translateY(-32px) rotateX(9deg) scale(1.08);z-index:60;outline:none}
+    transform:perspective(760px) rotate(0deg) translateY(-28px) rotateX(9deg) scale(1.08);z-index:60;outline:none}
   .main.a-vous .carte.jouable .avant{animation:lueur 2.6s ease-in-out infinite;animation-delay:calc(var(--z) * 90ms)}
   @keyframes lueur{0%,100%{box-shadow:var(--ombre-carte), inset 0 0 0 1px rgba(0,0,0,.14), 0 0 0 2px var(--or)}
     50%{box-shadow:var(--ombre-carte), inset 0 0 0 1px rgba(0,0,0,.14), 0 0 0 2px var(--or-pale), 0 0 18px rgba(200,155,60,.55)}}
@@ -344,6 +348,39 @@
   @keyframes toastIn{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}
   .talon .carte{animation:atterrissage .4s}
   @keyframes atterrissage{from{filter:brightness(1.35)}to{filter:none}}
+
+  /* --- carte soupesée par un adversaire, vue de dos --- */
+  .siege .eventail .carte.survolee{
+    transform:rotate(var(--rot)) translateY(calc(var(--dy) - 13px)) rotateY(180deg) scale(1.08);
+    z-index:50;filter:brightness(1.2)}
+  .siege .eventail .carte.survolee::before{content:"";position:absolute;inset:-2px;border-radius:inherit;
+    pointer-events:none;box-shadow:0 0 0 1.5px rgba(234,208,155,.85), 0 0 18px rgba(200,155,60,.55)}
+  .siege.pense .nom::after{content:"\2026";color:var(--or-pale);animation:pense 1.1s steps(1) infinite}
+  @keyframes pense{0%{opacity:.25}50%{opacity:1}100%{opacity:.25}}
+
+  /* --- attaque qui file vers sa victime --- */
+  .projectile{position:fixed;z-index:79;pointer-events:none;font-family:'Oswald',sans-serif;font-weight:600;
+    font-size:21px;letter-spacing:.06em;color:#FFE0E4;padding:5px 13px;border-radius:20px;white-space:nowrap;
+    background:radial-gradient(circle at 32% 28%, rgba(226,60,80,.98), rgba(120,10,24,.94));
+    box-shadow:0 0 24px rgba(216,40,60,.75), inset 0 0 12px rgba(255,255,255,.22)}
+  .impact{position:fixed;z-index:78;pointer-events:none;border-radius:14px;
+    box-shadow:0 0 0 2px rgba(216,40,60,.9), 0 0 36px rgba(216,40,60,.55)}
+
+  /* --- inversion du sens --- */
+  .anneau-sens{position:fixed;z-index:77;pointer-events:none;border-radius:50%;
+    border:2px dashed rgba(234,208,155,.7)}
+  .anneau-sens span{position:absolute;top:-15px;left:50%;margin-left:-11px;font-size:24px;color:var(--or-pale);
+    text-shadow:0 0 14px rgba(200,155,60,.85)}
+
+  /* --- éclat doré sur le vainqueur --- */
+  .eclat{position:fixed;z-index:86;pointer-events:none;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,240,210,.95), rgba(200,155,60,.35) 45%, rgba(200,155,60,0) 72%)}
+
+  /* --- la pioche réclame l'attention --- */
+  .pioche.urgente .dos:last-child{animation:appel 1.6s ease-in-out infinite}
+  @keyframes appel{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(-2deg)}}
+  #btn-piocher.urgente{animation:halo 1.7s ease-in-out infinite}
+  @keyframes halo{0%,100%{box-shadow:0 0 0 0 rgba(200,155,60,.45)}50%{box-shadow:0 0 0 11px rgba(200,155,60,0)}}
 
   .grille-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:90;display:flex;flex-direction:column;gap:8px;align-items:center}
   .toast{background:#31101A;border:1px solid var(--or);color:var(--craie);padding:10px 18px;border-radius:6px;font-size:14px;
@@ -669,20 +706,20 @@ function suivant(s, depuis, pas){
 
 /* ---------------- distribution ---------------- */
 function premierJoueur(s){
-  var ordre = ["Q","K","J"], v, c, i, cible;
+  var ordre = ["Q","K","J"], v, c, i, m;
   for(v=0;v<ordre.length;v++){
     for(c=0;c<ORDRE_ENTAME.length;c++){
-      cible = ordre[v];
       for(i=0;i<s.mains.length;i++){
         if(!enJeu(s,i)) continue;
-        for(var m=0;m<s.mains[i].length;m++){
-          if(val(s.mains[i][m])===cible && coul(s.mains[i][m])===ORDRE_ENTAME[c]) return {i:i, carte:cible+"-"+ORDRE_ENTAME[c]+"-0"};
+        for(m=0;m<s.mains[i].length;m++){
+          if(val(s.mains[i][m]) === ordre[v] && coul(s.mains[i][m]) === ORDRE_ENTAME[c])
+            return {i:i, carte:s.mains[i][m], pos:m};
         }
       }
     }
   }
   var actifs = indicesEnJeu(s);
-  return {i: actifs.length ? actifs[0] : 0, carte:null};
+  return {i: actifs.length ? actifs[0] : 0, carte:null, pos:-1};
 }
 
 function tropDeHuit(main){
@@ -702,22 +739,35 @@ function distribuer(s){
     for(i=0;i<joueurs;i++) if(tropDeHuit(s.mains[i])) correcte = false;
   } while(!correcte && essais++ < 60);
 
-  var d = s.paquet.pop(), garde = 0;
-  while(estSpeciale(d) && garde++ < 300){ s.paquet.unshift(d); d = s.paquet.pop(); }
-  s.talon = [d];
-  s.couleur = coul(d);
   s.pioche = 0; s.attaque = null; s.bloque8 = false; s.sens = 1;
   s.ordreSortie = [];
   for(i=0;i<s.joueurs.length;i++){
     s.joueurs[i].sorti = false; s.joueurs[i].rang = null; s.joueurs[i].sursis = false;
   }
-  var pj = premierJoueur(s);
-  s.tour = pj.i;
   s.journal = [];
   noter(s, "Donne de " + k + " cartes \u00e0 " + joueurs + " joueurs.");
-  noter(s, s.joueurs[pj.i].nom + " entame" + (pj.carte ? " (" + etiq(pj.carte) + COULEURS[coul(pj.carte)].sym + ")" : "") + ".");
+
+  /* Entame : celui qui tient la dame de coeur la pose d'office. Sinon carreau,
+     pique, trefle ; sans dame on descend aux rois, puis aux valets. La carte
+     d'entame ne produit pas son effet : le joueur suivant enchaine normalement. */
+  var pj = premierJoueur(s), entame = null, d, garde = 0;
+  if(pj.carte){
+    entame = s.mains[pj.i].splice(pj.pos, 1)[0];
+    s.talon = [entame];
+    s.couleur = coul(entame);
+    s.tour = suivant(s, pj.i, 1);
+    noter(s, s.joueurs[pj.i].nom + " tient " + etiq(entame) + COULEURS[coul(entame)].sym +
+      " et entame d'office. \u00c0 " + s.joueurs[s.tour].nom + " de jouer.");
+  } else {
+    d = s.paquet.pop();
+    while(estSpeciale(d) && garde++ < 300){ s.paquet.unshift(d); d = s.paquet.pop(); }
+    s.talon = [d];
+    s.couleur = coul(d);
+    s.tour = pj.i;
+    noter(s, "Aucune figure en main : on retourne le talon, " + s.joueurs[pj.i].nom + " commence.");
+  }
   s.evt = (s.evt || 0) + 1;
-  s.dernier = {n:s.evt, type:"donne", joueur:pj.i};
+  s.dernier = {n:s.evt, type:"donne", joueur:pj.i, entame:entame};
 }
 
 function nouvelleTable(nomHote, opts){
@@ -736,6 +786,7 @@ function recharger(s){
   var haut = s.talon.pop();
   s.paquet = melanger(s.talon);
   s.talon = [haut];
+  s.rebat = (s.rebat || 0) + 1;
   noter(s, "Pioche \u00e9puis\u00e9e : le talon est rebattu.");
 }
 function tirer(s,i,n){
@@ -1001,6 +1052,7 @@ function vuePour(s, i){
       rang:j.rang, sursis:j.sursis, parti:j.parti, bot:j.bot}; }),
     mains:mains, paquet:s.paquet.length, talon:s.talon.slice(-4), couleur:s.couleur, tour:s.tour,
     sens:s.sens, pioche:s.pioche, attaque:s.attaque, bloque8:s.bloque8, manche:s.manche,
+    rebat:s.rebat || 0,
     ordreSortie:s.ordreSortie.slice(), journal:s.journal.slice(0,24), chat:s.chat.slice(-60), dernier:s.dernier
   };
 }
@@ -1017,6 +1069,8 @@ var canaux = [], canal = null;    /* maître : un canal par invité ; invité : 
 var minuterieBot = null, dernierAnime = 0, sourceVol = null, dernierePhase = null;
 var pointsVus = [], partiesVues = [];
 var derniereCouleur = null, ongletChat = false, chatNonLu = false, dernierChatVu = 0, animer = true;
+var dernierSens = null, dernierRebat = null;
+var survols = {}, minuteriesSurvol = {}, dernierSurvolEnvoye = null;
 try{ animer = !window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
 
 function estAutorite(){ return modeLocal || estHote; }
@@ -1209,9 +1263,14 @@ function animerPose(d){
   }});
   if(!a) revoir();
   setTimeout(revoir, 950);
-  var t = texteEffet(d.carte);
-  effet(t[0], t[1], 380);
-  if(t[1] && d.joueur !== V.moi && V.tour === V.moi) setTimeout(secouer, 420);
+  var t = texteEffet(d.carte), v = val(d.carte);
+  if((v === "A" || v === "JK") && V.pioche > 0){
+    var deI = d.joueur, versI = V.tour, cumul = V.pioche;
+    setTimeout(function(){ projectile(deI, versI, "+" + cumul); }, 360);
+  } else {
+    effet(t[0], t[1], 380);
+  }
+  if(t[1] && d.joueur !== V.moi && V.tour === V.moi) setTimeout(secouer, 700);
 }
 
 function animerPioche(d){
@@ -1255,19 +1314,118 @@ function animerDonne(){
     setTimeout(revoir, 1400 + k*42);
   });
   var fin = ordre.length * 42 + 260;
+  var info = V.dernier || {};
   var talon = $("talon").querySelector(".carte");
   if(talon){
     talon.style.visibility = "hidden";
     var rt = rect(talon);
     var revoirT = function(){ talon.style.visibility = ""; onde($("talon")); };
-    var at = volCarte(carteHTML(sommet(V), ""), dep, rt, {flip:true, duree:480, delai:fin, apres:revoirT});
+    /* si quelqu'un entame avec sa figure, la carte part de sa main, pas de la pioche */
+    var depart = dep, retourne = true;
+    if(info.entame){
+      var z = rect(zoneJoueur(info.joueur));
+      if(z) depart = z;
+      retourne = (info.joueur !== V.moi);
+    }
+    var at = volCarte(carteHTML(sommet(V), ""), depart, rt, {flip:retourne, duree:520, delai:fin, apres:revoirT});
     if(!at) revoirT();
-    setTimeout(revoirT, fin + 1200);
+    setTimeout(revoirT, fin + 1250);
   }
   setTimeout(function(){
-    if(V && V.phase === "partie" && V.joueurs[V.tour]) effet(V.joueurs[V.tour].nom + " entame", false, 0);
-  }, fin + 420);
+    if(!V || V.phase !== "partie") return;
+    var qui = info.entame && V.joueurs[info.joueur] ? V.joueurs[info.joueur] : V.joueurs[V.tour];
+    if(qui) effet(qui.nom + " entame", false, 0);
+  }, fin + 460);
+  if(info.entame) setTimeout(function(){
+    if(V && V.phase === "partie" && V.joueurs[V.tour]) effet("\u00c0 " + V.joueurs[V.tour].nom + " de jouer", false, 0);
+  }, fin + 1500);
 }
+function centreDe(el){ var r = rect(el); return r ? {x:r.left + r.width/2, y:r.top + r.height/2} : null; }
+
+/* impact lumineux sur une zone */
+function impact(cible){
+  if(!animer) return;
+  var r = rect(cible); if(!r) return;
+  var d = document.createElement("div");
+  d.className = "impact";
+  d.style.left = r.left + "px"; d.style.top = r.top + "px";
+  d.style.width = r.width + "px"; d.style.height = r.height + "px";
+  $("scene").appendChild(d);
+  var a = d.animate([{opacity:0, transform:"scale(.92)"}, {opacity:1, transform:"scale(1.05)", offset:.28},
+    {opacity:0, transform:"scale(1.14)"}], {duration:620, easing:"cubic-bezier(.2,.8,.3,1)"});
+  a.onfinish = function(){ d.remove(); };
+  setTimeout(function(){ if(d.parentNode) d.remove(); }, 1000);
+}
+/* l'attaque part du poseur et va frapper sa victime */
+function projectile(deI, versI, texte){
+  if(!animer) return;
+  var a = centreDe(zoneJoueur(deI)), b = centreDe(zoneJoueur(versI));
+  if(!a || !b) return;
+  var d = document.createElement("div");
+  d.className = "projectile"; d.textContent = texte;
+  $("scene").appendChild(d);
+  var l = rect(d);
+  d.style.left = (a.x - l.width/2) + "px";
+  d.style.top = (a.y - l.height/2) + "px";
+  var dx = b.x - a.x, dy = b.y - a.y;
+  var an = d.animate([
+    {transform:"scale(.35)", opacity:0},
+    {transform:"translate(" + (dx*.22).toFixed(0) + "px," + (dy*.22 - 30).toFixed(0) + "px) scale(1.18)", opacity:1, offset:.3},
+    {transform:"translate(" + dx.toFixed(0) + "px," + dy.toFixed(0) + "px) scale(.92)", opacity:1, offset:.82},
+    {transform:"translate(" + dx.toFixed(0) + "px," + dy.toFixed(0) + "px) scale(1.6)", opacity:0}
+  ], {duration:880, easing:"cubic-bezier(.3,.68,.4,1)"});
+  var fin = function(){ if(d.parentNode){ d.remove(); impact(zoneJoueur(versI)); } };
+  an.onfinish = fin;
+  setTimeout(fin, 1300);
+}
+/* le tour de table repart dans l'autre sens */
+function anneauSens(){
+  if(!animer) return;
+  var z = document.querySelector(".tapis"), r = rect(z);
+  if(!r) return;
+  var taille = Math.max(160, Math.min(r.width, r.height) * .66);
+  var d = document.createElement("div");
+  d.className = "anneau-sens";
+  d.innerHTML = "<span>" + (V && V.sens === -1 ? "\u27f2" : "\u27f3") + "</span>";
+  d.style.width = taille + "px"; d.style.height = taille + "px";
+  d.style.left = (r.left + r.width/2 - taille/2) + "px";
+  d.style.top = (r.top + r.height/2 - taille/2) + "px";
+  $("scene").appendChild(d);
+  var sens = (V && V.sens === -1) ? -1 : 1;
+  var a = d.animate([
+    {transform:"rotate(0deg) scale(.5)", opacity:0},
+    {transform:"rotate(" + (sens*170) + "deg) scale(1)", opacity:.95, offset:.35},
+    {transform:"rotate(" + (sens*370) + "deg) scale(1.1)", opacity:0}
+  ], {duration:1150, easing:"cubic-bezier(.25,.8,.3,1)"});
+  a.onfinish = function(){ d.remove(); };
+  setTimeout(function(){ if(d.parentNode) d.remove(); }, 1600);
+  effet(sens === 1 ? "Sens horaire" : "Sens invers\u00e9", false, 120);
+}
+/* halo doré sur celui qui vient de sortir */
+function eclat(cible){
+  if(!animer) return;
+  var r = rect(cible); if(!r) return;
+  var t = Math.max(r.width, r.height) * 2.4;
+  var d = document.createElement("div");
+  d.className = "eclat";
+  d.style.width = t + "px"; d.style.height = t + "px";
+  d.style.left = (r.left + r.width/2 - t/2) + "px";
+  d.style.top = (r.top + r.height/2 - t/2) + "px";
+  $("scene").appendChild(d);
+  var a = d.animate([{transform:"scale(.12)", opacity:0}, {transform:"scale(.7)", opacity:.95, offset:.25},
+    {transform:"scale(1.3)", opacity:0}], {duration:1050, easing:"cubic-bezier(.2,.8,.3,1)"});
+  a.onfinish = function(){ d.remove(); };
+  setTimeout(function(){ if(d.parentNode) d.remove(); }, 1500);
+}
+/* le talon repart alimenter la pioche */
+function animerRebat(){
+  if(!animer) return;
+  var de = rect($("talon")), vers = rect($("btn-pioche"));
+  if(!de || !vers) return;
+  for(var k=0;k<7;k++) volCarte(dosHTML("retournee"), de, vers, {duree:540, delai:k*60});
+  effet("Talon rebattu", false, 160);
+}
+
 function confettis(){
   if(!animer) return;
   var teintes = ["#C89B3C","#EAD09B","#BE2033","#F6F0E3","#8C2637"], k;
@@ -1285,6 +1443,47 @@ function confettis(){
       ], {duration:chute, delay:Math.random()*500, easing:"cubic-bezier(.3,.6,.6,1)"}).onfinish = function(){ d.remove(); };
     })(k);
   }
+}
+
+/* ---------------- survol partagé ----------------
+   Quand un joueur soupèse une carte, les autres voient la carte correspondante
+   se lever dans son éventail, de dos : le geste passe, pas l'information. */
+function peindreSurvols(){
+  if(!V) return;
+  for(var i=0;i<V.joueurs.length;i++){
+    if(i === V.moi) continue;
+    var siege = document.querySelector('.siege[data-i="' + i + '"]');
+    if(!siege) continue;
+    var lot = siege.querySelectorAll(".eventail .carte");
+    var idx = survols[i];
+    if(idx !== undefined && idx !== null && lot.length && idx >= lot.length) idx = lot.length - 1;
+    siege.classList.toggle("pense", idx !== undefined && idx !== null);
+    for(var k=0;k<lot.length;k++) lot[k].classList.toggle("survolee", idx === k);
+  }
+}
+function poserSurvol(i, k){
+  if(k === null || k === undefined) delete survols[i];
+  else survols[i] = k;
+  clearTimeout(minuteriesSurvol[i]);
+  if(survols[i] !== undefined){
+    minuteriesSurvol[i] = setTimeout(function(){ delete survols[i]; peindreSurvols(); }, 5000);
+  }
+  peindreSurvols();
+}
+function relayerSurvol(i, k, source){
+  for(var n=0;n<canaux.length;n++){
+    if(canaux[n] === source || !canaux[n].pret || canaux[n].idx === null || canaux[n].idx === undefined) continue;
+    canaux[n].envoyer({t:"survol", i:i, k:k});
+  }
+  if(i !== monIndex) poserSurvol(i, k);
+}
+function envoyerSurvol(k){
+  if(k === undefined) k = null;
+  if(dernierSurvolEnvoye === k) return;
+  dernierSurvolEnvoye = k;
+  if(modeLocal) return;
+  if(estAutorite()) relayerSurvol(monIndex, k, null);
+  else if(canal && canal.pret) canal.envoyer({t:"survol", k:k});
 }
 
 /* ---------------- rendu ---------------- */
@@ -1445,8 +1644,24 @@ function rendre(){
   $("btn-piocher").textContent = V.pioche > 0 && monTour ? "Ramasser " + V.pioche : "Piocher";
   $("btn-pioche").disabled = $("btn-piocher").disabled;
 
+  /* la pioche s'agite quand c'est le seul recours */
+  var urgent = monTour && !finie && !horsJeu && V.pioche === 0 && !aDuJeu(V, moi);
+  $("btn-pioche").classList.toggle("urgente", urgent);
+  $("btn-piocher").classList.toggle("urgente", urgent);
+
+  /* on ne diffuse plus son survol quand la main est passée */
+  if(!monTour && dernierSurvolEnvoye !== null) envoyerSurvol(null);
+  peindreSurvols();
+
   majEtat();
   animerEvenement();
+
+  if(dernierSens === null) dernierSens = V.sens;
+  else if(dernierSens !== V.sens){ dernierSens = V.sens; setTimeout(anneauSens, 260); }
+  var nr = V.rebat || 0;
+  if(dernierRebat === null) dernierRebat = nr;
+  else if(nr > dernierRebat){ dernierRebat = nr; setTimeout(animerRebat, 300); }
+
   if(dernierePhase === "partie" && finie) finDeManche();
   dernierePhase = V.phase;
 }
@@ -1485,6 +1700,10 @@ function finDeManche(){
     '<button class="principal" id="mod-suite">' + (V.phase === "finPartie" ? "Nouvelle partie" : "Manche suivante") + '</button></div>');
   $("mod-fermer").onclick = fermerModale;
   $("mod-suite").onclick = function(){ fermerModale(); agir({t:"suite"}); };
+  if(gagnant && V.ordreSortie.length){
+    var vainqueur = V.ordreSortie[0];
+    setTimeout(function(){ eclat(zoneJoueur(vainqueur)); }, 180);
+  }
   if(gagnant && V.ordreSortie[0] === V.moi) confettis();
 }
 
@@ -1668,7 +1887,8 @@ function afficherRegles(){
     '<p>Se débarrasser de sa main avant les autres. On pose une carte de la couleur demandée ou de la même valeur ; sinon on pioche.</p>' +
     '<h4>Donne et entame</h4><ul>' +
     '<li>Deux joueurs : 8 cartes. Trois : 7 cartes. Quatre et plus : 6 cartes.</li>' +
-    '<li>Entame : la dame de cœur, sinon carreau, pique, trèfle. Sans dame, on descend aux rois, puis aux valets.</li>' +
+    '<li>Entame : celui qui tient la dame de cœur la pose d\'office au milieu. À défaut, dame de carreau, de pique, de trèfle ; sans dame on descend aux rois, puis aux valets.</li>' +
+    '<li>Cette carte d\'entame ne produit pas son effet : elle donne la couleur, et le joueur suivant démarre son tour.</li>' +
     '<li>À cinq joueurs et plus, deux jeux sont mélangés.</li></ul>' +
     '<h4>Le 8, carte magique</h4><ul>' +
     '<li>Il se pose quand on veut, sur n\'importe quelle carte, et coupe même une attaque en cours.</li>' +
@@ -1748,6 +1968,10 @@ function surMessage(m, ch){
     toast(nom + " s'assoit à la table.");
     ajouterChat(-1, nom + " rejoint la table.");
     diffuser();
+  }
+  else if(m.t === "survol"){
+    if(estAutorite()){ if(ch && ch.idx != null) relayerSurvol(ch.idx, m.k, ch); }
+    else if(typeof m.i === "number" && m.i !== monIndex) poserSurvol(m.i, m.k);
   }
   else if(m.t === "refus"){
     toast(m.raison || "Table indisponible.");
@@ -2034,6 +2258,15 @@ $("ma-main").addEventListener("pointercancel", function(){
   $("talon").classList.remove("cible");
 });
 $("ma-main").addEventListener("dragstart", function(e){ e.preventDefault(); });
+$("ma-main").addEventListener("pointerover", function(e){
+  if(!V || V.phase !== "partie" || V.tour !== V.moi) return;
+  var el = e.target.closest(".carte");
+  if(!el) return;
+  var lot = Array.prototype.slice.call($("ma-main").querySelectorAll(".carte"));
+  var k = lot.indexOf(el);
+  if(k >= 0) envoyerSurvol(k);
+});
+$("ma-main").addEventListener("pointerleave", function(){ envoyerSurvol(null); });
 $("ma-main").addEventListener("keydown", function(e){
   if(e.key !== "Enter" && e.key !== " ") return;
   var el = e.target.closest(".carte");
