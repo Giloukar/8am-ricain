@@ -101,10 +101,16 @@
   .table{display:grid;grid-template-columns:1fr 300px;gap:18px;flex:1;width:100%;align-items:stretch}
   .tapis{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:14px;min-height:560px;
     border-radius:18px;padding:18px 18px 14px;
-    background:radial-gradient(80% 60% at 50% 42%, rgba(255,220,170,.1), rgba(0,0,0,0) 70%), rgba(0,0,0,.14);
+    background:radial-gradient(70% 55% at 50% 42%, rgba(255,220,170,.13), rgba(0,0,0,0) 70%), rgba(0,0,0,.14);
+    background-size:170% 170%, auto;background-position:50% 50%, 0 0;
+    animation:ambiance 18s ease-in-out infinite;
     border:1px solid rgba(200,155,60,.22);
     box-shadow:inset 0 0 0 6px rgba(43,16,16,.5), inset 0 0 40px rgba(0,0,0,.5)}
 
+  @keyframes ambiance{0%,100%{background-position:38% 44%, 0 0}50%{background-position:62% 56%, 0 0}}
+  .tableau-score .chiffre.pop{animation:popScore .7s}
+  @keyframes popScore{0%{transform:scale(1)}30%{transform:scale(1.7);color:var(--ivoire);text-shadow:0 0 14px rgba(200,155,60,.9)}100%{transform:scale(1)}}
+  .tableau-score .chiffre{display:inline-block;min-width:22px}
   .sieges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
   .siege{position:relative;min-width:132px;padding:10px 12px 12px;border-radius:12px;text-align:center;
     background:rgba(0,0,0,.26);border:1px solid rgba(234,217,190,.14);transition:border-color .25s,box-shadow .25s,transform .25s}
@@ -115,9 +121,12 @@
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .siege.actif .nom{color:var(--or-pale)}
   .siege .compte{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--craie-faible);margin-top:2px}
-  .siege .dos-mini{display:flex;justify-content:center;height:34px;margin-top:8px}
-  .siege .dos-mini .dos{width:24px;height:34px;border-radius:3px;margin-left:-15px;box-shadow:0 2px 5px rgba(0,0,0,.5), inset 0 0 0 1.5px var(--ivoire)}
-  .siege .dos-mini .dos:first-child{margin-left:0}
+  .siege .eventail{--cl:42px;--ch:60px;--r:5px;display:flex;justify-content:center;align-items:flex-end;
+    height:calc(var(--ch) + 10px);margin-top:8px;padding-top:6px}
+  .siege .eventail .carte{margin-left:-24px;transform-origin:50% 135%;z-index:var(--z);
+    transform:rotate(var(--rot)) translateY(var(--dy)) rotateY(180deg)}
+  .siege .eventail .carte:first-child{margin-left:0}
+  .siege .surplus{font-family:'Space Mono',monospace;font-size:11px;color:var(--or-pale);align-self:center;margin-left:6px}
   .siege .fanion{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-family:'Oswald',sans-serif;
     font-size:10px;letter-spacing:.16em;text-transform:uppercase;background:var(--rouge);color:#fff;padding:2px 8px;border-radius:3px;white-space:nowrap}
   .siege .fanion.or{background:var(--or);color:#2A0A12}
@@ -160,7 +169,11 @@
   .main .carte{margin-left:-28px;transform-origin:50% 130%;
     transform:rotate(var(--rot)) translateY(var(--dy));z-index:var(--z)}
   .main .carte:first-child{margin-left:0}
-  .main .carte.jouable:hover,.main .carte.jouable:focus-visible{transform:rotate(0deg) translateY(-30px) scale(1.07);z-index:60;outline:none}
+  .main .carte.jouable:hover,.main .carte.jouable:focus-visible{
+    transform:perspective(760px) rotate(0deg) translateY(-32px) rotateX(9deg) scale(1.08);z-index:60;outline:none}
+  .main.a-vous .carte.jouable .avant{animation:lueur 2.6s ease-in-out infinite;animation-delay:calc(var(--z) * 90ms)}
+  @keyframes lueur{0%,100%{box-shadow:var(--ombre-carte), inset 0 0 0 1px rgba(0,0,0,.14), 0 0 0 2px var(--or)}
+    50%{box-shadow:var(--ombre-carte), inset 0 0 0 1px rgba(0,0,0,.14), 0 0 0 2px var(--or-pale), 0 0 18px rgba(200,155,60,.55)}}
   .main.serree .carte{margin-left:-40px}
 
   .actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid rgba(234,217,190,.18);padding-top:12px}
@@ -212,6 +225,13 @@
     box-shadow:var(--ombre-carte), inset 0 0 0 3px var(--ivoire), inset 0 0 0 4.5px #8C2637}
   .vide{width:var(--cl);height:var(--ch);border-radius:var(--r);border:1px dashed rgba(234,217,190,.3)}
   .carte.jouable{cursor:pointer}
+  .main .carte{touch-action:none}
+  .main .carte.jouable{cursor:grab}
+  .carte.saisie{transition:none !important;z-index:300 !important;cursor:grabbing}
+  .carte.saisie .avant{box-shadow:0 28px 44px rgba(0,0,0,.62), 0 0 0 2px var(--or-pale)}
+  .talon.cible::after{content:"";position:absolute;inset:-18px;border-radius:16px;border:2px dashed var(--or-pale);
+    animation:respire 1.1s infinite;pointer-events:none}
+  @keyframes respire{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
   .carte.jouable .avant{box-shadow:var(--ombre-carte), inset 0 0 0 1px rgba(0,0,0,.14), 0 0 0 2px var(--or)}
   .carte.jouable:hover .avant,.carte.jouable:focus-visible .avant{box-shadow:var(--ombre-levee), 0 0 0 2px var(--or-pale)}
   .carte.morte{filter:saturate(.4) brightness(.82)}
@@ -228,13 +248,18 @@
 
   /* ---------- panneau latéral ---------- */
   .marque{background:linear-gradient(180deg,rgba(0,0,0,.32),rgba(0,0,0,.2));border:1px solid rgba(234,217,190,.18);
-    border-radius:12px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+    border-radius:12px;display:flex;flex-direction:column;overflow:hidden;min-height:0;
+    height:100%;max-height:calc(100vh - 132px)}
   .marque-onglets{display:flex;border-bottom:1px solid rgba(234,217,190,.16)}
   .marque-onglets button{flex:1;border:none;border-radius:0;background:transparent;font-size:12px;letter-spacing:.12em;
     text-transform:uppercase;font-family:'Oswald',sans-serif;padding:11px 4px;color:var(--craie-faible);position:relative}
   .marque-onglets button[aria-selected=true]{color:var(--or-pale);background:rgba(0,0,0,.3);box-shadow:inset 0 -2px 0 var(--or)}
   .marque-onglets .puce{position:absolute;top:6px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--rouge-vif)}
-  .volet{padding:14px;overflow:auto;flex:1;min-height:180px;display:none;flex-direction:column;gap:12px}
+  .volet{padding:14px;overflow-y:auto;overflow-x:hidden;flex:1 1 0;min-height:0;display:none;flex-direction:column;gap:12px;
+    scrollbar-width:thin;scrollbar-color:rgba(200,155,60,.5) transparent}
+  .volet::-webkit-scrollbar,.fil::-webkit-scrollbar{width:8px}
+  .volet::-webkit-scrollbar-thumb,.fil::-webkit-scrollbar-thumb{background:rgba(200,155,60,.45);border-radius:4px}
+  .volet::-webkit-scrollbar-track,.fil::-webkit-scrollbar-track{background:rgba(0,0,0,.2)}
   .volet.visible{display:flex}
   .marque h3{font-family:'Bodoni Moda',Georgia,serif;font-size:16px;color:var(--ivoire);font-weight:700;margin-bottom:6px}
   .tableau-score{width:100%;border-collapse:collapse;font-size:14px}
@@ -243,7 +268,7 @@
   .tableau-score th:first-child{text-align:left}
   .tableau-score td{padding:6px 0;border-bottom:1px dotted rgba(234,217,190,.18);text-align:right}
   .tableau-score td:first-child{text-align:left;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .tableau-score td.chiffre{font-family:'Space Mono',monospace;color:var(--or-pale)}
+  .tableau-score .chiffre{font-family:'Space Mono',monospace;color:var(--or-pale)}
   .tableau-score tr.moi td{color:var(--ivoire)}
   .jauge{height:4px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:3px}
   .jauge i{display:block;height:100%;background:linear-gradient(90deg,var(--or),var(--or-pale));transition:width .5s}
@@ -254,8 +279,11 @@
   @keyframes apparait{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
 
   /* ---------- chat ---------- */
-  #volet-chat{padding:0;gap:0}
-  .fil{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:120px}
+  #volet-chat{padding:0;gap:0;overflow:hidden}
+  .fil{flex:1 1 0;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(200,155,60,.5) transparent}
+  .chips{flex:0 0 auto}
+  .barre-chat{flex:0 0 auto}
   .bulle{max-width:88%;padding:7px 11px;border-radius:12px;font-size:14px;line-height:1.4;word-wrap:break-word;
     background:rgba(255,255,255,.07);border:1px solid rgba(234,217,190,.12);animation:apparait .25s}
   .bulle .qui{display:block;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
@@ -291,6 +319,32 @@
   .podium li .rang{font-family:'Space Mono',monospace;color:var(--or-pale);width:26px}
   .podium li.premier{background:rgba(200,155,60,.2);border:1px solid rgba(200,155,60,.5)}
 
+  /* ---------- effets ---------- */
+  .effet{position:fixed;z-index:78;pointer-events:none;font-family:'Oswald',sans-serif;font-weight:600;
+    font-size:clamp(20px,3vw,30px);letter-spacing:.05em;color:var(--or-pale);white-space:nowrap;
+    text-shadow:0 3px 12px rgba(0,0,0,.8), 0 0 22px rgba(200,155,60,.45);text-transform:uppercase}
+  .effet.rouge{color:#FFA9B2;text-shadow:0 3px 12px rgba(0,0,0,.8), 0 0 22px rgba(216,40,60,.5)}
+  #app.secousse{animation:secousse .5s}
+  @keyframes secousse{10%,90%{transform:translateX(-3px)}20%,80%{transform:translateX(5px)}
+    30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
+  .pioche.secoue{animation:tressaut .4s}
+  @keyframes tressaut{0%,100%{transform:none}30%{transform:translateY(-5px) rotate(-2deg)}65%{transform:translateY(2px) rotate(1.5deg)}}
+  .siege.actif::after{content:"";position:absolute;inset:-2px;border-radius:13px;pointer-events:none;
+    box-shadow:0 0 0 1px rgba(200,155,60,.5);animation:anneau 2.2s ease-in-out infinite}
+  @keyframes anneau{0%,100%{box-shadow:0 0 0 1px rgba(200,155,60,.4)}
+    50%{box-shadow:0 0 0 1px rgba(234,208,155,.9), 0 0 22px rgba(200,155,60,.35)}}
+  .onde{position:fixed;z-index:74;pointer-events:none;border-radius:50%;border:2px solid rgba(234,208,155,.7)}
+  .ligne-moi .nom.actif{animation:respireNom 2.4s ease-in-out infinite}
+  @keyframes respireNom{0%,100%{text-shadow:none}50%{text-shadow:0 0 16px rgba(200,155,60,.6)}}
+  .jeton-couleur{animation:flotte 4s ease-in-out infinite}
+  @keyframes flotte{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .cumul{animation:pulseRouge 1.5s infinite, entreeCumul .35s}
+  @keyframes entreeCumul{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+  .toast{animation:toastIn .3s cubic-bezier(.2,.9,.3,1.3)}
+  @keyframes toastIn{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}
+  .talon .carte{animation:atterrissage .4s}
+  @keyframes atterrissage{from{filter:brightness(1.35)}to{filter:none}}
+
   .grille-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:90;display:flex;flex-direction:column;gap:8px;align-items:center}
   .toast{background:#31101A;border:1px solid var(--or);color:var(--craie);padding:10px 18px;border-radius:6px;font-size:14px;
     box-shadow:0 12px 32px rgba(0,0,0,.55);animation:apparait .25s}
@@ -299,7 +353,10 @@
   .confetti{position:fixed;width:9px;height:14px;top:-20px;z-index:85;pointer-events:none;border-radius:1px}
 
   @media (max-width:960px){
-    .table{grid-template-columns:1fr}
+    #ecran-table{display:block}
+    .table{display:flex;flex-direction:column;grid-template-columns:1fr}
+    .marque{flex:0 0 auto}
+    .table{gap:14px}
     .lobby{grid-template-columns:1fr}
     :root{--cl:62px;--ch:89px}
     .main .carte{margin-left:-34px}
@@ -307,10 +364,11 @@
     .sieges{gap:8px}
     .siege{min-width:96px;padding:8px 8px 10px}
     .siege .nom{font-size:15px}
-    .siege .dos-mini{height:26px}
-    .siege .dos-mini .dos{width:18px;height:26px;margin-left:-11px}
-    .marque{max-height:420px}
-    .volet{min-height:140px}
+    .siege .eventail{--cl:32px;--ch:46px;height:52px}
+    .siege .eventail .carte{margin-left:-19px}
+    .marque{height:min(58vh,430px);max-height:none}
+    .volet{min-height:0;max-height:none}
+    .chips{max-height:64px;overflow:auto}
   }
   @media (max-width:520px){
     :root{--cl:54px;--ch:78px}
@@ -627,13 +685,22 @@ function premierJoueur(s){
   return {i: actifs.length ? actifs[0] : 0, carte:null};
 }
 
+function tropDeHuit(main){
+  var n = 0;
+  for(var k=0;k<main.length;k++) if(val(main[k]) === "8") n++;
+  return n >= 3;
+}
 function distribuer(s){
   var joueurs = s.joueurs.length;
-  s.paquet = paquetNeuf(joueurs >= 5 ? 2 : 1);
-  var k = cartesADonner(joueurs), t, i;
-  s.mains = [];
-  for(i=0;i<joueurs;i++) s.mains.push([]);
-  for(t=0;t<k;t++) for(i=0;i<joueurs;i++) s.mains[i].push(s.paquet.pop());
+  var k = cartesADonner(joueurs), t, i, essais = 0, correcte;
+  do{
+    s.paquet = paquetNeuf(joueurs >= 5 ? 2 : 1);
+    s.mains = [];
+    for(i=0;i<joueurs;i++) s.mains.push([]);
+    for(t=0;t<k;t++) for(i=0;i<joueurs;i++) s.mains[i].push(s.paquet.pop());
+    correcte = true;
+    for(i=0;i<joueurs;i++) if(tropDeHuit(s.mains[i])) correcte = false;
+  } while(!correcte && essais++ < 60);
 
   var d = s.paquet.pop(), garde = 0;
   while(estSpeciale(d) && garde++ < 300){ s.paquet.unshift(d); d = s.paquet.pop(); }
@@ -812,8 +879,16 @@ function poser(s, c, i, couleurChoisie){
     var interdit = duo ? (v==="7"||v==="J"||v==="10") : (v==="10");
     if(interdit){
       tirer(s,i,1);
-      rejoue = true; saut = false;
-      noter(s, j.nom + " ne peut pas finir sur cette carte : il repioche et rejoue.");
+      saut = false;
+      if(!s.mains[i].length){
+        sortir(s,i);                       /* plus rien à piocher : la carte compte quand même */
+      } else if(aDuJeu(s,i)){
+        rejoue = true;
+        noter(s, j.nom + " ne peut pas finir sur cette carte : il repioche et rejoue.");
+      } else {
+        rejoue = false;
+        noter(s, j.nom + " ne peut pas finir sur cette carte : il repioche, sans pouvoir enchaîner.");
+      }
     } else if(estAttaque(c)){
       var autres = indicesEnJeu(s).filter(function(x){ return x !== i; });
       if(autres.length === 1 && peutRiposter(s, autres[0])){
@@ -940,6 +1015,7 @@ var V = null;            /* vue locale, celle qu'on affiche */
 var estHote = false, modeLocal = false, monNom = "Joueur", monIndex = 0;
 var canaux = [], canal = null;    /* maître : un canal par invité ; invité : un seul canal */
 var minuterieBot = null, dernierAnime = 0, sourceVol = null, dernierePhase = null;
+var pointsVus = [], partiesVues = [];
 var derniereCouleur = null, ongletChat = false, chatNonLu = false, dernierChatVu = 0, animer = true;
 try{ animer = !window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
 
@@ -996,6 +1072,20 @@ function carteHTML(c, classes, style){
     ' tabindex="' + ((classes || "").indexOf("jouable") >= 0 ? "0" : "-1") + '">' +
     '<div class="face avant">' + faceHTML(c) + '</div><div class="face arriere"></div></div>';
 }
+function dosHTML(classes){
+  return '<div class="carte ' + (classes || "") + '"><div class="face avant"></div><div class="face arriere"></div></div>';
+}
+function fanTransform(k, m, arc, courbe){
+  var dec = k - (m-1)/2;
+  return "--rot:" + (dec * arc).toFixed(2) + "deg;--dy:" + (Math.abs(dec)*Math.abs(dec)*courbe).toFixed(1) + "px;--z:" + k;
+}
+function eventailHTML(nb){
+  var vus = Math.min(nb, 9), h = '<div class="eventail">', k;
+  var arc = vus > 1 ? Math.min(6.5, 40/vus) : 0;
+  for(k=0;k<vus;k++) h += '<div class="carte" style="' + fanTransform(k, vus, arc, 1.1) + '"><div class="face avant"></div><div class="face arriere"></div></div>';
+  if(nb > vus) h += '<span class="surplus">+' + (nb - vus) + '</span>';
+  return h + '</div>';
+}
 function grain(c){ var h = 0; for(var i=0;i<c.length;i++) h = (h*31 + c.charCodeAt(i)) % 1000; return h/1000; }
 
 /* ---------------- animations ---------------- */
@@ -1007,6 +1097,9 @@ function volCarte(html, de, vers, opts){
   w.className = "vol";
   w.style.left = vers.left + "px"; w.style.top = vers.top + "px";
   w.style.width = vers.width + "px"; w.style.height = vers.height + "px";
+  w.style.setProperty("--cl", vers.width + "px");
+  w.style.setProperty("--ch", vers.height + "px");
+  w.style.setProperty("--r", Math.max(4, Math.round(vers.width/9)) + "px");
   w.innerHTML = html;
   $("scene").appendChild(w);
   var dx = (de.left + de.width/2) - (vers.left + vers.width/2);
@@ -1025,36 +1118,155 @@ function volCarte(html, de, vers, opts){
 }
 function zoneJoueur(i){
   if(i === V.moi) return $("ma-main");
-  var el = document.querySelector('.siege[data-i="' + i + '"]');
+  var el = document.querySelector('.siege[data-i="' + i + '"] .eventail') ||
+           document.querySelector('.siege[data-i="' + i + '"]');
   return el || $("sieges");
 }
+function cartesDe(i){
+  var racine = i === V.moi ? $("ma-main") : document.querySelector('.siege[data-i="' + i + '"] .eventail');
+  return racine ? Array.prototype.slice.call(racine.querySelectorAll(".carte")) : [];
+}
+/* texte qui s'envole au-dessus du talon */
+function effet(texte, rouge, retard){
+  if(!animer || !texte) return;
+  var r = rect($("talon")); if(!r) return;
+  var d = document.createElement("div");
+  d.className = "effet" + (rouge ? " rouge" : "");
+  d.textContent = texte;
+  $("scene").appendChild(d);
+  var l = rect(d);
+  d.style.left = (r.left + r.width/2 - l.width/2) + "px";
+  d.style.top = (r.top - 6) + "px";
+  var a = d.animate([
+    {transform:"translateY(18px) scale(.7)", opacity:0},
+    {transform:"translateY(-14px) scale(1.08)", opacity:1, offset:.25},
+    {transform:"translateY(-30px) scale(1)", opacity:1, offset:.7},
+    {transform:"translateY(-64px) scale(.95)", opacity:0}
+  ], {duration:1400, delay:retard || 0, easing:"cubic-bezier(.2,.8,.3,1)", fill:"backwards"});
+  a.onfinish = function(){ d.remove(); };
+  setTimeout(function(){ if(d.parentNode) d.remove(); }, 2200 + (retard || 0));
+}
+function onde(cible){
+  if(!animer) return;
+  var r = rect(cible); if(!r) return;
+  var d = document.createElement("div");
+  d.className = "onde";
+  d.style.left = (r.left + r.width/2) + "px"; d.style.top = (r.top + r.height/2) + "px";
+  d.style.width = "10px"; d.style.height = "10px"; d.style.margin = "-5px 0 0 -5px";
+  $("scene").appendChild(d);
+  var a = d.animate([{transform:"scale(1)", opacity:.85}, {transform:"scale(16)", opacity:0}],
+    {duration:620, easing:"cubic-bezier(.2,.7,.3,1)"});
+  a.onfinish = function(){ d.remove(); };
+}
+function secouer(){
+  if(!animer) return;
+  var a = $("app");
+  a.classList.remove("secousse"); void a.offsetWidth; a.classList.add("secousse");
+  setTimeout(function(){ a.classList.remove("secousse"); }, 600);
+}
+function secouerPioche(){
+  if(!animer) return;
+  var b = $("btn-pioche");
+  b.classList.remove("secoue"); void b.offsetWidth; b.classList.add("secoue");
+  setTimeout(function(){ b.classList.remove("secoue"); }, 450);
+}
+function texteEffet(c){
+  var v = val(c), duo = V.joueurs.filter(function(j){ return !j.sorti && !j.parti; }).length <= 2;
+  if(v === "JK") return ["Joker · +4", true];
+  if(v === "A") return ["+2", true];
+  if(v === "8") return ["Couleur : " + COULEURS[V.couleur].nom, false];
+  if(v === "J") return [duo ? "Rejoue" : "Sens inversé", false];
+  if(v === "10") return ["Rejoue", false];
+  if(v === "7") return [duo ? "Rejoue" : "Tour sauté", false];
+  return [null, false];
+}
+
 function animerEvenement(){
   if(!V || !V.dernier || V.dernier.n <= dernierAnime) return;
   var d = V.dernier;
   dernierAnime = d.n;
   if(!animer) return;
-  if(d.type === "poser"){
-    var cible = $("talon").querySelector(".carte");
-    if(!cible) return;
-    var rv = rect(cible);
-    var source = (d.joueur === V.moi && sourceVol) ? sourceVol : rect(zoneJoueur(d.joueur));
-    sourceVol = null;
-    cible.style.visibility = "hidden";
-    var revoir = function(){ cible.style.visibility = ""; };
-    var a = volCarte(carteHTML(d.carte, ""), source, rv, {flip: d.joueur !== V.moi, duree:520, apres:revoir});
-    if(!a) revoir();
-    setTimeout(revoir, 900);
-  } else if(d.type === "piocher"){
-    var dep = rect($("btn-pioche"));
-    var arr = rect(zoneJoueur(d.joueur));
-    if(!dep || !arr) return;
-    var n = Math.min(d.nb || 1, 6), k;
-    for(k=0;k<n;k++){
-      volCarte('<div class="carte retournee"><div class="face avant"></div><div class="face arriere"></div></div>',
-        dep, {left:arr.left + arr.width/2 - dep.width/2 + (k-n/2)*10, top:arr.top + arr.height/2 - dep.height/2, width:dep.width, height:dep.height},
-        {duree:420, delai:k*70});
-    }
+  if(d.type === "donne") animerDonne();
+  else if(d.type === "poser") animerPose(d);
+  else if(d.type === "piocher") animerPioche(d);
+}
+
+function animerPose(d){
+  var cible = $("talon").querySelector(".carte:last-child") || $("talon").querySelector(".carte");
+  if(!cible) return;
+  var rv = rect(cible);
+  var source;
+  if(d.joueur === V.moi && sourceVol) source = sourceVol;
+  else {
+    var lot = cartesDe(d.joueur);
+    source = lot.length ? rect(lot[lot.length-1]) : rect(zoneJoueur(d.joueur));
   }
+  sourceVol = null;
+  cible.style.visibility = "hidden";
+  var revoir = function(){ cible.style.visibility = ""; };
+  var a = volCarte(carteHTML(d.carte, ""), source, rv, {flip: d.joueur !== V.moi, duree:520, apres:function(){
+    revoir(); onde($("talon"));
+  }});
+  if(!a) revoir();
+  setTimeout(revoir, 950);
+  var t = texteEffet(d.carte);
+  effet(t[0], t[1], 380);
+  if(t[1] && d.joueur !== V.moi && V.tour === V.moi) setTimeout(secouer, 420);
+}
+
+function animerPioche(d){
+  var dep = rect($("btn-pioche"));
+  if(!dep) return;
+  secouerPioche();
+  var n = Math.max(1, d.nb || 1);
+  var lot = cartesDe(d.joueur);
+  var cibles = lot.slice(Math.max(0, lot.length - n));
+  if(!cibles.length){
+    var z = rect(zoneJoueur(d.joueur));
+    volCarte(dosHTML("retournee"), dep, {left:z.left + z.width/2 - dep.width/2, top:z.top, width:dep.width, height:dep.height}, {duree:420});
+    return;
+  }
+  cibles.forEach(function(el, k){
+    var r = rect(el);
+    el.style.visibility = "hidden";
+    var revoir = function(){ el.style.visibility = ""; };
+    var html = d.joueur === V.moi ? carteHTML(el.dataset.c, "") : dosHTML("retournee");
+    var a = volCarte(html, dep, r, {flip: d.joueur === V.moi, duree:460, delai:k*95, apres:revoir});
+    if(!a) revoir();
+    setTimeout(revoir, 1100 + k*95);
+  });
+  if(n > 1) effet("+" + n, true, 120);
+}
+
+function animerDonne(){
+  var dep = rect($("btn-pioche"));
+  if(!dep) return;
+  var n = V.joueurs.length, i, mains = [], max = 0;
+  for(i=0;i<n;i++){ mains[i] = cartesDe(i); if(mains[i].length > max) max = mains[i].length; }
+  var ordre = [], t;
+  for(t=0;t<max;t++) for(i=0;i<n;i++) if(mains[i][t]) ordre.push({el:mains[i][t], moi:(i === V.moi)});
+  ordre.forEach(function(o, k){
+    var r = rect(o.el);
+    o.el.style.visibility = "hidden";
+    var revoir = function(){ o.el.style.visibility = ""; };
+    var html = o.moi ? carteHTML(o.el.dataset.c, "") : dosHTML("retournee");
+    var a = volCarte(html, dep, r, {flip:o.moi, duree:420, delai:k*42, apres:revoir});
+    if(!a) revoir();
+    setTimeout(revoir, 1400 + k*42);
+  });
+  var fin = ordre.length * 42 + 260;
+  var talon = $("talon").querySelector(".carte");
+  if(talon){
+    talon.style.visibility = "hidden";
+    var rt = rect(talon);
+    var revoirT = function(){ talon.style.visibility = ""; onde($("talon")); };
+    var at = volCarte(carteHTML(sommet(V), ""), dep, rt, {flip:true, duree:480, delai:fin, apres:revoirT});
+    if(!at) revoirT();
+    setTimeout(revoirT, fin + 1200);
+  }
+  setTimeout(function(){
+    if(V && V.phase === "partie" && V.joueurs[V.tour]) effet(V.joueurs[V.tour].nom + " entame", false, 0);
+  }, fin + 420);
 }
 function confettis(){
   if(!animer) return;
@@ -1108,8 +1320,8 @@ function rendre(){
   var moi = V.moi, n = V.joueurs.length, i;
   var monTour = V.phase === "partie" && V.tour === moi;
   var frais = !!(V.dernier && V.dernier.n > dernierAnime);
-  var donneFraiche = frais && V.dernier.type === "donne";
   var poseFraiche = frais && V.dernier.type === "poser";
+  if(drag){ drag = null; $("talon").classList.remove("cible"); }
 
   /* --- sièges des autres joueurs --- */
   var ordre = [], k;
@@ -1125,12 +1337,10 @@ function rendre(){
     else if(j.sorti) fanion = '<span class="fanion or">' + (j.rang === 1 ? "gagne" : j.rang + "e") + '</span>';
     else if(j.sursis) fanion = '<span class="fanion">sur le fil</span>';
     else if(nb === 1) fanion = '<span class="fanion">derni\u00e8re carte</span>';
-    var dos = "";
-    for(var d=0;d<Math.min(nb,8);d++) dos += '<div class="dos"></div>';
     html += '<div class="' + cls + '" data-i="' + i + '">' + fanion +
       '<div class="nom">' + echapper(j.nom) + '</div>' +
       '<div class="compte">' + (j.parti ? "parti" : nb + " carte" + (nb > 1 ? "s" : "")) + '</div>' +
-      '<div class="dos-mini">' + dos + '</div></div>';
+      eventailHTML(nb) + '</div>';
   }
   $("sieges").innerHTML = html;
 
@@ -1169,13 +1379,10 @@ function rendre(){
   var m = main.length, arc = m > 1 ? Math.min(4.5, 46/m) : 0;
   var cartes = "";
   for(k=0;k<m;k++){
-    var dec = k - (m-1)/2;
-    var rot = (dec * arc).toFixed(2), dy = (Math.abs(dec) * Math.abs(dec) * 1.4).toFixed(1);
     var utilisable = monTour && jouable(V, main[k], moi);
-    cartes += carteHTML(main[k], (utilisable ? "jouable" : "morte") + (donneFraiche ? " neuve" : ""),
-      "--rot:" + rot + "deg;--dy:" + dy + "px;--z:" + k + ";animation-delay:" + (k*55) + "ms");
+    cartes += carteHTML(main[k], utilisable ? "jouable" : "morte", fanTransform(k, m, arc, 1.4));
   }
-  $("ma-main").className = "main" + (m > 10 ? " serree" : "");
+  $("ma-main").className = "main" + (m > 10 ? " serree" : "") + (monTour ? " a-vous" : "");
   $("ma-main").innerHTML = cartes || '<div class="vide"></div>';
   $("nom-moi").textContent = V.joueurs[moi].nom;
   $("nom-moi").className = "nom" + (monTour ? " actif" : "");
@@ -1186,10 +1393,14 @@ function rendre(){
   var lignes = "";
   for(i=0;i<n;i++){
     var jj = V.joueurs[i];
+    var bouge = (pointsVus[i] !== undefined && pointsVus[i] !== jj.points) ? " pop" : "";
+    var bougeP = (partiesVues[i] !== undefined && partiesVues[i] !== jj.parties) ? " pop" : "";
+    pointsVus[i] = jj.points; partiesVues[i] = jj.parties;
     lignes += '<tr class="' + (i === moi ? "moi" : "") + '"><td>' + echapper(jj.nom) +
       (jj.parti ? " (absent)" : "") + '<div class="jauge"><i style="width:' +
       Math.min(100, Math.round(100 * jj.points / Math.max(1, V.opts.objectif))) + '%"></i></div></td>' +
-      '<td class="chiffre">' + jj.points + '</td><td class="chiffre">' + jj.parties + '</td></tr>';
+      '<td><span class="chiffre' + bouge + '">' + jj.points + '</span></td>' +
+      '<td><span class="chiffre' + bougeP + '">' + jj.parties + '</span></td></tr>';
   }
   $("corps-score").innerHTML = lignes;
   $("rappel-manche").textContent = "Manche " + V.manche + " · premier arrivé à " + V.opts.objectif +
@@ -1371,6 +1582,14 @@ function tourAuto(){
   }, 800 + Math.random() * 600);
 }
 
+function jouerCarte(c){
+  if(val(c) === "8" || val(c) === "JK"){
+    var depart = sourceVol;
+    choisirCouleur(val(c), function(k){ sourceVol = depart; agir({t:"poser", c:c, couleur:k}); });
+  } else {
+    agir({t:"poser", c:c, couleur:null});
+  }
+}
 function clicCarte(el){
   var c = el.dataset.c;
   if(!V || V.phase !== "partie" || V.tour !== V.moi) return;
@@ -1379,10 +1598,48 @@ function clicCarte(el){
     return;
   }
   sourceVol = rect(el);
-  if(val(c) === "8" || val(c) === "JK"){
-    choisirCouleur(val(c), function(k){ agir({t:"poser", c:c, couleur:k}); });
-  } else {
-    agir({t:"poser", c:c, couleur:null});
+  jouerCarte(c);
+}
+
+/* --- glisser une carte jusqu'au talon --- */
+var drag = null;
+function surCible(x, y){
+  var r = rect($("talon"));
+  if(!r) return false;
+  var marge = 100;
+  return x > r.left - marge && x < r.right + marge && y > r.top - marge && y < r.bottom + marge;
+}
+function debutGlisse(e){
+  if(e.button && e.button !== 0) return;
+  var el = e.target.closest(".carte");
+  if(!el || !V || V.phase !== "partie" || V.tour !== V.moi) return;
+  e.preventDefault();
+  drag = {el:el, x:e.clientX, y:e.clientY, bouge:false, ok:el.classList.contains("jouable"), id:e.pointerId};
+  try{ el.setPointerCapture(e.pointerId); }catch(err){}
+}
+function pendantGlisse(e){
+  if(!drag || !drag.ok) return;
+  var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if(!drag.bouge){
+    if(Math.abs(dx) + Math.abs(dy) < 8) return;
+    drag.bouge = true;
+    drag.el.classList.add("saisie");
+  }
+  drag.el.style.transform = "translate(" + dx + "px," + dy + "px) rotate(" + (dx * 0.035).toFixed(2) + "deg) scale(1.08)";
+  $("talon").classList.toggle("cible", surCible(e.clientX, e.clientY));
+}
+function finGlisse(e){
+  if(!drag) return;
+  var d = drag; drag = null;
+  $("talon").classList.remove("cible");
+  d.el.classList.remove("saisie");
+  d.el.style.transform = "";
+  if(!d.bouge){ clicCarte(d.el); return; }
+  if(!d.ok) return;
+  if(surCible(e.clientX, e.clientY)){
+    var r = rect($("talon"));
+    sourceVol = {left:e.clientX - r.width/2, top:e.clientY - r.height/2, width:r.width, height:r.height};
+    jouerCarte(d.el.dataset.c);
   }
 }
 
@@ -1769,10 +2026,14 @@ $("code-affiche").onclick = function(){
   t.remove();
 };
 $("code-saisi").addEventListener("keydown", function(e){ if(e.key === "Enter") rejoindreParCode(); });
-$("ma-main").addEventListener("click", function(e){
-  var el = e.target.closest(".carte");
-  if(el) clicCarte(el);
+$("ma-main").addEventListener("pointerdown", debutGlisse);
+$("ma-main").addEventListener("pointermove", pendantGlisse);
+$("ma-main").addEventListener("pointerup", finGlisse);
+$("ma-main").addEventListener("pointercancel", function(){
+  if(drag){ drag.el.classList.remove("saisie"); drag.el.style.transform = ""; drag = null; }
+  $("talon").classList.remove("cible");
 });
+$("ma-main").addEventListener("dragstart", function(e){ e.preventDefault(); });
 $("ma-main").addEventListener("keydown", function(e){
   if(e.key !== "Enter" && e.key !== " ") return;
   var el = e.target.closest(".carte");
