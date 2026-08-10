@@ -3,162 +3,320 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>8 américain — table à deux</title>
-<meta name="description" content="Jouer au 8 américain à deux, chacun sur son ordinateur, en connexion directe.">
+<title>8 américain — la table</title>
+<meta name="description" content="8 américain de 2 à 6 joueurs : jokers, valets, dames, chat de table et animations de cartes.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Oswald:wght@500;600&family=Karla:wght@400;500;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Oswald:wght@400;500;600&family=Karla:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --feutre:#4A1220; --feutre-haut:#611B2C; --feutre-bas:#320B16;
-    --ivoire:#F3ECDD; --ivoire-ombre:#DFD4BF; --encre:#18121A;
-    --rouge:#BE2033; --or:#C89B3C; --or-pale:#E6C77E;
-    --craie:#EAD9BE; --craie-faible:#B99A86;
-    --carte-l:74px; --carte-h:104px; --r:9px;
+    --feutre:#4A1220; --feutre-haut:#6A2032; --feutre-bas:#26060E;
+    --bois:#2B1010; --bois-clair:#4A2018;
+    --ivoire:#F6F0E3; --ivoire-ombre:#D9CDB6; --encre:#191218;
+    --rouge:#BE2033; --rouge-vif:#D8283C; --or:#C89B3C; --or-pale:#EAD09B;
+    --craie:#EDDDC4; --craie-faible:#B49685;
+    --cl:78px; --ch:112px; --r:9px;
+    --ombre-carte:0 2px 3px rgba(0,0,0,.28), 0 8px 18px rgba(0,0,0,.42);
+    --ombre-levee:0 18px 34px rgba(0,0,0,.55), 0 4px 8px rgba(0,0,0,.35);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{font-family:'Karla',system-ui,sans-serif;color:var(--craie);min-height:100%;
-    background:radial-gradient(120% 90% at 50% 0%, var(--feutre-haut) 0%, var(--feutre) 45%, var(--feutre-bas) 100%);}
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;
-    background-image:repeating-linear-gradient(45deg, rgba(255,255,255,.08) 0 1px, transparent 1px 4px),
-      repeating-linear-gradient(-45deg, rgba(0,0,0,.14) 0 1px, transparent 1px 4px);}
-  #app{position:relative;max-width:1120px;margin:0 auto;padding:18px 16px 32px;min-height:100vh;display:flex;flex-direction:column;gap:16px}
+  body{font-family:'Karla',system-ui,sans-serif;color:var(--craie);min-height:100%;overflow-x:hidden;
+    background:
+      radial-gradient(140% 100% at 50% -10%, rgba(255,225,180,.16) 0%, rgba(255,225,180,0) 45%),
+      radial-gradient(120% 90% at 50% 12%, var(--feutre-haut) 0%, var(--feutre) 42%, var(--feutre-bas) 100%);}
+  /* grain du feutre */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.2;z-index:0;
+    background-image:repeating-linear-gradient(45deg, rgba(255,255,255,.06) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(-45deg, rgba(0,0,0,.16) 0 1px, transparent 1px 4px);}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(100% 70% at 50% 40%, transparent 40%, rgba(20,3,8,.55) 100%)}
+  #app{position:relative;z-index:1;max-width:1220px;margin:0 auto;padding:16px 16px 28px;min-height:100vh;display:flex;flex-direction:column;gap:14px}
 
+  /* ---------- bandeau ---------- */
   .bandeau{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;
-    border-bottom:1px solid rgba(234,217,190,.22);padding-bottom:12px}
-  .titre{font-family:'Bodoni Moda',Didot,Georgia,serif;font-weight:700;line-height:.92;font-size:clamp(30px,5vw,46px);color:var(--ivoire)}
-  .titre em{font-style:normal;color:var(--or-pale)}
-  .sous{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--craie-faible);margin-top:6px}
-  .bandeau-droite{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .etiquette{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--craie-faible)}
-  .code-table{font-family:'Space Mono',monospace;font-size:22px;letter-spacing:.22em;color:var(--or-pale);
-    border:1px dashed rgba(200,155,60,.55);border-radius:6px;padding:6px 12px;cursor:pointer;background:rgba(0,0,0,.18)}
-  .code-table:hover{background:rgba(0,0,0,.32)}
-  .etat{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--craie-faible);display:flex;align-items:center;gap:7px}
+    border-bottom:1px solid rgba(234,217,190,.22);padding-bottom:10px}
+  .titre{font-family:'Bodoni Moda',Didot,Georgia,serif;font-weight:700;line-height:.9;font-size:clamp(28px,4.6vw,44px);color:var(--ivoire)}
+  .titre em{font-style:italic;color:var(--or-pale)}
+  .sous{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--craie-faible);margin-top:6px}
+  .bandeau-droite{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .etiquette{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--craie-faible)}
+  .code-table{font-family:'Space Mono',monospace;font-size:21px;font-weight:700;letter-spacing:.24em;color:var(--or-pale);
+    border:1px dashed rgba(200,155,60,.55);border-radius:6px;padding:5px 11px;cursor:pointer;background:rgba(0,0,0,.22)}
+  .code-table:hover{background:rgba(0,0,0,.4)}
+  .etat{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--craie-faible);display:flex;align-items:center;gap:7px}
   .pastille{width:8px;height:8px;border-radius:50%;background:var(--or)}
   .pastille.vive{animation:pouls 1.9s infinite}
   .pastille.morte{background:#7d5a5a}
-  @keyframes pouls{0%{box-shadow:0 0 0 0 rgba(200,155,60,.5)}70%{box-shadow:0 0 0 9px rgba(200,155,60,0)}100%{box-shadow:0 0 0 0 rgba(200,155,60,0)}}
+  @keyframes pouls{0%{box-shadow:0 0 0 0 rgba(200,155,60,.5)}70%{box-shadow:0 0 0 10px rgba(200,155,60,0)}100%{box-shadow:0 0 0 0 rgba(200,155,60,0)}}
 
+  /* ---------- contrôles ---------- */
   button{font-family:'Karla',sans-serif;font-size:15px;font-weight:700;cursor:pointer;border-radius:6px;
-    border:1px solid rgba(234,217,190,.3);background:rgba(0,0,0,.22);color:var(--craie);padding:10px 16px;
-    transition:transform .12s ease,background .15s ease,border-color .15s ease}
-  button:hover:not(:disabled){background:rgba(0,0,0,.4);border-color:var(--or)}
+    border:1px solid rgba(234,217,190,.3);background:rgba(0,0,0,.24);color:var(--craie);padding:10px 16px;
+    transition:transform .12s ease,background .15s ease,border-color .15s ease,box-shadow .15s ease}
+  button:hover:not(:disabled){background:rgba(0,0,0,.42);border-color:var(--or)}
   button:active:not(:disabled){transform:translateY(1px)}
-  button:disabled{opacity:.35;cursor:not-allowed}
+  button:disabled{opacity:.32;cursor:not-allowed}
   button:focus-visible{outline:2px solid var(--or-pale);outline-offset:2px}
-  .principal{background:var(--or);border-color:var(--or);color:#2A0A12}
+  .principal{background:linear-gradient(180deg,var(--or-pale),var(--or));border-color:var(--or);color:#2A0A12;
+    box-shadow:0 4px 14px rgba(200,155,60,.28)}
   .principal:hover:not(:disabled){background:var(--or-pale);border-color:var(--or-pale)}
-  .alerte{border-color:rgba(190,32,51,.8);color:#F7C4C9;background:rgba(190,32,51,.25)}
-  .alerte:hover:not(:disabled){background:rgba(190,32,51,.45)}
+  .alerte{border-color:rgba(216,40,60,.85);color:#FFD3D8;background:rgba(190,32,51,.3)}
+  .alerte:hover:not(:disabled){background:rgba(190,32,51,.5)}
   .discret{font-size:13px;padding:7px 12px;font-weight:500}
-
-  .onglets{display:flex;gap:8px;margin-bottom:2px}
-  .onglets button{border-radius:6px 6px 0 0;border-bottom-color:transparent;font-size:14px}
-  .onglets button[aria-selected=true]{background:rgba(0,0,0,.34);border-color:rgba(200,155,60,.6);color:var(--or-pale)}
-  .lobby{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
-  .panneau{background:rgba(0,0,0,.24);border:1px solid rgba(234,217,190,.18);border-radius:12px;padding:22px}
-  .panneau h2{font-family:'Bodoni Moda',Georgia,serif;font-size:24px;color:var(--ivoire);font-weight:700;margin-bottom:4px}
-  .panneau p.aide{font-size:14px;color:var(--craie-faible);margin-bottom:16px;line-height:1.5}
-  .etape{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--or-pale);margin:16px 0 6px}
-  label.champ{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--craie-faible);margin-bottom:6px}
-  input[type=text],textarea{width:100%;padding:11px 13px;border-radius:6px;border:1px solid rgba(234,217,190,.3);
-    background:rgba(0,0,0,.3);color:var(--ivoire);font-family:'Karla',sans-serif;font-size:16px;margin-bottom:14px}
+  input[type=text],input[type=number],textarea{width:100%;padding:11px 13px;border-radius:6px;border:1px solid rgba(234,217,190,.3);
+    background:rgba(0,0,0,.32);color:var(--ivoire);font-family:'Karla',sans-serif;font-size:16px;margin-bottom:14px}
   textarea{font-family:'Space Mono',monospace;font-size:11px;height:92px;resize:vertical;line-height:1.4;word-break:break-all}
   input#code-saisi{font-family:'Space Mono',monospace;letter-spacing:.28em;text-transform:uppercase;font-size:20px}
   input:focus,textarea:focus{outline:none;border-color:var(--or)}
-  .options{margin:6px 0 16px;display:grid;gap:9px}
-  .options summary{cursor:pointer;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--craie-faible);margin-bottom:10px}
-  .opt{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--craie)}
-  .opt input{accent-color:var(--or);width:16px;height:16px}
-  .msg{font-size:14px;color:#F7C4C9;min-height:20px;margin-top:8px;line-height:1.45}
+  label.champ{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--craie-faible);margin-bottom:6px}
+  select{font-family:'Karla',sans-serif;font-size:15px;padding:10px 12px;border-radius:6px;background:rgba(0,0,0,.32);
+    color:var(--ivoire);border:1px solid rgba(234,217,190,.3);margin-bottom:14px;width:100%}
+
+  /* ---------- lobby ---------- */
+  .onglets{display:flex;gap:8px;flex-wrap:wrap}
+  .onglets button{border-radius:6px 6px 0 0;font-size:14px}
+  .onglets button[aria-selected=true]{background:rgba(0,0,0,.4);border-color:rgba(200,155,60,.65);color:var(--or-pale)}
+  .lobby{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  .panneau{background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.18));border:1px solid rgba(234,217,190,.18);
+    border-radius:12px;padding:22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  .panneau h2{font-family:'Bodoni Moda',Georgia,serif;font-size:24px;color:var(--ivoire);font-weight:700;margin-bottom:4px}
+  .panneau p.aide{font-size:14px;color:var(--craie-faible);margin-bottom:16px;line-height:1.5}
+  .etape{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--or-pale);margin:16px 0 6px}
+  .msg{font-size:14px;color:#FFC9CF;min-height:20px;margin-top:8px;line-height:1.45}
   .msg.ok{color:var(--or-pale)}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pied{font-size:12px;color:var(--craie-faible);text-align:center;line-height:1.6;padding-top:6px}
 
-  .table{display:grid;grid-template-columns:1fr 260px;gap:20px;flex:1}
-  .piste{display:flex;flex-direction:column;justify-content:space-between;gap:18px;min-height:520px}
-  .rangee{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-  .joueur-nom{font-family:'Bodoni Moda',Georgia,serif;font-size:20px;color:var(--ivoire)}
-  .joueur-meta{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--craie-faible)}
-  .actif{color:var(--or-pale)}
-  .badge-carte{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
-    background:var(--rouge);color:#fff;padding:3px 9px;border-radius:3px}
-  .main-adverse{display:flex;padding-left:14px;min-height:calc(var(--carte-h) * .78)}
-  .main-adverse .dos{margin-left:-38px;width:calc(var(--carte-l) * .78);height:calc(var(--carte-h) * .78)}
-  .centre{display:flex;align-items:center;justify-content:center;gap:clamp(24px,6vw,64px);padding:8px 0;flex-wrap:wrap}
-  .pile{display:flex;flex-direction:column;align-items:center;gap:10px}
-  .talon{position:relative;width:var(--carte-l);height:var(--carte-h)}
+  /* ---------- salon d'attente ---------- */
+  .sieges-attente{display:flex;flex-direction:column;gap:8px;margin:14px 0 18px}
+  .siege-attente{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;
+    background:rgba(0,0,0,.26);border:1px solid rgba(234,217,190,.14);font-size:15px}
+  .siege-attente .num{font-family:'Space Mono',monospace;color:var(--or-pale);font-size:12px}
+  .siege-attente.libre{opacity:.45;font-style:italic}
+
+  /* ---------- table ---------- */
+  #ecran-table{flex:1;display:flex;min-height:0}
+  #ecran-lobby{display:flex;flex-direction:column;gap:14px}
+  .table{display:grid;grid-template-columns:1fr 300px;gap:18px;flex:1;width:100%;align-items:stretch}
+  .tapis{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:14px;min-height:560px;
+    border-radius:18px;padding:18px 18px 14px;
+    background:radial-gradient(80% 60% at 50% 42%, rgba(255,220,170,.1), rgba(0,0,0,0) 70%), rgba(0,0,0,.14);
+    border:1px solid rgba(200,155,60,.22);
+    box-shadow:inset 0 0 0 6px rgba(43,16,16,.5), inset 0 0 40px rgba(0,0,0,.5)}
+
+  .sieges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .siege{position:relative;min-width:132px;padding:10px 12px 12px;border-radius:12px;text-align:center;
+    background:rgba(0,0,0,.26);border:1px solid rgba(234,217,190,.14);transition:border-color .25s,box-shadow .25s,transform .25s}
+  .siege.actif{border-color:var(--or);box-shadow:0 0 0 1px var(--or), 0 0 26px rgba(200,155,60,.3);transform:translateY(-3px)}
+  .siege.sorti{opacity:.55}
+  .siege.parti{opacity:.35;filter:grayscale(.7)}
+  .siege .nom{font-family:'Bodoni Moda',Georgia,serif;font-size:17px;color:var(--ivoire);line-height:1.1;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .siege.actif .nom{color:var(--or-pale)}
+  .siege .compte{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--craie-faible);margin-top:2px}
+  .siege .dos-mini{display:flex;justify-content:center;height:34px;margin-top:8px}
+  .siege .dos-mini .dos{width:24px;height:34px;border-radius:3px;margin-left:-15px;box-shadow:0 2px 5px rgba(0,0,0,.5), inset 0 0 0 1.5px var(--ivoire)}
+  .siege .dos-mini .dos:first-child{margin-left:0}
+  .siege .fanion{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-family:'Oswald',sans-serif;
+    font-size:10px;letter-spacing:.16em;text-transform:uppercase;background:var(--rouge);color:#fff;padding:2px 8px;border-radius:3px;white-space:nowrap}
+  .siege .fanion.or{background:var(--or);color:#2A0A12}
+  .siege.alerte-carte{animation:battement 1.4s infinite}
+  @keyframes battement{0%,100%{box-shadow:0 0 0 1px rgba(216,40,60,.7)}50%{box-shadow:0 0 0 1px rgba(216,40,60,.7), 0 0 22px rgba(216,40,60,.5)}}
+
+  .centre{display:flex;align-items:center;justify-content:center;gap:clamp(18px,5vw,54px);padding:6px 0;flex-wrap:wrap;position:relative}
+  .pile{display:flex;flex-direction:column;align-items:center;gap:9px}
+  .talon{position:relative;width:var(--cl);height:var(--ch)}
   .talon .carte{position:absolute;inset:0}
-  .pioche-btn{padding:0;border:none;background:none;border-radius:var(--r)}
-  .couleur-active{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:92px}
-  .pastille-couleur{width:56px;height:56px;border-radius:50%;background:var(--ivoire);color:var(--encre);
-    display:flex;align-items:center;justify-content:center;font-size:32px;line-height:1;box-shadow:0 6px 16px rgba(0,0,0,.4)}
-  .cumul{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.1em;color:#F7C4C9;
-    border:1px solid rgba(190,32,51,.8);background:rgba(190,32,51,.28);padding:5px 11px;border-radius:4px}
-  .ma-main{display:flex;justify-content:center;padding-left:22px;min-height:var(--carte-h);flex-wrap:wrap;row-gap:12px}
-  .ma-main .carte{margin-left:-22px}
+  .pioche{position:relative;width:var(--cl);height:var(--ch);padding:0;border:none;background:none;border-radius:var(--r)}
+  .pioche .dos{position:absolute;inset:0}
+  .pioche .dos:nth-child(1){transform:translate(3px,3px) rotate(1.6deg)}
+  .pioche .dos:nth-child(2){transform:translate(-2px,1px) rotate(-1.2deg)}
+  .pioche:hover:not(:disabled) .dos:nth-child(3){transform:translateY(-6px)}
+  .pioche .dos:nth-child(3){transition:transform .18s ease}
+  .pioche:disabled{cursor:not-allowed;filter:saturate(.5) brightness(.75)}
+  .pioche.vide-pioche{border:1px dashed rgba(234,217,190,.3)}
 
-  .carte{width:var(--carte-l);height:var(--carte-h);border-radius:var(--r);background:var(--ivoire);color:var(--encre);
-    position:relative;flex:0 0 auto;box-shadow:0 3px 10px rgba(0,0,0,.45), inset 0 0 0 1px var(--ivoire-ombre);
-    transition:transform .14s ease, box-shadow .14s ease;font-family:'Oswald',Impact,sans-serif;user-select:none}
-  .carte.rouge{color:var(--rouge)}
-  .carte .coin{position:absolute;left:6px;top:5px;text-align:center;line-height:.94}
-  .carte .coin b{display:block;font-size:19px;font-weight:600}
-  .carte .coin i{font-style:normal;font-size:14px}
-  .carte .coin.bas{left:auto;right:6px;bottom:5px;top:auto;transform:rotate(180deg)}
-  .carte .gros{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px}
-  .carte.jouable{cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.45), 0 0 0 2px var(--or)}
-  .carte.jouable:hover,.carte.jouable:focus-visible{transform:translateY(-16px);box-shadow:0 14px 22px rgba(0,0,0,.5), 0 0 0 2px var(--or-pale);outline:none}
-  .carte.morte{filter:saturate(.35) brightness(.8);opacity:.72}
-  .dos{width:var(--carte-l);height:var(--carte-h);border-radius:var(--r);flex:0 0 auto;
-    background:repeating-linear-gradient(45deg, rgba(243,236,221,.22) 0 2px, transparent 2px 7px),
-      repeating-linear-gradient(-45deg, rgba(243,236,221,.22) 0 2px, transparent 2px 7px),
-      linear-gradient(160deg,#7C2333,#4A1220);
-    box-shadow:0 3px 10px rgba(0,0,0,.45), inset 0 0 0 3px var(--ivoire), inset 0 0 0 4px #7C2333}
-  .vide{width:var(--carte-l);height:var(--carte-h);border-radius:var(--r);border:1px dashed rgba(234,217,190,.3)}
+  .indicateurs{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:104px}
+  .jeton-couleur{width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 34% 30%, #fff, var(--ivoire) 62%, var(--ivoire-ombre));
+    color:var(--encre);display:flex;align-items:center;justify-content:center;font-size:34px;line-height:1;
+    box-shadow:0 8px 18px rgba(0,0,0,.5), inset 0 -3px 6px rgba(0,0,0,.18);transition:transform .3s}
+  .jeton-couleur.change{animation:tourne .5s ease}
+  @keyframes tourne{0%{transform:rotateY(0) scale(1)}50%{transform:rotateY(90deg) scale(1.12)}100%{transform:rotateY(0) scale(1)}}
+  .cumul{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.08em;color:#FFD3D8;
+    border:1px solid rgba(216,40,60,.85);background:rgba(190,32,51,.32);padding:5px 11px;border-radius:4px;animation:pulseRouge 1.5s infinite}
+  @keyframes pulseRouge{0%,100%{box-shadow:0 0 0 0 rgba(216,40,60,.5)}50%{box-shadow:0 0 0 8px rgba(216,40,60,0)}}
+  .sens{display:flex;align-items:center;gap:6px;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--craie-faible)}
+  .sens svg{width:20px;height:20px;transition:transform .5s ease}
+  .sens.inverse svg{transform:scaleX(-1)}
 
-  .actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid rgba(234,217,190,.2);padding-top:14px}
-  .consigne{font-size:15px;color:var(--craie);flex:1;min-width:220px}
+  /* ---------- ma zone ---------- */
+  .zone-moi{display:flex;flex-direction:column;gap:10px}
+  .ligne-moi{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;justify-content:center}
+  .ligne-moi .nom{font-family:'Bodoni Moda',Georgia,serif;font-size:21px;color:var(--ivoire)}
+  .ligne-moi .nom.actif{color:var(--or-pale)}
+  .main{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:calc(var(--ch) + 30px);padding-top:18px}
+  .main .carte{margin-left:-28px;transform-origin:50% 130%;
+    transform:rotate(var(--rot)) translateY(var(--dy));z-index:var(--z)}
+  .main .carte:first-child{margin-left:0}
+  .main .carte.jouable:hover,.main .carte.jouable:focus-visible{transform:rotate(0deg) translateY(-30px) scale(1.07);z-index:60;outline:none}
+  .main.serree .carte{margin-left:-40px}
+
+  .actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid rgba(234,217,190,.18);padding-top:12px}
+  .consigne{font-size:15px;color:var(--craie);flex:1;min-width:220px;line-height:1.4}
   .consigne strong{color:var(--or-pale)}
-  .bascule{display:flex;align-items:center;gap:8px;font-size:14px;padding:8px 12px;border-radius:6px;
-    border:1px solid rgba(200,155,60,.5);background:rgba(200,155,60,.12);cursor:pointer}
-  .bascule input{accent-color:var(--or);width:16px;height:16px}
 
-  .marque{background:rgba(0,0,0,.24);border:1px solid rgba(234,217,190,.18);border-radius:12px;padding:16px;
-    display:flex;flex-direction:column;gap:14px}
-  .marque h3{font-family:'Bodoni Moda',Georgia,serif;font-size:17px;color:var(--ivoire);font-weight:700}
-  .score-ligne{display:flex;justify-content:space-between;font-size:15px;padding:5px 0;border-bottom:1px dotted rgba(234,217,190,.2)}
-  .score-ligne span:last-child{font-family:'Space Mono',monospace;color:var(--or-pale)}
-  .journal{list-style:none;font-size:13px;line-height:1.45;color:var(--craie-faible);display:flex;flex-direction:column;gap:7px;max-height:300px;overflow:auto}
-  .journal li{border-left:2px solid rgba(200,155,60,.4);padding-left:9px}
+  /* ---------- cartes ---------- */
+  .carte{width:var(--cl);height:var(--ch);border-radius:var(--r);position:relative;flex:0 0 auto;
+    transition:transform .18s cubic-bezier(.2,.9,.3,1.2), box-shadow .18s ease, filter .2s ease;
+    transform-style:preserve-3d;user-select:none;-webkit-tap-highlight-color:transparent}
+  .face{position:absolute;inset:0;border-radius:var(--r);backface-visibility:hidden;overflow:hidden}
+  .avant{background:linear-gradient(160deg,#FFFBF2 0%,var(--ivoire) 45%,#EFE6D3 100%);color:var(--encre);
+    box-shadow:var(--ombre-carte), inset 0 0 0 1px rgba(0,0,0,.14), inset 0 0 0 3px rgba(255,255,255,.6)}
+  .carte.rouge .avant{color:var(--rouge)}
+  .arriere{transform:rotateY(180deg)}
+  .carte.retournee{transform:rotateY(180deg)}
+  .coin{position:absolute;left:6px;top:5px;text-align:center;line-height:.9;font-family:'Oswald',sans-serif}
+  .coin b{display:block;font-size:18px;font-weight:600;letter-spacing:-.02em}
+  .coin i{font-style:normal;font-size:13px}
+  .coin.bas{left:auto;right:6px;bottom:5px;top:auto;transform:rotate(180deg)}
+  .pips{position:absolute;left:22%;right:22%;top:7%;bottom:7%}
+  .pip{position:absolute;transform:translate(-50%,-50%);font-size:17px;line-height:1}
+  .pip.bas{transform:translate(-50%,-50%) rotate(180deg)}
+  .pip.geant{font-size:40px}
+  .figure{position:absolute;left:20%;right:20%;top:8%;bottom:8%;border-radius:4px;
+    background:linear-gradient(135deg, rgba(190,32,51,.1) 0 6px, transparent 6px 12px) , rgba(0,0,0,.03);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.22);display:flex;flex-direction:column}
+  .figure .moitie{flex:1;display:flex;align-items:center;justify-content:center;gap:2px;font-family:'Bodoni Moda',Georgia,serif;
+    font-weight:700;font-size:24px;position:relative}
+  .figure .moitie:last-child{transform:rotate(180deg)}
+  .figure .moitie span{font-size:14px}
+  .figure .barre{height:1px;background:rgba(0,0,0,.25)}
+  .joker{position:absolute;inset:8% 18%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    color:var(--rouge)}
+  .joker .etoile{font-size:34px;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+  .joker .mot{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.18em;color:var(--encre)}
+  .dos{width:var(--cl);height:var(--ch);border-radius:var(--r);flex:0 0 auto;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(234,208,155,.28) 0 12%, transparent 13%),
+      repeating-linear-gradient(45deg, rgba(243,236,221,.2) 0 2px, transparent 2px 7px),
+      repeating-linear-gradient(-45deg, rgba(243,236,221,.2) 0 2px, transparent 2px 7px),
+      linear-gradient(160deg,#8C2637,#4A1220 70%);
+    box-shadow:var(--ombre-carte), inset 0 0 0 3px var(--ivoire), inset 0 0 0 4.5px #8C2637}
+  .carte .arriere{background:
+      radial-gradient(circle at 50% 50%, rgba(234,208,155,.28) 0 12%, transparent 13%),
+      repeating-linear-gradient(45deg, rgba(243,236,221,.2) 0 2px, transparent 2px 7px),
+      repeating-linear-gradient(-45deg, rgba(243,236,221,.2) 0 2px, transparent 2px 7px),
+      linear-gradient(160deg,#8C2637,#4A1220 70%);
+    box-shadow:var(--ombre-carte), inset 0 0 0 3px var(--ivoire), inset 0 0 0 4.5px #8C2637}
+  .vide{width:var(--cl);height:var(--ch);border-radius:var(--r);border:1px dashed rgba(234,217,190,.3)}
+  .carte.jouable{cursor:pointer}
+  .carte.jouable .avant{box-shadow:var(--ombre-carte), inset 0 0 0 1px rgba(0,0,0,.14), 0 0 0 2px var(--or)}
+  .carte.jouable:hover .avant,.carte.jouable:focus-visible .avant{box-shadow:var(--ombre-levee), 0 0 0 2px var(--or-pale)}
+  .carte.morte{filter:saturate(.4) brightness(.82)}
+  .carte.refus{animation:refus .4s}
+  @keyframes refus{0%,100%{transform:rotate(var(--rot)) translateY(var(--dy))}
+    25%{transform:rotate(var(--rot)) translateY(var(--dy)) translateX(-7px)}
+    75%{transform:rotate(var(--rot)) translateY(var(--dy)) translateX(7px)}}
+  .vol{position:fixed;z-index:70;pointer-events:none;transform-style:preserve-3d}
+  .carte.pose{animation:atterrit .45s cubic-bezier(.2,.8,.3,1)}
+  @keyframes atterrit{0%{filter:brightness(1.5)}100%{filter:brightness(1)}}
+  @keyframes entree{from{opacity:0;transform:rotate(var(--rot)) translateY(calc(var(--dy) + 40px)) scale(.9)}
+    to{opacity:1;transform:rotate(var(--rot)) translateY(var(--dy)) scale(1)}}
+  .main .carte.neuve{animation:entree .38s backwards}
+
+  /* ---------- panneau latéral ---------- */
+  .marque{background:linear-gradient(180deg,rgba(0,0,0,.32),rgba(0,0,0,.2));border:1px solid rgba(234,217,190,.18);
+    border-radius:12px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+  .marque-onglets{display:flex;border-bottom:1px solid rgba(234,217,190,.16)}
+  .marque-onglets button{flex:1;border:none;border-radius:0;background:transparent;font-size:12px;letter-spacing:.12em;
+    text-transform:uppercase;font-family:'Oswald',sans-serif;padding:11px 4px;color:var(--craie-faible);position:relative}
+  .marque-onglets button[aria-selected=true]{color:var(--or-pale);background:rgba(0,0,0,.3);box-shadow:inset 0 -2px 0 var(--or)}
+  .marque-onglets .puce{position:absolute;top:6px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--rouge-vif)}
+  .volet{padding:14px;overflow:auto;flex:1;min-height:180px;display:none;flex-direction:column;gap:12px}
+  .volet.visible{display:flex}
+  .marque h3{font-family:'Bodoni Moda',Georgia,serif;font-size:16px;color:var(--ivoire);font-weight:700;margin-bottom:6px}
+  .tableau-score{width:100%;border-collapse:collapse;font-size:14px}
+  .tableau-score th{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--craie-faible);text-align:right;font-weight:500;padding-bottom:6px}
+  .tableau-score th:first-child{text-align:left}
+  .tableau-score td{padding:6px 0;border-bottom:1px dotted rgba(234,217,190,.18);text-align:right}
+  .tableau-score td:first-child{text-align:left;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tableau-score td.chiffre{font-family:'Space Mono',monospace;color:var(--or-pale)}
+  .tableau-score tr.moi td{color:var(--ivoire)}
+  .jauge{height:4px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:3px}
+  .jauge i{display:block;height:100%;background:linear-gradient(90deg,var(--or),var(--or-pale));transition:width .5s}
+  .rappel{font-size:12px;color:var(--craie-faible);line-height:1.5}
+  .journal{list-style:none;font-size:13px;line-height:1.45;color:var(--craie-faible);display:flex;flex-direction:column;gap:7px}
+  .journal li{border-left:2px solid rgba(200,155,60,.4);padding-left:9px;animation:apparait .3s}
   .journal li:first-child{color:var(--craie)}
+  @keyframes apparait{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
 
-  .voile{position:fixed;inset:0;background:rgba(20,4,10,.78);display:flex;align-items:center;justify-content:center;padding:20px;z-index:40}
-  .modale{background:linear-gradient(160deg,#5B1A29,#380D18);border:1px solid rgba(200,155,60,.5);border-radius:14px;
-    padding:26px;max-width:520px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+  /* ---------- chat ---------- */
+  #volet-chat{padding:0;gap:0}
+  .fil{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:120px}
+  .bulle{max-width:88%;padding:7px 11px;border-radius:12px;font-size:14px;line-height:1.4;word-wrap:break-word;
+    background:rgba(255,255,255,.07);border:1px solid rgba(234,217,190,.12);animation:apparait .25s}
+  .bulle .qui{display:block;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
+  .bulle.moi{align-self:flex-end;background:rgba(200,155,60,.18);border-color:rgba(200,155,60,.4)}
+  .bulle.systeme{align-self:center;background:none;border:none;color:var(--craie-faible);font-size:12px;font-style:italic;text-align:center}
+  .chat-vide{color:var(--craie-faible);font-size:13px;text-align:center;margin:auto;line-height:1.6;padding:0 10px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 8px}
+  .chips button{font-size:12px;padding:4px 9px;font-weight:500;border-radius:20px}
+  .barre-chat{display:flex;gap:8px;padding:10px 12px;border-top:1px solid rgba(234,217,190,.16);background:rgba(0,0,0,.2)}
+  .barre-chat input{margin:0;font-size:14px;padding:9px 11px}
+  .barre-chat button{padding:9px 14px}
+
+  /* ---------- modales ---------- */
+  .voile{position:fixed;inset:0;background:rgba(18,3,8,.8);display:flex;align-items:center;justify-content:center;padding:20px;z-index:80;
+    animation:fondu .2s;backdrop-filter:blur(3px)}
+  @keyframes fondu{from{opacity:0}to{opacity:1}}
+  .modale{background:linear-gradient(160deg,#66202F,#340C16);border:1px solid rgba(200,155,60,.5);border-radius:14px;
+    padding:24px;max-width:560px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.65);animation:monte .28s cubic-bezier(.2,.8,.3,1)}
+  @keyframes monte{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
   .modale h2{font-family:'Bodoni Moda',Georgia,serif;font-size:26px;color:var(--ivoire);margin-bottom:8px}
-  .modale p{font-size:15px;line-height:1.55;color:var(--craie);margin-bottom:18px}
+  .modale p{font-size:15px;line-height:1.55;color:var(--craie);margin-bottom:16px}
   .choix-couleurs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:8px}
-  .choix-couleurs button{aspect-ratio:3/4;font-size:34px;background:var(--ivoire);color:var(--encre);border-color:var(--ivoire-ombre)}
+  .choix-couleurs button{aspect-ratio:3/4;font-size:34px;background:linear-gradient(160deg,#FFFBF2,#EFE6D3);color:var(--encre);border-color:var(--ivoire-ombre)}
   .choix-couleurs button.rouge{color:var(--rouge)}
-  .choix-couleurs button:hover{background:#fff;transform:translateY(-3px)}
+  .choix-couleurs button:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.4)}
   .modale-actions{display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
-  .regles{font-size:14px;line-height:1.6;color:var(--craie);max-height:60vh;overflow:auto}
-  .regles h4{font-family:'Oswald',sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:12px;color:var(--or-pale);margin:16px 0 6px}
+  .regles{font-size:14px;line-height:1.6;color:var(--craie);max-height:58vh;overflow:auto;padding-right:6px}
+  .regles h4{font-family:'Oswald',sans-serif;letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--or-pale);margin:16px 0 6px}
   .regles ul{padding-left:18px;display:flex;flex-direction:column;gap:4px}
   .regles code{font-family:'Space Mono',monospace;color:var(--or-pale)}
+  .podium{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+  .podium li{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:8px;background:rgba(0,0,0,.26);font-size:15px}
+  .podium li .rang{font-family:'Space Mono',monospace;color:var(--or-pale);width:26px}
+  .podium li.premier{background:rgba(200,155,60,.2);border:1px solid rgba(200,155,60,.5)}
 
-  .grille-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:8px;align-items:center}
-  .toast{background:#2A0A12;border:1px solid var(--or);color:var(--craie);padding:10px 18px;border-radius:6px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  .grille-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:90;display:flex;flex-direction:column;gap:8px;align-items:center}
+  .toast{background:#31101A;border:1px solid var(--or);color:var(--craie);padding:10px 18px;border-radius:6px;font-size:14px;
+    box-shadow:0 12px 32px rgba(0,0,0,.55);animation:apparait .25s}
   .cache{display:none !important}
-  .pied{font-size:12px;color:var(--craie-faible);text-align:center;line-height:1.6;padding-top:8px}
 
-  @media (max-width:900px){
+  .confetti{position:fixed;width:9px;height:14px;top:-20px;z-index:85;pointer-events:none;border-radius:1px}
+
+  @media (max-width:960px){
     .table{grid-template-columns:1fr}
     .lobby{grid-template-columns:1fr}
-    :root{--carte-l:60px;--carte-h:84px}
-    .ma-main .carte{margin-left:-18px}
-    .journal{max-height:150px}
+    :root{--cl:62px;--ch:89px}
+    .main .carte{margin-left:-34px}
+    .tapis{min-height:0;padding:12px}
+    .sieges{gap:8px}
+    .siege{min-width:96px;padding:8px 8px 10px}
+    .siege .nom{font-size:15px}
+    .siege .dos-mini{height:26px}
+    .siege .dos-mini .dos{width:18px;height:26px;margin-left:-11px}
+    .marque{max-height:420px}
+    .volet{min-height:140px}
+  }
+  @media (max-width:520px){
+    :root{--cl:54px;--ch:78px}
+    .main .carte{margin-left:-30px}
+    .duo{grid-template-columns:1fr}
+    .centre{gap:14px}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 </style>
@@ -168,7 +326,7 @@
   <div class="bandeau">
     <div>
       <div class="titre">8 <em>américain</em></div>
-      <div class="sous">Table à deux, deux écrans, un seul paquet</div>
+      <div class="sous">De deux à six joueurs · jokers compris</div>
     </div>
     <div class="bandeau-droite">
       <div id="code-zone" class="cache">
@@ -181,36 +339,35 @@
     </div>
   </div>
 
-  <!-- LOBBY -->
+  <!-- ================= LOBBY ================= -->
   <div id="ecran-lobby">
     <div class="onglets" role="tablist">
-      <button id="ong-code" role="tab" aria-selected="true">Par code</button>
-      <button id="ong-manuel" role="tab" aria-selected="false">Copier-coller (secours)</button>
+      <button id="ong-code" role="tab" aria-selected="true">En ligne</button>
+      <button id="ong-locale" role="tab" aria-selected="false">Sur cet écran</button>
+      <button id="ong-manuel" role="tab" aria-selected="false">Sans serveur (à deux)</button>
     </div>
 
     <div id="vue-code" class="lobby">
       <div class="panneau">
         <h2>Ouvrir une table</h2>
-        <p class="aide">Tu reçois un code à quatre lettres. Envoie-le à ton adversaire, il le saisit de son côté et la partie démarre.</p>
-        <label class="champ" for="nom-hote">Ton nom</label>
-        <input type="text" id="nom-hote" maxlength="14" placeholder="Mathis">
-        <details class="options">
-          <summary>Cartes spéciales</summary>
-          <label class="opt"><input type="checkbox" id="o-as" checked> As : l'adversaire pioche 2</label>
-          <label class="opt"><input type="checkbox" id="o-cumul" checked> Les As se cumulent (+2, +4, +6…)</label>
-          <label class="opt"><input type="checkbox" id="o-valet" checked> Valet : changement de sens (donc tu rejoues)</label>
-          <label class="opt"><input type="checkbox" id="o-dix" checked> 10 : tu rejoues</label>
-          <label class="opt"><input type="checkbox" id="o-sept" checked> 7 : l'adversaire saute son tour</label>
-          <label class="opt"><input type="checkbox" id="o-huit" checked> Interdit de finir sur un 8</label>
-          <label class="opt"><input type="checkbox" id="o-contre" checked> Annonce « Carte » et contre-carte</label>
-        </details>
+        <p class="aide">Vous recevez un code à quatre lettres. Transmettez-le aux autres joueurs : jusqu'à six places autour de la table.</p>
+        <label class="champ" for="nom-hote">Votre nom</label>
+        <input type="text" id="nom-hote" maxlength="14" placeholder="Adèle">
+        <label class="champ" for="objectif">Manches à gagner pour remporter la partie</label>
+        <select id="objectif">
+          <option value="1">1 manche</option>
+          <option value="3">3 manches</option>
+          <option value="5" selected>5 manches</option>
+          <option value="7">7 manches</option>
+          <option value="10">10 manches</option>
+        </select>
         <button class="principal" id="btn-creer">Ouvrir la table</button>
         <div class="msg" id="msg-hote"></div>
       </div>
       <div class="panneau">
         <h2>Rejoindre une table</h2>
-        <p class="aide">Saisis le code reçu. La connexion se fait directement d'un navigateur à l'autre.</p>
-        <label class="champ" for="nom-invite">Ton nom</label>
+        <p class="aide">Saisissez le code reçu. La connexion se fait d'un navigateur à l'autre, sans compte ni installation.</p>
+        <label class="champ" for="nom-invite">Votre nom</label>
         <input type="text" id="nom-invite" maxlength="14" placeholder="Camille">
         <label class="champ" for="code-saisi">Code</label>
         <input type="text" id="code-saisi" maxlength="4" placeholder="ABCD" autocomplete="off">
@@ -219,579 +376,1416 @@
       </div>
     </div>
 
+    <div id="vue-locale" class="lobby cache">
+      <div class="panneau">
+        <h2>Jouer tout de suite</h2>
+        <p class="aide">Une table sur ce seul écran : vous menez votre main, les autres places sont tenues par la maison. Pratique pour éprouver les règles à trois ou quatre.</p>
+        <label class="champ" for="nom-local">Votre nom</label>
+        <input type="text" id="nom-local" maxlength="14" placeholder="Adèle">
+        <div class="duo">
+          <div>
+            <label class="champ" for="nb-joueurs">Nombre de joueurs</label>
+            <select id="nb-joueurs">
+              <option value="2">2 joueurs — 8 cartes</option>
+              <option value="3">3 joueurs — 7 cartes</option>
+              <option value="4" selected>4 joueurs — 6 cartes</option>
+              <option value="5">5 joueurs — 6 cartes</option>
+              <option value="6">6 joueurs — 6 cartes</option>
+            </select>
+          </div>
+          <div>
+            <label class="champ" for="objectif-local">Manches à gagner</label>
+            <select id="objectif-local">
+              <option value="1">1 manche</option>
+              <option value="3" selected>3 manches</option>
+              <option value="5">5 manches</option>
+              <option value="7">7 manches</option>
+            </select>
+          </div>
+        </div>
+        <button class="principal" id="btn-local">Distribuer</button>
+        <div class="msg" id="msg-local"></div>
+      </div>
+      <div class="panneau">
+        <h2>Ce qui change selon le nombre</h2>
+        <p class="aide">Les règles de la maison ne se jouent pas pareil à deux et à quatre.</p>
+        <div class="regles" style="max-height:none">
+          <h4>Distribution</h4>
+          <ul><li>Deux joueurs : 8 cartes.</li><li>Trois joueurs : 7 cartes.</li><li>Quatre et plus : 6 cartes.</li></ul>
+          <h4>Cartes qui font rejouer</h4>
+          <ul>
+            <li>À deux, le <code>7</code>, le <code>V</code> et le <code>10</code> vous rendent la main : impossible de finir dessus, vous repiochez une carte.</li>
+            <li>À trois et plus, seul le <code>10</code> vous empêche de terminer.</li>
+          </ul>
+          <h4>Sortie sur une attaque</h4>
+          <ul><li>S'il ne reste que deux joueurs en lice et que votre dernière carte est un As ou un Joker, l'adversaire peut riposter : l'attaque vous revient et vous reprenez les cartes.</li></ul>
+        </div>
+      </div>
+    </div>
+
     <div id="vue-manuel" class="lobby cache">
       <div class="panneau">
-        <h2>Inviter sans serveur</h2>
-        <p class="aide">Aucun intermédiaire : tu envoies un pavé de texte à ton adversaire, il te renvoie sa réponse, la table s'ouvre.</p>
-        <label class="champ" for="nom-hote-m">Ton nom</label>
-        <input type="text" id="nom-hote-m" maxlength="14" placeholder="Mathis">
+        <h2>Inviter sans intermédiaire</h2>
+        <p class="aide">Aucun service de mise en relation : vous envoyez un pavé de texte, l'autre joueur renvoie sa réponse, la table s'ouvre. Deux joueurs seulement.</p>
+        <label class="champ" for="nom-hote-m">Votre nom</label>
+        <input type="text" id="nom-hote-m" maxlength="14" placeholder="Adèle">
         <div class="etape">1. Fabriquer l'invitation</div>
         <button id="btn-offre">Créer l'invitation</button>
         <textarea id="txt-offre" readonly placeholder="L'invitation apparaîtra ici." style="margin-top:12px"></textarea>
         <button class="discret" id="btn-copie-offre">Copier l'invitation</button>
         <div class="etape">2. Coller sa réponse</div>
-        <textarea id="txt-reponse-hote" placeholder="Colle ici le pavé que ton adversaire te renvoie."></textarea>
+        <textarea id="txt-reponse-hote" placeholder="Collez ici le pavé que l'autre joueur renvoie."></textarea>
         <button class="principal" id="btn-valide-reponse">Ouvrir la table</button>
         <div class="msg" id="msg-hote-m"></div>
       </div>
       <div class="panneau">
         <h2>Répondre à une invitation</h2>
-        <p class="aide">Tu as reçu un pavé de texte. Colle-le, renvoie la réponse produite, et c'est parti.</p>
-        <label class="champ" for="nom-invite-m">Ton nom</label>
+        <p class="aide">Vous avez reçu un pavé de texte. Collez-le, renvoyez la réponse produite, et la table s'ouvre toute seule.</p>
+        <label class="champ" for="nom-invite-m">Votre nom</label>
         <input type="text" id="nom-invite-m" maxlength="14" placeholder="Camille">
         <div class="etape">1. Coller l'invitation</div>
-        <textarea id="txt-offre-invite" placeholder="Colle ici l'invitation reçue."></textarea>
+        <textarea id="txt-offre-invite" placeholder="Collez ici l'invitation reçue."></textarea>
         <button id="btn-repondre">Fabriquer ma réponse</button>
         <div class="etape">2. Renvoyer la réponse</div>
-        <textarea id="txt-reponse" readonly placeholder="Ta réponse apparaîtra ici."></textarea>
+        <textarea id="txt-reponse" readonly placeholder="Votre réponse apparaîtra ici."></textarea>
         <button class="discret" id="btn-copie-reponse">Copier la réponse</button>
         <div class="msg" id="msg-invite-m"></div>
       </div>
     </div>
 
-    <div class="pied">
-      Le jeu tourne entièrement dans les deux navigateurs. Aucune partie n'est stockée, aucun compte n'est nécessaire.
+    <div class="pied">Tout se joue dans les navigateurs. Aucune partie n'est enregistrée, aucun compte n'est demandé.</div>
+  </div>
+
+  <!-- ================= SALON ================= -->
+  <div id="ecran-salon" class="cache">
+    <div class="panneau" style="max-width:520px;margin:0 auto">
+      <h2>Salon</h2>
+      <p class="aide" id="aide-salon">En attente des autres joueurs.</p>
+      <div class="sieges-attente" id="sieges-attente"></div>
+      <button class="principal cache" id="btn-lancer">Lancer la partie</button>
+      <div class="msg" id="msg-salon"></div>
     </div>
   </div>
 
-  <!-- TABLE -->
+  <!-- ================= TABLE ================= -->
   <div id="ecran-table" class="cache">
     <div class="table">
-      <div class="piste">
-        <div>
-          <div class="rangee" style="margin-bottom:10px">
-            <div class="joueur-nom" id="nom-adverse">Adversaire</div>
-            <div class="joueur-meta" id="meta-adverse"></div>
-            <span class="badge-carte cache" id="badge-adverse">Carte !</span>
-          </div>
-          <div class="main-adverse" id="main-adverse"></div>
-        </div>
+      <div class="tapis">
+        <div class="sieges" id="sieges"></div>
+
         <div class="centre">
           <div class="pile">
             <div class="etiquette">Pioche</div>
-            <button class="pioche-btn" id="btn-pioche" aria-label="Piocher"><div class="dos"></div></button>
-            <div class="joueur-meta" id="compte-pioche">52</div>
+            <button class="pioche" id="btn-pioche" aria-label="Piocher une carte">
+              <div class="dos"></div><div class="dos"></div><div class="dos"></div>
+            </button>
+            <div class="etiquette" id="compte-pioche">52</div>
           </div>
           <div class="pile">
             <div class="etiquette">Talon</div>
             <div class="talon" id="talon"><div class="vide"></div></div>
+            <div class="etiquette" id="compte-talon">&nbsp;</div>
           </div>
-          <div class="couleur-active">
+          <div class="indicateurs">
             <div class="etiquette">Couleur demandée</div>
-            <div class="pastille-couleur" id="pastille-couleur">?</div>
+            <div class="jeton-couleur" id="jeton-couleur">?</div>
             <div class="cumul cache" id="cumul">+0</div>
+            <div class="sens" id="sens">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 1 1-3.2-6.9"/><polyline points="21 3 21 9 15 9"/>
+              </svg>
+              <span id="sens-texte">Sens horaire</span>
+            </div>
           </div>
         </div>
-        <div>
-          <div class="rangee" style="margin-bottom:10px">
-            <div class="joueur-nom" id="nom-moi">Toi</div>
-            <div class="joueur-meta" id="meta-moi"></div>
-            <span class="badge-carte cache" id="badge-moi">Carte !</span>
+
+        <div class="zone-moi">
+          <div class="ligne-moi">
+            <div class="nom" id="nom-moi">Vous</div>
+            <div class="etiquette" id="meta-moi"></div>
           </div>
-          <div class="ma-main" id="ma-main"></div>
+          <div class="main" id="ma-main"></div>
           <div class="actions">
             <div class="consigne" id="consigne">En attente…</div>
-            <label class="bascule cache" id="bascule-carte"><input type="checkbox" id="chk-carte"> Annoncer « Carte »</label>
-            <button class="alerte cache" id="btn-contre">Contre-carte !</button>
             <button id="btn-piocher">Piocher</button>
-            <button class="principal cache" id="btn-manche">Nouvelle manche</button>
+            <button class="principal cache" id="btn-manche">Manche suivante</button>
           </div>
         </div>
       </div>
+
       <aside class="marque">
-        <div>
-          <h3>La marque</h3>
-          <div class="score-ligne"><span id="score-nom-1">—</span><span id="score-val-1">0</span></div>
-          <div class="score-ligne"><span id="score-nom-2">—</span><span id="score-val-2">0</span></div>
-          <div class="joueur-meta" style="margin-top:8px">Manche <span id="num-manche">1</span></div>
+        <div class="marque-onglets" role="tablist">
+          <button id="ong-marque" role="tab" aria-selected="true">Marque</button>
+          <button id="ong-journal" role="tab" aria-selected="false">Journal</button>
+          <button id="ong-chat" role="tab" aria-selected="false">Discussion<span class="puce cache" id="puce-chat"></span></button>
         </div>
-        <div>
-          <h3>Journal</h3>
+
+        <div class="volet visible" id="volet-marque">
+          <div>
+            <h3>La marque</h3>
+            <table class="tableau-score">
+              <thead><tr><th>Joueur</th><th>Manches</th><th>Parties</th></tr></thead>
+              <tbody id="corps-score"></tbody>
+            </table>
+          </div>
+          <div class="rappel" id="rappel-manche"></div>
+        </div>
+
+        <div class="volet" id="volet-journal">
           <ul class="journal" id="journal"></ul>
+        </div>
+
+        <div class="volet" id="volet-chat">
+          <div class="fil" id="fil-chat"><div class="chat-vide">La table est silencieuse.<br>Un mot, une pique, un « bien joué » ?</div></div>
+          <div class="chips" id="chips"></div>
+          <div class="barre-chat">
+            <input type="text" id="saisie-chat" maxlength="180" placeholder="Écrire à la table…" autocomplete="off">
+            <button class="principal" id="btn-envoyer">Envoyer</button>
+          </div>
         </div>
       </aside>
     </div>
   </div>
 </div>
+
 <div class="grille-toast" id="toasts"></div>
 <div id="modales"></div>
+<div id="scene"></div>
 
 <script>
-(() => {
+(function(){
 "use strict";
+/* =========================================================================
+   MOTEUR — règles de la maison
+   Aucune dépendance au DOM : tout est calculé sur un objet d'état « s ».
+   ========================================================================= */
 
-/* ===================== modèle ===================== */
-const COULEURS = {
-  S:{sym:"\u2660", nom:"Pique",   rouge:false},
-  H:{sym:"\u2665", nom:"C\u0153ur", rouge:true},
-  D:{sym:"\u2666", nom:"Carreau", rouge:true},
+var COULEURS = {
+  H:{sym:"\u2665", nom:"C\u0153ur",   rouge:true},
+  D:{sym:"\u2666", nom:"Carreau",     rouge:true},
+  S:{sym:"\u2660", nom:"Pique",       rouge:false},
   C:{sym:"\u2663", nom:"Tr\u00e8fle", rouge:false}
 };
-const VALEURS = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
-const ETIQ = {A:"A", J:"V", Q:"D", K:"R"};
-const val = c => c.slice(0,-1);
-const coul = c => c.slice(-1);
-const etiq = c => ETIQ[val(c)] || val(c);
-const points = c => { const v=val(c); if(v==="8") return 50; if(v==="A") return 11; if("JQK".includes(v)) return 10; return parseInt(v,10); };
+/* ordre d'entame : dame de coeur, puis carreau, puis pique, puis trefle */
+var ORDRE_ENTAME = ["H","D","S","C"];
+var VALEURS = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+var ETIQ = {A:"A", J:"V", Q:"D", K:"R", JK:"JK"};
 
-let G = null;          // état de la partie
-let estHote = false;   // l'hôte fait autorité
-let net = null;        // canal ouvert vers l'autre joueur
-let monNom = "Joueur";
+var val  = function(c){ return c.slice(0, c.indexOf("-")); };
+var coul = function(c){ var p = c.split("-"); return p[1]; };
+var etiq = function(c){ var v = val(c); return ETIQ[v] || v; };
+var estJoker = function(c){ return val(c) === "JK"; };
+var estAttaque = function(c){ var v = val(c); return v === "A" || v === "JK"; };
+var estSpeciale = function(c){ var v = val(c); return v==="8"||v==="A"||v==="7"||v==="J"||v==="10"||v==="JK"; };
 
-function melanger(t){ for(let i=t.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [t[i],t[j]]=[t[j],t[i]]; } return t; }
-function paquetNeuf(){ const p=[]; for(const c of Object.keys(COULEURS)) for(const v of VALEURS) p.push(v+c); return melanger(p); }
-function speciale(c,o){ const v=val(c); return v==="8"||(o.as&&v==="A")||(o.valet&&v==="J")||(o.dix&&v==="10")||(o.sept&&v==="7"); }
-function noter(s,t){ s.journal.unshift(t); if(s.journal.length>28) s.journal.pop(); }
-const sommet = s => s.talon[s.talon.length-1];
+function melanger(t){
+  for(var i=t.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=t[i]; t[i]=t[j]; t[j]=x; }
+  return t;
+}
+function paquetNeuf(nbJeux){
+  var p=[], n, co, v, k=0;
+  for(n=0;n<nbJeux;n++){
+    for(co in COULEURS){ for(v=0;v<VALEURS.length;v++) p.push(VALEURS[v]+"-"+co+"-"+n); }
+    p.push("JK-X-"+(k++)); p.push("JK-X-"+(k++));
+  }
+  return melanger(p);
+}
+function cartesADonner(n){ return n <= 2 ? 8 : (n === 3 ? 7 : 6); }
+
+function noter(s,t){ s.journal.unshift(t); if(s.journal.length>40) s.journal.pop(); }
+function sommet(s){ return s.talon[s.talon.length-1]; }
+function enJeu(s,i){ var j=s.joueurs[i]; return !!j && !j.sorti && !j.parti; }
+function indicesEnJeu(s){ var r=[],i; for(i=0;i<s.joueurs.length;i++) if(enJeu(s,i)) r.push(i); return r; }
+function nbEnJeu(s){ return indicesEnJeu(s).length; }
+
+function suivant(s, depuis, pas){
+  pas = pas || 1;
+  var n = s.joueurs.length, k = depuis, sauts = 0, tours = 0;
+  while(sauts < pas && tours < n*4+8){
+    k = ((k + s.sens) % n + n) % n;
+    tours++;
+    if(enJeu(s,k)) sauts++;
+  }
+  return k;
+}
+
+/* ---------------- distribution ---------------- */
+function premierJoueur(s){
+  var ordre = ["Q","K","J"], v, c, i, cible;
+  for(v=0;v<ordre.length;v++){
+    for(c=0;c<ORDRE_ENTAME.length;c++){
+      cible = ordre[v];
+      for(i=0;i<s.mains.length;i++){
+        if(!enJeu(s,i)) continue;
+        for(var m=0;m<s.mains[i].length;m++){
+          if(val(s.mains[i][m])===cible && coul(s.mains[i][m])===ORDRE_ENTAME[c]) return {i:i, carte:cible+"-"+ORDRE_ENTAME[c]+"-0"};
+        }
+      }
+    }
+  }
+  var actifs = indicesEnJeu(s);
+  return {i: actifs.length ? actifs[0] : 0, carte:null};
+}
+
+function distribuer(s){
+  var joueurs = s.joueurs.length;
+  s.paquet = paquetNeuf(joueurs >= 5 ? 2 : 1);
+  var k = cartesADonner(joueurs), t, i;
+  s.mains = [];
+  for(i=0;i<joueurs;i++) s.mains.push([]);
+  for(t=0;t<k;t++) for(i=0;i<joueurs;i++) s.mains[i].push(s.paquet.pop());
+
+  var d = s.paquet.pop(), garde = 0;
+  while(estSpeciale(d) && garde++ < 300){ s.paquet.unshift(d); d = s.paquet.pop(); }
+  s.talon = [d];
+  s.couleur = coul(d);
+  s.pioche = 0; s.attaque = null; s.bloque8 = false; s.sens = 1;
+  s.ordreSortie = [];
+  for(i=0;i<s.joueurs.length;i++){
+    s.joueurs[i].sorti = false; s.joueurs[i].rang = null; s.joueurs[i].sursis = false;
+  }
+  var pj = premierJoueur(s);
+  s.tour = pj.i;
+  s.journal = [];
+  noter(s, "Donne de " + k + " cartes \u00e0 " + joueurs + " joueurs.");
+  noter(s, s.joueurs[pj.i].nom + " entame" + (pj.carte ? " (" + etiq(pj.carte) + COULEURS[coul(pj.carte)].sym + ")" : "") + ".");
+  s.evt = (s.evt || 0) + 1;
+  s.dernier = {n:s.evt, type:"donne", joueur:pj.i};
+}
 
 function nouvelleTable(nomHote, opts){
-  const s = {v:1, opts, phase:"attente", joueurs:[{nom:nomHote}, null], mains:[[],[]], scores:[0,0],
-    annonce:[false,false], paquet:[], talon:[], couleur:null, tour:0, pioche:0, manche:1, gagnant:null, journal:[]};
-  distribuer(s);
+  var s = {
+    v:1, evt:0, phase:"salon", opts:opts,
+    joueurs:[{nom:nomHote, points:0, parties:0, sorti:false, rang:null, sursis:false, parti:false, bot:false}],
+    mains:[[]], paquet:[], talon:[], couleur:null, tour:0, sens:1, pioche:0, attaque:null,
+    bloque8:false, manche:1, ordreSortie:[], journal:[], chat:[], dernier:null
+  };
   return s;
 }
-function distribuer(s){
-  s.paquet = paquetNeuf(); s.mains = [[],[]];
-  for(let i=0;i<7;i++){ s.mains[0].push(s.paquet.pop()); s.mains[1].push(s.paquet.pop()); }
-  let d = s.paquet.pop(), garde = 0;
-  while(speciale(d, s.opts) && garde++ < 60){ s.paquet.unshift(d); d = s.paquet.pop(); }
-  s.talon = [d]; s.couleur = coul(d); s.pioche = 0; s.annonce = [false,false]; s.gagnant = null;
-  s.tour = Math.floor(Math.random()*2); s.journal = [];
-  noter(s, "Donne de 7 cartes. " + (s.joueurs[s.tour] ? s.joueurs[s.tour].nom : "L'h\u00f4te") + " commence.");
-}
+
+/* ---------------- pioche ---------------- */
 function recharger(s){
-  if(s.paquet.length) return;
-  const haut = s.talon.pop();
-  s.paquet = melanger(s.talon); s.talon = [haut];
+  if(s.paquet.length || s.talon.length < 2) return;
+  var haut = s.talon.pop();
+  s.paquet = melanger(s.talon);
+  s.talon = [haut];
   noter(s, "Pioche \u00e9puis\u00e9e : le talon est rebattu.");
 }
 function tirer(s,i,n){
-  for(let k=0;k<n;k++){ recharger(s); if(!s.paquet.length) break; s.mains[i].push(s.paquet.pop()); }
-  if(s.mains[i].length !== 1) s.annonce[i] = false;
+  var pris = [];
+  for(var k=0;k<n;k++){
+    recharger(s);
+    if(!s.paquet.length) break;
+    var c = s.paquet.pop();
+    s.mains[i].push(c); pris.push(c);
+  }
+  return pris;
 }
-function jouable(s,c,i){
-  if(s.pioche > 0) return s.opts.cumul && val(c) === "A";
-  if(val(c) === "8") return !(s.opts.pasDeHuitFinal && s.mains[i].length === 1);
-  return coul(c) === s.couleur || val(c) === val(sommet(s));
+
+/* ---------------- légalité ---------------- */
+function jouable(s, c, i){
+  if(!c) return false;
+  var v = val(c), h = sommet(s);
+  if(s.pioche > 0){
+    if(v === "JK") return true;                    /* le joker couvre tout */
+    if(v === "A")  return s.attaque === "A";        /* un as ne passe pas sur un joker */
+    if(v === "8")  return !s.bloque8;               /* le 8 contre l'attaque */
+    return false;
+  }
+  if(v === "JK") return true;
+  if(v === "8")  return !s.bloque8;                 /* jamais un 8 sur un 8 */
+  if(!h) return true;
+  return coul(c) === s.couleur || val(c) === val(h);
 }
-function aDuJeu(s,i){ return s.mains[i].some(c => jouable(s,c,i)); }
-function finirSiVide(s,i){
-  if(s.mains[i].length) return false;
-  s.phase = "fin"; s.gagnant = i;
-  const pts = s.mains[1-i].reduce((a,c) => a + points(c), 0);
-  s.scores[i] += pts;
-  noter(s, s.joueurs[i].nom + " termine et ramasse " + pts + " points.");
-  return true;
+function aDuJeu(s,i){
+  var m = s.mains[i];
+  for(var k=0;k<m.length;k++) if(jouable(s,m[k],i)) return true;
+  return false;
 }
-function poser(s,c,i,couleurChoisie){
+function peutRiposter(s,i){
+  var m = s.mains[i], v;
+  for(var k=0;k<m.length;k++){
+    v = val(m[k]);
+    if(v === "JK") return true;
+    if(v === "A" && s.attaque === "A") return true;
+  }
+  return false;
+}
+
+/* ---------------- sorties et fin de manche ---------------- */
+function sortir(s,i){
+  var j = s.joueurs[i];
+  j.sorti = true; j.sursis = false;
+  s.ordreSortie.push(i);
+  j.rang = s.ordreSortie.length;
+  if(j.rang === 1){
+    j.points++;
+    noter(s, j.nom + " remporte la manche.");
+  } else {
+    noter(s, j.nom + " se d\u00e9barrasse de ses cartes (" + j.rang + "e).");
+  }
+  if(nbEnJeu(s) <= 1) terminerManche(s);
+}
+function terminerManche(s){
+  var restants = indicesEnJeu(s), i;
+  for(i=0;i<restants.length;i++){
+    s.joueurs[restants[i]].rang = s.ordreSortie.length + 1;
+  }
+  if(restants.length === 1) noter(s, s.joueurs[restants[0]].nom + " reste avec les cartes en main.");
+  s.phase = "finManche";
+  var g = s.ordreSortie.length ? s.ordreSortie[0] : null;
+  if(g !== null && s.joueurs[g].points >= s.opts.objectif){
+    s.joueurs[g].parties++;
+    s.phase = "finPartie";
+    noter(s, s.joueurs[g].nom + " emporte la partie, " + s.joueurs[g].points + " manches \u00e0 " + s.opts.objectif + ".");
+  }
+}
+
+/* le joueur dont c'est le tour n'a plus de carte : il sort, ou il ramasse l'attaque */
+function resoudreSursis(s){
+  var garde = 0;
+  while(s.phase === "partie" && garde++ < 24){
+    var i = s.tour, j = s.joueurs[i];
+    if(!j || !j.sursis) break;
+    if(s.pioche > 0){
+      var n = s.pioche;
+      tirer(s,i,n);
+      s.pioche = 0; s.attaque = null; s.bloque8 = false; j.sursis = false;
+      noter(s, j.nom + " encaisse la riposte et reprend " + n + " cartes.");
+      s.tour = suivant(s,i,1);
+    } else {
+      j.sursis = false;
+      sortir(s,i);
+      if(s.phase !== "partie") break;
+      s.tour = suivant(s,i,1);
+    }
+  }
+}
+
+/* ---------------- poser une carte ---------------- */
+function poser(s, c, i, couleurChoisie){
   if(s.phase !== "partie" || s.tour !== i) return false;
-  const k = s.mains[i].indexOf(c);
+  var k = s.mains[i].indexOf(c);
   if(k < 0 || !jouable(s,c,i)) return false;
-  s.mains[i].splice(k,1); s.talon.push(c);
-  const v = val(c);
-  s.couleur = v === "8" ? (COULEURS[couleurChoisie] ? couleurChoisie : coul(c)) : coul(c);
-  noter(s, s.joueurs[i].nom + " pose " + etiq(c) + COULEURS[coul(c)].sym + (v === "8" ? " et demande " + COULEURS[s.couleur].nom : ""));
-  if(finirSiVide(s,i)) return true;
-  let rejoue = false;
-  if(v === "A" && s.opts.as){ s.pioche += 2; }
-  else if(v === "J" && s.opts.valet){ rejoue = true; noter(s, "Valet : changement de sens, " + s.joueurs[i].nom + " rejoue."); }
-  else if(v === "10" && s.opts.dix){ rejoue = true; noter(s, "10 : " + s.joueurs[i].nom + " rejoue."); }
-  else if(v === "7" && s.opts.sept){ rejoue = true; noter(s, "7 : tour saut\u00e9."); }
-  if(s.mains[i].length !== 1) s.annonce[i] = false;
-  if(!rejoue) s.tour = 1 - i;
+
+  s.mains[i].splice(k,1);
+  s.talon.push(c);
+  var v = val(c), j = s.joueurs[i], rejoue = false, saut = false;
+
+  if(v === "8" || v === "JK"){
+    s.couleur = COULEURS[couleurChoisie] ? couleurChoisie : (COULEURS[coul(c)] ? coul(c) : s.couleur);
+  } else {
+    s.couleur = coul(c);
+  }
+  s.bloque8 = (v === "8");
+
+  if(v === "8"){
+    if(s.pioche > 0) noter(s, j.nom + " coupe l'attaque avec un 8 et demande " + COULEURS[s.couleur].nom + ".");
+    else noter(s, j.nom + " pose un 8 et demande " + COULEURS[s.couleur].nom + ".");
+    s.pioche = 0; s.attaque = null;
+  } else if(v === "JK"){
+    s.pioche += 4; s.attaque = "JK";
+    noter(s, j.nom + " abat un Joker : +4 (total " + s.pioche + ") et demande " + COULEURS[s.couleur].nom + ".");
+  } else if(v === "A"){
+    s.pioche += 2; s.attaque = "A";
+    noter(s, j.nom + " pose un As : +2 (total " + s.pioche + ").");
+  } else if(v === "J"){
+    s.sens = -s.sens;
+    if(nbEnJeu(s) <= 2) rejoue = true;
+    noter(s, j.nom + " pose un Valet : " + (rejoue ? "il rejoue." : "le sens s'inverse."));
+  } else if(v === "10"){
+    rejoue = true;
+    noter(s, j.nom + " pose un 10 et rejoue.");
+  } else if(v === "7"){
+    saut = true;
+    noter(s, j.nom + " pose un 7 : le joueur suivant saute son tour.");
+  } else {
+    noter(s, j.nom + " pose " + etiq(c) + COULEURS[coul(c)].sym + ".");
+  }
+
+  s.evt++;
+  s.dernier = {n:s.evt, type:"poser", joueur:i, carte:c};
+
+  /* -------- il vient de vider sa main -------- */
+  if(s.mains[i].length === 0){
+    var duo = nbEnJeu(s) <= 2;
+    var interdit = duo ? (v==="7"||v==="J"||v==="10") : (v==="10");
+    if(interdit){
+      tirer(s,i,1);
+      rejoue = true; saut = false;
+      noter(s, j.nom + " ne peut pas finir sur cette carte : il repioche et rejoue.");
+    } else if(estAttaque(c)){
+      var autres = indicesEnJeu(s).filter(function(x){ return x !== i; });
+      if(autres.length === 1 && peutRiposter(s, autres[0])){
+        j.sursis = true;
+        noter(s, j.nom + " pose sa derni\u00e8re carte, mais " + s.joueurs[autres[0]].nom + " peut riposter.");
+      } else {
+        sortir(s,i);
+      }
+    } else {
+      sortir(s,i);
+    }
+  }
+
+  if(s.phase !== "partie") return true;
+  if(!rejoue || s.joueurs[i].sorti){
+    s.tour = suivant(s, i, saut ? 2 : 1);
+  }
+  resoudreSursis(s);
   return true;
 }
+
+/* ---------------- piocher ---------------- */
 function piocherLogique(s,i){
   if(s.phase !== "partie" || s.tour !== i) return false;
+  var j = s.joueurs[i], n;
   if(s.pioche > 0){
-    const n = s.pioche; tirer(s,i,n); s.pioche = 0;
-    noter(s, s.joueurs[i].nom + " ramasse " + n + " cartes."); s.tour = 1 - i; return true;
+    n = s.pioche;
+    tirer(s,i,n);
+    s.pioche = 0; s.attaque = null; s.bloque8 = false;
+    noter(s, j.nom + " ramasse " + n + " cartes.");
+  } else {
+    var pris = tirer(s,i,1);
+    s.bloque8 = false;
+    noter(s, j.nom + (pris.length ? " pioche une carte." : " ne trouve plus rien \u00e0 piocher."));
+    n = 1;
   }
-  if(aDuJeu(s,i)) return false;
-  tirer(s,i,1);
-  const nouvelle = s.mains[i][s.mains[i].length-1];
-  noter(s, s.joueurs[i].nom + " pioche une carte.");
-  if(!nouvelle || !jouable(s,nouvelle,i)){ s.tour = 1 - i; noter(s, "Rien \u00e0 poser, le tour passe."); }
-  else noter(s, "La carte pioch\u00e9e peut se jouer.");
-  return true;
-}
-function contreLogique(s,i){
-  const j = 1 - i;
-  if(s.phase !== "partie" || s.tour !== i || !s.joueurs[j]) return false;
-  if(s.mains[j].length !== 1 || s.annonce[j] || !s.opts.contre) return false;
-  tirer(s,j,2); s.annonce[j] = false;
-  noter(s, "Contre-carte : " + s.joueurs[j].nom + " n'a pas annonc\u00e9 et pioche 2 cartes.");
+  s.evt++;
+  s.dernier = {n:s.evt, type:"piocher", joueur:i, nb:n};
+  s.tour = suivant(s,i,1);
+  resoudreSursis(s);
   return true;
 }
 
-/* ===================== application des actions (hôte) ===================== */
-function appliquer(a, i){
-  if(!G) return;
-  let ok = false;
-  if(a.t === "poser"){
-    ok = poser(G, a.c, i, a.couleur);
-    if(ok && a.annoncer && G.mains[i].length === 1){ G.annonce[i] = true; noter(G, G.joueurs[i].nom + " annonce \u00ab Carte \u00bb."); }
+/* ---------------- manche suivante ---------------- */
+function mancheSuivante(s){
+  if(s.phase !== "finManche") return false;
+  s.manche++;
+  distribuer(s);
+  s.phase = "partie";
+  return true;
+}
+function nouvellePartie(s){
+  if(s.phase !== "finPartie") return false;
+  for(var i=0;i<s.joueurs.length;i++) s.joueurs[i].points = 0;
+  s.manche = 1;
+  distribuer(s);
+  s.phase = "partie";
+  return true;
+}
+function lancer(s){
+  if(s.phase !== "salon" || s.joueurs.length < 2) return false;
+  distribuer(s);
+  s.phase = "partie";
+  return true;
+}
+
+/* ---------------- joueur automatique ---------------- */
+function couleurMajoritaire(main, sauf){
+  var compte = {H:0,D:0,S:0,C:0}, meilleure = "H", i, c;
+  for(i=0;i<main.length;i++){
+    c = main[i];
+    if(c === sauf) continue;
+    if(compte[coul(c)] !== undefined) compte[coul(c)]++;
   }
-  else if(a.t === "piocher") ok = piocherLogique(G, i);
-  else if(a.t === "contre")  ok = contreLogique(G, i);
-  else if(a.t === "manche"){ if(G.phase === "fin"){ G.manche++; distribuer(G); G.phase = "partie"; ok = true; } }
-  if(!ok) return;
-  G.v++;
-  diffuser();
-  rendre();
+  for(var k in compte) if(compte[k] > compte[meilleure]) meilleure = k;
+  return meilleure;
 }
-function diffuser(){ if(net && net.pret) net.envoyer({t:"etat", s:G}); }
-
-function agir(action){
-  if(!G) return;
-  if(estHote) appliquer(action, 0);
-  else if(net && net.pret) net.envoyer({t:"action", a:action});
-  else toast("Adversaire d\u00e9connect\u00e9.");
+function coupAuto(s,i){
+  var main = s.mains[i], jouables = [], k;
+  for(k=0;k<main.length;k++) if(jouable(s,main[k],i)) jouables.push(main[k]);
+  if(!jouables.length) return {t:"piocher"};
+  var poids = function(c){
+    var v = val(c);
+    if(v === "A") return 9;
+    if(v === "JK") return s.pioche > 0 ? 10 : 2;
+    if(v === "7" || v === "10" || v === "J") return 7;
+    if(v === "8") return s.pioche > 0 ? 8 : 3;
+    return 5;
+  };
+  jouables.sort(function(a,b){ return poids(b) - poids(a); });
+  /* ne pas finir sur une carte interdite si une autre fait l'affaire */
+  if(main.length === 1){
+    var duo = nbEnJeu(s) <= 2;
+    var mauvaise = function(c){ var v=val(c); return duo ? (v==="7"||v==="J"||v==="10") : (v==="10"); };
+    var bonnes = jouables.filter(function(c){ return !mauvaise(c); });
+    if(bonnes.length) jouables = bonnes;
+  }
+  var c = jouables[0], couleur = null;
+  if(val(c) === "8" || val(c) === "JK") couleur = couleurMajoritaire(main, c);
+  return {t:"poser", c:c, couleur:couleur};
 }
 
-/* ===================== vue ===================== */
-const $ = id => document.getElementById(id);
+/* ---------------- vue transmise à un joueur ---------------- */
+function vuePour(s, i){
+  var mains = [], k;
+  for(k=0;k<s.mains.length;k++) mains.push(k === i ? s.mains[k].slice() : s.mains[k].length);
+  return {
+    v:s.v, evt:s.evt, phase:s.phase, opts:s.opts, moi:i,
+    joueurs:s.joueurs.map(function(j){ return {nom:j.nom, points:j.points, parties:j.parties, sorti:j.sorti,
+      rang:j.rang, sursis:j.sursis, parti:j.parti, bot:j.bot}; }),
+    mains:mains, paquet:s.paquet.length, talon:s.talon.slice(-4), couleur:s.couleur, tour:s.tour,
+    sens:s.sens, pioche:s.pioche, attaque:s.attaque, bloque8:s.bloque8, manche:s.manche,
+    ordreSortie:s.ordreSortie.slice(), journal:s.journal.slice(0,24), chat:s.chat.slice(-60), dernier:s.dernier
+  };
+}
+function nbCartes(s,k){ var m = s.mains[k]; return typeof m === "number" ? m : m.length; }
+function taillePaquet(s){ return typeof s.paquet === "number" ? s.paquet : s.paquet.length; }
+/* =========================================================================
+   TABLE — rendu, animations, discussion, réseau
+   ========================================================================= */
+var $ = function(id){ return document.getElementById(id); };
+var G = null;            /* état complet : maître de table seulement */
+var V = null;            /* vue locale, celle qu'on affiche */
+var estHote = false, modeLocal = false, monNom = "Joueur", monIndex = 0;
+var canaux = [], canal = null;    /* maître : un canal par invité ; invité : un seul canal */
+var minuterieBot = null, dernierAnime = 0, sourceVol = null, dernierePhase = null;
+var derniereCouleur = null, ongletChat = false, chatNonLu = false, dernierChatVu = 0, animer = true;
+try{ animer = !window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+
+function estAutorite(){ return modeLocal || estHote; }
+
+/* ---------------- petites vues ---------------- */
 function toast(txt){
-  const d = document.createElement("div");
+  var d = document.createElement("div");
   d.className = "toast"; d.textContent = txt;
-  $("toasts").appendChild(d); setTimeout(() => d.remove(), 3200);
+  $("toasts").appendChild(d);
+  setTimeout(function(){ d.style.opacity = "0"; d.style.transition = "opacity .3s"; }, 2600);
+  setTimeout(function(){ d.remove(); }, 3000);
 }
-function carteHTML(c, classes){
-  const co = COULEURS[coul(c)];
-  return '<div class="carte ' + (co.rouge?"rouge ":"") + (classes||"") + '" data-c="' + c + '" tabindex="' +
-    ((classes||"").includes("jouable") ? "0" : "-1") + '">' +
-    '<span class="coin"><b>' + etiq(c) + '</b><i>' + co.sym + '</i></span>' +
-    '<span class="gros">' + co.sym + '</span>' +
-    '<span class="coin bas"><b>' + etiq(c) + '</b><i>' + co.sym + '</i></span></div>';
+var PIPS = {
+  "2":[[50,15],[50,85]],
+  "3":[[50,15],[50,50],[50,85]],
+  "4":[[25,15],[75,15],[25,85],[75,85]],
+  "5":[[25,15],[75,15],[50,50],[25,85],[75,85]],
+  "6":[[25,15],[75,15],[25,50],[75,50],[25,85],[75,85]],
+  "7":[[25,15],[75,15],[50,32],[25,50],[75,50],[25,85],[75,85]],
+  "8":[[25,15],[75,15],[50,32],[25,50],[75,50],[50,68],[25,85],[75,85]],
+  "9":[[25,15],[75,15],[25,38],[75,38],[50,50],[25,62],[75,62],[25,85],[75,85]],
+  "10":[[25,15],[75,15],[50,27],[25,38],[75,38],[25,62],[75,62],[50,73],[25,85],[75,85]]
+};
+function faceHTML(c){
+  var v = val(c);
+  if(v === "JK"){
+    return '<span class="coin"><b style="font-size:13px">JK</b><i>\u2605</i></span>' +
+           '<div class="joker"><span class="etoile">\u2605</span><span class="mot">JOKER</span></div>' +
+           '<span class="coin bas"><b style="font-size:13px">JK</b><i>\u2605</i></span>';
+  }
+  var co = COULEURS[coul(c)], sym = co.sym;
+  var coin = '<span class="coin"><b>' + etiq(c) + '</b><i>' + sym + '</i></span>';
+  var coinBas = '<span class="coin bas"><b>' + etiq(c) + '</b><i>' + sym + '</i></span>';
+  var corps;
+  if(v === "A"){
+    corps = '<div class="pips"><span class="pip geant" style="left:50%;top:50%">' + sym + '</span></div>';
+  } else if(v === "J" || v === "Q" || v === "K"){
+    corps = '<div class="figure"><div class="moitie">' + etiq(c) + '<span>' + sym + '</span></div>' +
+            '<div class="barre"></div><div class="moitie">' + etiq(c) + '<span>' + sym + '</span></div></div>';
+  } else {
+    var l = PIPS[v] || [], i, s = '<div class="pips">';
+    for(i=0;i<l.length;i++){
+      s += '<span class="pip' + (l[i][1] > 50 ? ' bas' : '') + '" style="left:' + l[i][0] + '%;top:' + l[i][1] + '%">' + sym + '</span>';
+    }
+    corps = s + '</div>';
+  }
+  return coin + corps + coinBas;
 }
-const siege = () => estHote ? 0 : 1;
+function carteHTML(c, classes, style){
+  var rouge = (val(c) === "JK") || COULEURS[coul(c)].rouge;
+  return '<div class="carte ' + (rouge ? "rouge " : "") + (classes || "") + '" data-c="' + c + '"' +
+    (style ? ' style="' + style + '"' : '') +
+    ' tabindex="' + ((classes || "").indexOf("jouable") >= 0 ? "0" : "-1") + '">' +
+    '<div class="face avant">' + faceHTML(c) + '</div><div class="face arriere"></div></div>';
+}
+function grain(c){ var h = 0; for(var i=0;i<c.length;i++) h = (h*31 + c.charCodeAt(i)) % 1000; return h/1000; }
 
-function ouvrirTable(){
-  $("ecran-lobby").classList.add("cache");
-  $("ecran-table").classList.remove("cache");
-  $("btn-quitter").classList.remove("cache");
+/* ---------------- animations ---------------- */
+function rect(el){ return el ? el.getBoundingClientRect() : null; }
+function volCarte(html, de, vers, opts){
+  if(!animer || !de || !vers) return null;
+  opts = opts || {};
+  var w = document.createElement("div");
+  w.className = "vol";
+  w.style.left = vers.left + "px"; w.style.top = vers.top + "px";
+  w.style.width = vers.width + "px"; w.style.height = vers.height + "px";
+  w.innerHTML = html;
+  $("scene").appendChild(w);
+  var dx = (de.left + de.width/2) - (vers.left + vers.width/2);
+  var dy = (de.top + de.height/2) - (vers.top + vers.height/2);
+  var rot = (grain(html) * 24 - 12);
+  var f0 = "translate(" + dx + "px," + dy + "px) perspective(900px) rotate(" + rot + "deg) rotateY(" + (opts.flip ? 180 : 0) + "deg) scale(.8)";
+  var f1 = "translate(" + (dx*0.4) + "px," + (dy*0.4 - 26) + "px) perspective(900px) rotate(" + (rot/2) + "deg) rotateY(" + (opts.flip ? 92 : 0) + "deg) scale(1.1)";
+  var a = w.animate(
+    [{transform:f0, offset:0}, {transform:f1, offset:.55}, {transform:"none", offset:1}],
+    {duration:opts.duree || 480, delay:opts.delai || 0, easing:"cubic-bezier(.22,.75,.3,1)", fill:"backwards"}
+  );
+  var fin = function(){ if(w.parentNode) w.remove(); if(opts.apres) opts.apres(); };
+  a.onfinish = fin; a.oncancel = fin;
+  setTimeout(fin, (opts.duree || 480) + (opts.delai || 0) + 400);
+  return a;
+}
+function zoneJoueur(i){
+  if(i === V.moi) return $("ma-main");
+  var el = document.querySelector('.siege[data-i="' + i + '"]');
+  return el || $("sieges");
+}
+function animerEvenement(){
+  if(!V || !V.dernier || V.dernier.n <= dernierAnime) return;
+  var d = V.dernier;
+  dernierAnime = d.n;
+  if(!animer) return;
+  if(d.type === "poser"){
+    var cible = $("talon").querySelector(".carte");
+    if(!cible) return;
+    var rv = rect(cible);
+    var source = (d.joueur === V.moi && sourceVol) ? sourceVol : rect(zoneJoueur(d.joueur));
+    sourceVol = null;
+    cible.style.visibility = "hidden";
+    var revoir = function(){ cible.style.visibility = ""; };
+    var a = volCarte(carteHTML(d.carte, ""), source, rv, {flip: d.joueur !== V.moi, duree:520, apres:revoir});
+    if(!a) revoir();
+    setTimeout(revoir, 900);
+  } else if(d.type === "piocher"){
+    var dep = rect($("btn-pioche"));
+    var arr = rect(zoneJoueur(d.joueur));
+    if(!dep || !arr) return;
+    var n = Math.min(d.nb || 1, 6), k;
+    for(k=0;k<n;k++){
+      volCarte('<div class="carte retournee"><div class="face avant"></div><div class="face arriere"></div></div>',
+        dep, {left:arr.left + arr.width/2 - dep.width/2 + (k-n/2)*10, top:arr.top + arr.height/2 - dep.height/2, width:dep.width, height:dep.height},
+        {duree:420, delai:k*70});
+    }
+  }
+}
+function confettis(){
+  if(!animer) return;
+  var teintes = ["#C89B3C","#EAD09B","#BE2033","#F6F0E3","#8C2637"], k;
+  for(k=0;k<70;k++){
+    (function(k){
+      var d = document.createElement("div");
+      d.className = "confetti";
+      d.style.left = Math.random()*100 + "vw";
+      d.style.background = teintes[k % teintes.length];
+      document.body.appendChild(d);
+      var chute = 1400 + Math.random()*1600;
+      d.animate([
+        {transform:"translateY(0) rotate(0deg)", opacity:1},
+        {transform:"translateY(" + (window.innerHeight + 60) + "px) rotate(" + (360 + Math.random()*720) + "deg)", opacity:.9}
+      ], {duration:chute, delay:Math.random()*500, easing:"cubic-bezier(.3,.6,.6,1)"}).onfinish = function(){ d.remove(); };
+    })(k);
+  }
+}
+
+/* ---------------- rendu ---------------- */
+function ouvrirEcran(nom){
+  ["ecran-lobby","ecran-salon","ecran-table"].forEach(function(id){ $(id).classList.toggle("cache", id !== nom); });
+  $("btn-quitter").classList.toggle("cache", nom === "ecran-lobby");
+}
+function rendreSalon(){
+  if(!G && !V) return;
+  var s = estAutorite() ? G : V;
+  var moi = estAutorite() ? 0 : V.moi;
+  var html = "", i;
+  for(i=0;i<6;i++){
+    var j = s.joueurs[i];
+    html += '<div class="siege-attente' + (j ? "" : " libre") + '"><span class="num">' + (i+1) + '</span>' +
+      '<span>' + (j ? echapper(j.nom) + (i === 0 ? " — maître de table" : "") + (i === moi ? " (vous)" : "") : "place libre") + '</span></div>';
+  }
+  $("sieges-attente").innerHTML = html;
+  var n = s.joueurs.length;
+  $("aide-salon").textContent = n < 2
+    ? "Transmettez le code aux autres joueurs. Il faut au moins deux personnes pour distribuer."
+    : n + " joueurs assis : " + cartesADonner(n) + " cartes chacun. On peut lancer, ou attendre du monde.";
+  $("btn-lancer").classList.toggle("cache", !estAutorite());
+  $("btn-lancer").disabled = n < 2;
+  $("msg-salon").textContent = estAutorite() ? "" : "Le maître de table lance la partie.";
 }
 
 function rendre(){
-  if(!G) return;
-  const i = siege(), j = 1 - i, eux = G.joueurs[j];
-  $("nom-moi").textContent = G.joueurs[i] ? G.joueurs[i].nom : "Toi";
-  $("nom-adverse").textContent = eux ? eux.nom : "Place libre";
-  $("meta-moi").textContent = G.mains[i].length + " carte" + (G.mains[i].length>1?"s":"");
-  $("meta-adverse").textContent = eux ? G.mains[j].length + " carte" + (G.mains[j].length>1?"s":"") : "en attente";
-  $("nom-moi").className = "joueur-nom" + (G.tour===i && G.phase==="partie" ? " actif":"");
-  $("nom-adverse").className = "joueur-nom" + (G.tour===j && G.phase==="partie" ? " actif":"");
-  $("badge-moi").classList.toggle("cache", !(G.mains[i].length===1 && G.annonce[i]));
-  $("badge-adverse").classList.toggle("cache", !(eux && G.mains[j].length===1 && G.annonce[j]));
-  $("main-adverse").innerHTML = G.mains[j].map(() => '<div class="dos"></div>').join("");
+  if(!V) return;
+  if(V.phase === "salon"){ ouvrirEcran("ecran-salon"); rendreSalon(); majEtat(); return; }
+  ouvrirEcran("ecran-table");
 
-  const haut = sommet(G);
-  $("talon").innerHTML = haut ? carteHTML(haut,"") : '<div class="vide"></div>';
-  $("compte-pioche").textContent = G.paquet.length + " carte" + (G.paquet.length>1?"s":"");
-  const pc = $("pastille-couleur");
-  pc.textContent = G.couleur ? COULEURS[G.couleur].sym : "?";
-  pc.style.color = G.couleur && COULEURS[G.couleur].rouge ? "var(--rouge)" : "var(--encre)";
-  $("cumul").classList.toggle("cache", G.pioche === 0);
-  $("cumul").textContent = "Pioche cumul\u00e9e +" + G.pioche;
+  var moi = V.moi, n = V.joueurs.length, i;
+  var monTour = V.phase === "partie" && V.tour === moi;
+  var frais = !!(V.dernier && V.dernier.n > dernierAnime);
+  var donneFraiche = frais && V.dernier.type === "donne";
+  var poseFraiche = frais && V.dernier.type === "poser";
 
-  const monTour = G.phase === "partie" && G.tour === i && net && net.pret;
-  $("ma-main").innerHTML = G.mains[i].map(c => carteHTML(c, monTour ? (jouable(G,c,i)?"jouable":"morte") : "morte")).join("");
-
-  $("score-nom-1").textContent = G.joueurs[0] ? G.joueurs[0].nom : "…";
-  $("score-nom-2").textContent = G.joueurs[1] ? G.joueurs[1].nom : "…";
-  $("score-val-1").textContent = G.scores[0];
-  $("score-val-2").textContent = G.scores[1];
-  $("num-manche").textContent = G.manche;
-  $("journal").innerHTML = G.journal.map(l => "<li>" + l + "</li>").join("");
-
-  const cs = $("consigne"), finie = G.phase === "fin";
-  $("btn-manche").classList.toggle("cache", !finie);
-  $("btn-piocher").classList.toggle("cache", finie);
-  $("bascule-carte").classList.toggle("cache", !(monTour && G.mains[i].length === 2 && G.opts.contre));
-  $("btn-contre").classList.toggle("cache", !(monTour && eux && G.mains[j].length === 1 && !G.annonce[j] && G.opts.contre));
-
-  if(!net || !net.pret){
-    cs.innerHTML = "<strong>Adversaire d\u00e9connect\u00e9.</strong> La partie reprend d\u00e8s qu'il revient.";
-    $("btn-piocher").disabled = true;
-  } else if(G.phase === "attente"){
-    cs.innerHTML = "Table ouverte, en attente du deuxi\u00e8me joueur.";
-    $("btn-piocher").disabled = true;
-  } else if(finie){
-    cs.innerHTML = G.gagnant === i ? "<strong>Manche gagn\u00e9e.</strong> Tu as pos\u00e9 ta derni\u00e8re carte."
-                                   : "<strong>Manche perdue.</strong> " + (eux?eux.nom:"L'autre") + " s'est d\u00e9barrass\u00e9 de tout.";
-  } else if(monTour){
-    if(G.pioche > 0) cs.innerHTML = "\u00c0 toi. Un As te vise : pose un As pour renvoyer, ou pioche <strong>" + G.pioche + "</strong> cartes.";
-    else if(aDuJeu(G,i)) cs.innerHTML = "\u00c0 toi. Pose une carte en <strong>" + COULEURS[G.couleur].nom + "</strong>, un " + etiq(haut) + ", ou un 8.";
-    else cs.innerHTML = "\u00c0 toi, mais rien ne passe. <strong>Pioche.</strong>";
-    $("btn-piocher").disabled = false;
-    $("btn-piocher").textContent = G.pioche > 0 ? "Piocher " + G.pioche : "Piocher";
-  } else {
-    cs.innerHTML = "Au tour de <strong>" + (eux?eux.nom:"l'adversaire") + "</strong>.";
-    $("btn-piocher").disabled = true;
-    $("btn-piocher").textContent = "Piocher";
+  /* --- sièges des autres joueurs --- */
+  var ordre = [], k;
+  for(k=1;k<n;k++) ordre.push((moi + k) % n);
+  var html = "";
+  for(k=0;k<ordre.length;k++){
+    i = ordre[k];
+    var j = V.joueurs[i], nb = nbCartes(V, i);
+    var cls = "siege" + (V.tour === i && V.phase === "partie" ? " actif" : "") + (j.sorti ? " sorti" : "") +
+      (j.parti ? " parti" : "") + (nb === 1 && !j.sorti ? " alerte-carte" : "");
+    var fanion = "";
+    if(j.parti) fanion = '<span class="fanion">absent</span>';
+    else if(j.sorti) fanion = '<span class="fanion or">' + (j.rang === 1 ? "gagne" : j.rang + "e") + '</span>';
+    else if(j.sursis) fanion = '<span class="fanion">sur le fil</span>';
+    else if(nb === 1) fanion = '<span class="fanion">derni\u00e8re carte</span>';
+    var dos = "";
+    for(var d=0;d<Math.min(nb,8);d++) dos += '<div class="dos"></div>';
+    html += '<div class="' + cls + '" data-i="' + i + '">' + fanion +
+      '<div class="nom">' + echapper(j.nom) + '</div>' +
+      '<div class="compte">' + (j.parti ? "parti" : nb + " carte" + (nb > 1 ? "s" : "")) + '</div>' +
+      '<div class="dos-mini">' + dos + '</div></div>';
   }
-  $("btn-pioche").disabled = !(monTour && !finie);
-  $("etat-texte").textContent = !net || !net.pret ? "D\u00e9connect\u00e9" : (G.phase==="attente" ? "En attente du 2e joueur" : (monTour ? "\u00c0 toi de jouer" : "Connect\u00e9"));
-  $("pastille").className = "pastille" + (!net || !net.pret ? " morte" : (monTour ? " vive" : ""));
+  $("sieges").innerHTML = html;
+
+  /* --- centre --- */
+  var haut = sommet(V);
+  var talon = "";
+  if(V.talon.length){
+    var vus = V.talon.slice(-3);
+    for(k=0;k<vus.length;k++){
+      var r = (grain(vus[k]) * 16 - 8) * (k === vus.length-1 ? 0.35 : 1);
+      talon += carteHTML(vus[k], (k === vus.length-1 && poseFraiche) ? "pose" : "", "transform:rotate(" + r.toFixed(1) + "deg)");
+    }
+  } else talon = '<div class="vide"></div>';
+  $("talon").innerHTML = talon;
+  var np = taillePaquet(V);
+  var dosPioche = np <= 0 ? 0 : (np <= 2 ? 1 : (np <= 12 ? 2 : 3));
+  $("btn-pioche").innerHTML = new Array(dosPioche + 1).join('<div class="dos"></div>');
+  $("btn-pioche").classList.toggle("vide-pioche", dosPioche === 0);
+  $("compte-pioche").textContent = np + " carte" + (np > 1 ? "s" : "");
+  $("compte-talon").innerHTML = haut ? etiq(haut) + (val(haut) === "JK" ? "" : " " + COULEURS[coul(haut)].sym) : "&nbsp;";
+
+  var jc = $("jeton-couleur");
+  jc.textContent = V.couleur ? COULEURS[V.couleur].sym : "?";
+  jc.style.color = V.couleur && COULEURS[V.couleur].rouge ? "var(--rouge)" : "var(--encre)";
+  if(derniereCouleur !== V.couleur){
+    derniereCouleur = V.couleur;
+    jc.classList.remove("change"); void jc.offsetWidth; jc.classList.add("change");
+  }
+  $("cumul").classList.toggle("cache", V.pioche === 0);
+  $("cumul").textContent = "Attaque en cours : +" + V.pioche;
+  $("sens").classList.toggle("inverse", V.sens === -1);
+  $("sens-texte").textContent = V.sens === 1 ? "Sens horaire" : "Sens inverse";
+
+  /* --- ma main --- */
+  var main = V.mains[moi] || [];
+  var m = main.length, arc = m > 1 ? Math.min(4.5, 46/m) : 0;
+  var cartes = "";
+  for(k=0;k<m;k++){
+    var dec = k - (m-1)/2;
+    var rot = (dec * arc).toFixed(2), dy = (Math.abs(dec) * Math.abs(dec) * 1.4).toFixed(1);
+    var utilisable = monTour && jouable(V, main[k], moi);
+    cartes += carteHTML(main[k], (utilisable ? "jouable" : "morte") + (donneFraiche ? " neuve" : ""),
+      "--rot:" + rot + "deg;--dy:" + dy + "px;--z:" + k + ";animation-delay:" + (k*55) + "ms");
+  }
+  $("ma-main").className = "main" + (m > 10 ? " serree" : "");
+  $("ma-main").innerHTML = cartes || '<div class="vide"></div>';
+  $("nom-moi").textContent = V.joueurs[moi].nom;
+  $("nom-moi").className = "nom" + (monTour ? " actif" : "");
+  $("meta-moi").textContent = m + " carte" + (m > 1 ? "s" : "") +
+    (V.joueurs[moi].sorti ? " · sorti " + V.joueurs[moi].rang + "e" : "");
+
+  /* --- marque --- */
+  var lignes = "";
+  for(i=0;i<n;i++){
+    var jj = V.joueurs[i];
+    lignes += '<tr class="' + (i === moi ? "moi" : "") + '"><td>' + echapper(jj.nom) +
+      (jj.parti ? " (absent)" : "") + '<div class="jauge"><i style="width:' +
+      Math.min(100, Math.round(100 * jj.points / Math.max(1, V.opts.objectif))) + '%"></i></div></td>' +
+      '<td class="chiffre">' + jj.points + '</td><td class="chiffre">' + jj.parties + '</td></tr>';
+  }
+  $("corps-score").innerHTML = lignes;
+  $("rappel-manche").textContent = "Manche " + V.manche + " · premier arrivé à " + V.opts.objectif +
+    " manche" + (V.opts.objectif > 1 ? "s" : "") + " remporte la partie · " + n + " joueurs, " +
+    cartesADonner(n) + " cartes distribuées.";
+  $("journal").innerHTML = V.journal.map(function(l){ return "<li>" + echapper(l) + "</li>"; }).join("");
+  rendreChat();
+
+  /* --- consigne et boutons --- */
+  var cs = $("consigne"), finie = V.phase !== "partie";
+  $("btn-manche").classList.toggle("cache", !finie);
+  $("btn-manche").textContent = V.phase === "finPartie" ? "Nouvelle partie" : "Manche suivante";
+  $("btn-piocher").classList.toggle("cache", finie);
+  var horsJeu = V.joueurs[moi].sorti || V.joueurs[moi].parti;
+
+  if(finie){
+    var g = V.ordreSortie.length ? V.joueurs[V.ordreSortie[0]] : null;
+    cs.innerHTML = V.phase === "finPartie"
+      ? "<strong>" + echapper(g ? g.nom : "?") + "</strong> remporte la partie."
+      : (g && V.ordreSortie[0] === moi ? "<strong>Manche gagnée.</strong> À vous de relancer."
+                                       : "Manche pour <strong>" + echapper(g ? g.nom : "?") + "</strong>.");
+  } else if(horsJeu){
+    cs.innerHTML = "Vous avez posé toutes vos cartes. La manche continue entre les autres.";
+  } else if(monTour){
+    if(V.pioche > 0){
+      cs.innerHTML = "À vous. <strong>+" + V.pioche + "</strong> vous attend : ripostez" +
+        (V.attaque === "JK" ? " avec un Joker ou un 8" : " avec un As, un Joker ou un 8") + ", ou ramassez.";
+    } else if(aDuJeu(V, moi)){
+      var h = sommet(V), vh = h ? val(h) : "", bouts = [];
+      if(vh !== "8" && vh !== "JK") bouts.push("un " + etiq(h));
+      if(!V.bloque8) bouts.push("un 8");
+      bouts.push("un Joker");
+      cs.innerHTML = "À vous. Posez du <strong>" + COULEURS[V.couleur].nom + "</strong>, " +
+        bouts.join(", ").replace(/, ([^,]*)$/, " ou $1") + " — ou piochez si ça vous arrange.";
+    } else {
+      cs.innerHTML = "À vous, mais rien ne passe. <strong>Piochez.</strong>";
+    }
+  } else {
+    cs.innerHTML = "Au tour de <strong>" + echapper(V.joueurs[V.tour] ? V.joueurs[V.tour].nom : "?") + "</strong>.";
+  }
+  $("btn-piocher").disabled = !(monTour && !finie && !horsJeu);
+  $("btn-piocher").textContent = V.pioche > 0 && monTour ? "Ramasser " + V.pioche : "Piocher";
+  $("btn-pioche").disabled = $("btn-piocher").disabled;
+
+  majEtat();
+  animerEvenement();
+  if(dernierePhase === "partie" && finie) finDeManche();
+  dernierePhase = V.phase;
+}
+function majEtat(){
+  var relie = modeLocal || (estHote ? true : (canal && canal.pret));
+  var monTour = V && V.phase === "partie" && V.tour === V.moi;
+  $("etat-texte").textContent = !relie ? "Déconnecté" :
+    (V && V.phase === "salon" ? "Salon" : (monTour ? "À vous de jouer" : (modeLocal ? "Table locale" : "En ligne")));
+  $("pastille").className = "pastille" + (!relie ? " morte" : (monTour ? " vive" : ""));
+}
+function echapper(t){
+  return String(t).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
 }
 
-/* ===================== interactions ===================== */
-function clicCarte(c){
-  const i = siege();
-  if(!G || G.phase !== "partie" || G.tour !== i || !jouable(G,c,i)) return;
-  const annoncer = $("chk-carte").checked && G.mains[i].length === 2;
-  if(val(c) === "8") choisirCouleur(k => { agir({t:"poser", c, couleur:k, annoncer}); $("chk-carte").checked = false; });
-  else { agir({t:"poser", c, couleur:null, annoncer}); $("chk-carte").checked = false; }
+/* ---------------- fin de manche ---------------- */
+function finDeManche(){
+  var classement = V.ordreSortie.slice();
+  var i;
+  for(i=0;i<V.joueurs.length;i++) if(classement.indexOf(i) < 0) classement.push(i);
+  var li = classement.map(function(idx, r){
+    var j = V.joueurs[idx];
+    return '<li class="' + (r === 0 ? "premier" : "") + '"><span class="rang">' + (r+1) + '</span>' +
+      '<span style="flex:1">' + echapper(j.nom) + (idx === V.moi ? " (vous)" : "") + '</span>' +
+      '<span class="rang">' + j.points + '</span></li>';
+  }).join("");
+  var titre = V.phase === "finPartie" ? "Partie remportée" : "Manche terminée";
+  var gagnant = V.ordreSortie.length ? V.joueurs[V.ordreSortie[0]] : null;
+  var texte = V.phase === "finPartie"
+    ? echapper(gagnant ? gagnant.nom : "?") + " atteint " + V.opts.objectif + " manche" +
+      (V.opts.objectif > 1 ? "s" : "") + " et empoche la partie."
+    : echapper(gagnant ? gagnant.nom : "?") + " se débarrasse de tout et marque une manche.";
+  ouvrirModale('<h2>' + titre + '</h2><p>' + texte + '</p><ul class="podium">' + li + '</ul>' +
+    '<div class="modale-actions"><button class="discret" id="mod-fermer">Regarder la table</button>' +
+    '<button class="principal" id="mod-suite">' + (V.phase === "finPartie" ? "Nouvelle partie" : "Manche suivante") + '</button></div>');
+  $("mod-fermer").onclick = fermerModale;
+  $("mod-suite").onclick = function(){ fermerModale(); agir({t:"suite"}); };
+  if(gagnant && V.ordreSortie[0] === V.moi) confettis();
+}
+
+/* ---------------- discussion ---------------- */
+var CHIPS = ["Bien joué !", "Aïe…", "À toi !", "Pas de pitié", "Dernière carte !", "Bien tenté"];
+var REPLIQUES = {
+  derniere:["Dernière carte.", "Plus qu'une.", "Je sens la fin.", "Une seule, et pas des moindres."],
+  attaque:["Rien de personnel.", "Ramasse.", "Désolé. Enfin, pas tant que ça.", "C'est le jeu.", "Bon courage."],
+  pioche:["Rien de rien.", "Je pioche, et je boude.", "Toujours la mauvaise couleur.", "Cette pioche me déteste."]
+};
+function auHasard(l){ return l[Math.floor(Math.random()*l.length)]; }
+function rendreChat(){
+  var fil = $("fil-chat"), msgs = V.chat || [];
+  if(!msgs.length){
+    fil.innerHTML = '<div class="chat-vide">La table est silencieuse.<br>Un mot, une pique, un « bien joué » ?</div>';
+    return;
+  }
+  var colle = fil.scrollHeight - fil.scrollTop - fil.clientHeight < 60;
+  fil.innerHTML = msgs.map(function(m){
+    if(m.i < 0) return '<div class="bulle systeme">' + echapper(m.texte) + '</div>';
+    var teinte = "hsl(" + ((m.i * 67 + 28) % 360) + " 55% 78%)";
+    return '<div class="bulle' + (m.i === V.moi ? " moi" : "") + '"><span class="qui" style="color:' + teinte + '">' +
+      echapper(m.nom) + '</span>' + echapper(m.texte) + '</div>';
+  }).join("");
+  if(colle) fil.scrollTop = fil.scrollHeight;
+}
+function marquerChat(){
+  if(!ongletChat){ chatNonLu = true; $("puce-chat").classList.remove("cache"); }
+}
+function envoyerChat(texte){
+  texte = (texte || "").trim().slice(0, 180);
+  if(!texte) return;
+  if(estAutorite()) ajouterChat(monIndex, texte);
+  else if(canal && canal.pret) canal.envoyer({t:"chat", texte:texte});
+  else toast("Personne à l'autre bout pour l'instant.");
+  $("saisie-chat").value = "";
+}
+function ajouterChat(i, texte){
+  if(!G) return;
+  var nom = i < 0 ? "" : (G.joueurs[i] ? G.joueurs[i].nom : "?");
+  G.chat.push({i:i, nom:nom, texte:texte, ts:Date.now()});
+  if(G.chat.length > 120) G.chat.shift();
+  G.v++;
+  diffuser();
+}
+
+/* ---------------- actions ---------------- */
+function agir(action){
+  if(!V) return;
+  if(estAutorite()) appliquer(action, monIndex);
+  else if(canal && canal.pret) canal.envoyer({t:"action", a:action});
+  else toast("Connexion perdue.");
+}
+function appliquer(a, i){
+  if(!G) return;
+  var ok = false;
+  if(a.t === "poser") ok = poser(G, a.c, i, a.couleur);
+  else if(a.t === "piocher") ok = piocherLogique(G, i);
+  else if(a.t === "suite"){
+    if(G.phase === "finManche") ok = mancheSuivante(G);
+    else if(G.phase === "finPartie") ok = nouvellePartie(G);
+  }
+  else if(a.t === "lancer"){ if(i === 0) ok = lancer(G); }
+  if(!ok) return;
+  G.v++;
+  diffuser();
+  tourAuto();
+}
+function diffuser(){
+  if(!G) return;
+  for(var k=0;k<canaux.length;k++){
+    if(canaux[k].pret && canaux[k].idx !== null && canaux[k].idx !== undefined){
+      canaux[k].envoyer({t:"etat", s:vuePour(G, canaux[k].idx)});
+    }
+  }
+  V = vuePour(G, 0);
+  rendre();
+}
+function tourAuto(){
+  clearTimeout(minuterieBot);
+  if(!estAutorite() || !G || G.phase !== "partie") return;
+  var i = G.tour;
+  if(!G.joueurs[i] || !G.joueurs[i].bot) return;
+  minuterieBot = setTimeout(function(){
+    if(!G || G.phase !== "partie" || G.tour !== i || !G.joueurs[i].bot) return;
+    var avant = G.mains[i].length;
+    var a = coupAuto(G, i);
+    appliquer(a, i);
+    if(G.joueurs[i] && G.mains[i] && G.mains[i].length === 1 && avant > 1 && Math.random() < .45)
+      ajouterChat(i, auHasard(REPLIQUES.derniere));
+    else if(a.t === "poser" && (val(a.c) === "JK" || val(a.c) === "A") && Math.random() < .35)
+      ajouterChat(i, auHasard(REPLIQUES.attaque));
+    else if(a.t === "piocher" && G.pioche === 0 && Math.random() < .12)
+      ajouterChat(i, auHasard(REPLIQUES.pioche));
+  }, 800 + Math.random() * 600);
+}
+
+function clicCarte(el){
+  var c = el.dataset.c;
+  if(!V || V.phase !== "partie" || V.tour !== V.moi) return;
+  if(!jouable(V, c, V.moi)){
+    el.classList.remove("refus"); void el.offsetWidth; el.classList.add("refus");
+    return;
+  }
+  sourceVol = rect(el);
+  if(val(c) === "8" || val(c) === "JK"){
+    choisirCouleur(val(c), function(k){ agir({t:"poser", c:c, couleur:k}); });
+  } else {
+    agir({t:"poser", c:c, couleur:null});
+  }
+}
+
+/* ---------------- modales ---------------- */
+function ouvrirModale(html){
+  $("modales").innerHTML = '<div class="voile"><div class="modale">' + html + '</div></div>';
 }
 function fermerModale(){ $("modales").innerHTML = ""; }
-function choisirCouleur(suite){
-  const boutons = Object.entries(COULEURS).map(([k,c]) =>
-    '<button data-k="'+k+'" class="'+(c.rouge?"rouge":"")+'" title="'+c.nom+'">'+c.sym+'</button>').join("");
-  $("modales").innerHTML = '<div class="voile"><div class="modale"><h2>Quelle couleur ?</h2>'+
-    '<p>Le 8 se pose sur n\'importe quoi. \u00c0 toi d\'imposer la couleur que ton adversaire devra suivre.</p>'+
-    '<div class="choix-couleurs">'+boutons+'</div>'+
-    '<div class="modale-actions"><button id="annul-couleur" class="discret">Annuler</button></div></div></div>';
-  $("modales").querySelectorAll(".choix-couleurs button").forEach(b => b.onclick = () => { fermerModale(); suite(b.dataset.k); });
-  $("annul-couleur").onclick = fermerModale;
+function choisirCouleur(quoi, suite){
+  var boutons = Object.keys(COULEURS).map(function(k){
+    var c = COULEURS[k];
+    return '<button data-k="' + k + '" class="' + (c.rouge ? "rouge" : "") + '" title="' + c.nom + '">' + c.sym + '</button>';
+  }).join("");
+  ouvrirModale('<h2>Quelle couleur ?</h2><p>' +
+    (quoi === "JK" ? "Le Joker impose +4 au joueur suivant. À vous de dire la couleur qui suivra."
+                   : "Le 8 se pose sur n'importe quoi et coupe les attaques. Annoncez la couleur.") +
+    '</p><div class="choix-couleurs">' + boutons + '</div>' +
+    '<div class="modale-actions"><button id="annul-couleur" class="discret">Annuler</button></div>');
+  Array.prototype.forEach.call($("modales").querySelectorAll(".choix-couleurs button"), function(b){
+    b.onclick = function(){ fermerModale(); suite(b.dataset.k); };
+  });
+  $("annul-couleur").onclick = function(){ sourceVol = null; fermerModale(); };
 }
 function afficherRegles(){
-  $("modales").innerHTML = '<div class="voile"><div class="modale"><h2>Le 8 am\u00e9ricain</h2><div class="regles">'+
-    '<p>Jeu de 52 cartes, 7 cartes par joueur. Le premier qui n\'a plus rien en main remporte la manche et ramasse les points rest\u00e9s dans la main de l\'autre.</p>'+
-    '<h4>Poser une carte</h4><ul><li>M\u00eame couleur que le talon, ou m\u00eame valeur.</li>'+
-    '<li>Un 8 se pose sur n\'importe quelle carte : tu annonces la couleur qui suit.</li>'+
-    '<li>Rien \u00e0 poser ? Tu pioches. Si la carte pioch\u00e9e passe, tu la joues.</li></ul>'+
-    '<h4>Cartes sp\u00e9ciales</h4><ul><li><code>8</code> change la couleur.</li>'+
-    '<li><code>As</code> fait piocher 2 cartes \u00e0 l\'adversaire. Un As r\u00e9pond \u00e0 un As et cumule.</li>'+
-    '<li><code>Valet</code> change le sens : \u00e0 deux, tu rejoues.</li><li><code>10</code> te fait rejouer.</li>'+
-    '<li><code>7</code> saute le tour de l\'adversaire.</li></ul>'+
-    '<h4>Carte et contre-carte</h4><p>Quand tu poses ton avant-derni\u00e8re carte, coche \u00ab Annoncer Carte \u00bb. Si tu oublies, l\'adversaire clique sur <em>Contre-carte</em> \u00e0 son tour et tu ramasses 2 cartes.</p>'+
-    '<h4>Points</h4><p>8 = 50, As = 11, figures = 10, les autres \u00e0 leur valeur. Pioche vide : le talon est rebattu.</p>'+
-    '<h4>Variantes</h4><p>Le jeu en compte des dizaines. L\'h\u00f4te choisit lesquelles activer avant d\'ouvrir la table.</p>'+
-    '</div><div class="modale-actions" style="margin-top:18px"><button class="principal" id="fermer-regles">Fermer</button></div></div></div>';
+  ouvrirModale('<h2>Les règles de la maison</h2><div class="regles">' +
+    '<p>Se débarrasser de sa main avant les autres. On pose une carte de la couleur demandée ou de la même valeur ; sinon on pioche.</p>' +
+    '<h4>Donne et entame</h4><ul>' +
+    '<li>Deux joueurs : 8 cartes. Trois : 7 cartes. Quatre et plus : 6 cartes.</li>' +
+    '<li>Entame : la dame de cœur, sinon carreau, pique, trèfle. Sans dame, on descend aux rois, puis aux valets.</li>' +
+    '<li>À cinq joueurs et plus, deux jeux sont mélangés.</li></ul>' +
+    '<h4>Le 8, carte magique</h4><ul>' +
+    '<li>Il se pose quand on veut, sur n\'importe quelle carte, et coupe même une attaque en cours.</li>' +
+    '<li>Seule interdiction : un 8 sur un 8. Dès que quelqu\'un pioche, l\'interdiction saute.</li>' +
+    '<li>Celui qui le pose annonce la couleur à suivre.</li></ul>' +
+    '<h4>Attaques</h4><ul>' +
+    '<li><code>As</code> : +2. <code>Joker</code> : +4, et il fixe aussi la couleur.</li>' +
+    '<li>Un joker se pose sur un as ; un as ne se pose jamais sur un joker.</li>' +
+    '<li>Les attaques se cumulent tant que personne ne ramasse. Un 8 les annule.</li></ul>' +
+    '<h4>Valet, 10, 7</h4><ul>' +
+    '<li><code>V</code> change le sens du jeu. <code>10</code> fait rejouer. <code>7</code> saute le tour du suivant.</li>' +
+    '<li>À deux joueurs, ces trois cartes rendent la main : on rejoue derrière.</li></ul>' +
+    '<h4>Terminer</h4><ul>' +
+    '<li>À deux, impossible de finir sur un 7, un valet ou un 10 : on repioche une carte et on rejoue.</li>' +
+    '<li>À trois et plus, seul le 10 empêche de sortir.</li>' +
+    '<li>À plus de deux joueurs, on peut sortir sur un 8 : la manche continue avec la couleur annoncée.</li>' +
+    '<li>S\'il ne reste que deux joueurs en lice et que la dernière carte est un As ou un Joker, l\'adversaire peut riposter : l\'attaque revient au sortant, qui reprend les cartes et rejoue.</li></ul>' +
+    '<h4>Pioche</h4><ul>' +
+    '<li>On peut toujours choisir de piocher, même avec une carte jouable.</li>' +
+    '<li>La carte piochée ne se joue pas dans la foulée : le tour passe.</li></ul>' +
+    '<h4>Marque</h4><ul>' +
+    '<li>Une manche gagnée vaut un point. La partie va au premier qui atteint l\'objectif fixé à l\'ouverture.</li>' +
+    '<li>Manches et parties gagnées se lisent dans la colonne de droite.</li></ul>' +
+    '</div><div class="modale-actions" style="margin-top:16px"><button class="principal" id="fermer-regles">Fermer</button></div>');
   $("fermer-regles").onclick = fermerModale;
 }
 
-/* ===================== réseau ===================== */
-function surMessage(m){
+/* ---------------- départ d'un joueur ---------------- */
+function retirerJoueur(i){
+  if(!G || !G.joueurs[i] || G.joueurs[i].parti) return;
+  if(G.phase === "salon"){
+    var nom = G.joueurs[i].nom;
+    G.joueurs.splice(i, 1); G.mains.splice(i, 1);
+    for(var k=0;k<canaux.length;k++){
+      if(canaux[k].idx === i) canaux[k].idx = null;
+      else if(canaux[k].idx > i) canaux[k].idx--;
+    }
+    toast(nom + " quitte le salon.");
+    diffuser();
+    return;
+  }
+  var j = G.joueurs[i];
+  j.parti = true; j.sursis = false;
+  if(G.mains[i] && G.mains[i].length){ G.paquet = melanger(G.paquet.concat(G.mains[i])); G.mains[i] = []; }
+  noter(G, j.nom + " quitte la table.");
+  ajouterChat(-1, j.nom + " a quitté la table.");
+  if(G.phase === "partie"){
+    if(nbEnJeu(G) <= 1) terminerManche(G);
+    else if(G.tour === i){ G.tour = suivant(G, i, 1); resoudreSursis(G); }
+  }
+  G.v++;
+  diffuser();
+  tourAuto();
+}
+
+/* ---------------- réseau ---------------- */
+function surMessage(m, ch){
   if(!m || typeof m !== "object") return;
-  if(m.t === "etat" && !estHote){ G = m.s; ouvrirTable(); rendre(); }
-  else if(m.t === "action" && estHote){ appliquer(m.a, 1); }
-  else if(m.t === "bonjour" && estHote){
-    const nom = (m.nom || "Invit\u00e9").slice(0,14);
-    if(!G.joueurs[1]){ G.joueurs[1] = {nom}; G.phase = "partie"; noter(G, nom + " s'assoit \u00e0 la table."); }
-    else G.joueurs[1].nom = nom;
-    G.v++; diffuser(); rendre(); toast(nom + " a rejoint la table.");
+  if(m.t === "etat" && !estAutorite()){
+    var avant = dernierChatVu;
+    V = m.s; monIndex = V.moi;
+    dernierChatVu = (V.chat || []).length;
+    rendre();
+    if(dernierChatVu > avant) marquerChat();
+  }
+  else if(m.t === "action" && estAutorite() && ch && ch.idx != null) appliquer(m.a, ch.idx);
+  else if(m.t === "chat"){
+    if(estAutorite() && ch && ch.idx != null){ ajouterChat(ch.idx, m.texte); marquerChat(); }
+  }
+  else if(m.t === "bonjour" && estAutorite() && ch){
+    var nom = String(m.nom || "Invité").slice(0, 14);
+    if(G.phase !== "salon"){ ch.envoyer({t:"refus", raison:"La partie a déjà commencé."}); return; }
+    if(G.joueurs.length >= 6){ ch.envoyer({t:"refus", raison:"La table est complète."}); return; }
+    G.joueurs.push({nom:nom, points:0, parties:0, sorti:false, rang:null, sursis:false, parti:false, bot:false});
+    G.mains.push([]);
+    ch.idx = G.joueurs.length - 1;
+    toast(nom + " s'assoit à la table.");
+    ajouterChat(-1, nom + " rejoint la table.");
+    diffuser();
+  }
+  else if(m.t === "refus"){
+    toast(m.raison || "Table indisponible.");
+    $("msg-invite").textContent = m.raison || "Table indisponible.";
+    ouvrirEcran("ecran-lobby");
+    $("btn-rejoindre").disabled = false;
   }
 }
-function surOuverture(){
-  if(estHote){ if(net) net.envoyer({t:"etat", s:G}); }
-  else net.envoyer({t:"bonjour", nom:monNom});
-  ouvrirTable(); rendre();
+function surOuverture(ch){
+  if(estAutorite()){ /* on attend le bonjour de l'invité */ }
+  else { canal = ch; ch.envoyer({t:"bonjour", nom:monNom}); }
+  majEtat();
 }
-function surFermeture(){ if(net) net.pret = false; rendre(); toast("Connexion interrompue."); }
+function surFermeture(ch){
+  if(estAutorite()){
+    if(ch) ch.pret = false;
+    var i = canaux.indexOf(ch);
+    if(i >= 0) canaux.splice(i, 1);
+    if(ch && ch.idx != null) retirerJoueur(ch.idx);
+  } else {
+    if(canal) canal.pret = false;
+    toast("Connexion interrompue.");
+    majEtat();
+  }
+}
 
+function canalDepuisConn(conn){
+  var c = {pret:false, idx:null, envoyer:function(o){ try{ conn.send(o); }catch(e){} }};
+  conn.on("open", function(){ c.pret = true; surOuverture(c); });
+  conn.on("data", function(d){ surMessage(d, c); });
+  conn.on("close", function(){ surFermeture(c); });
+  conn.on("error", function(){ surFermeture(c); });
+  return c;
+}
 function canalDepuisDataChannel(dc){
-  const c = {pret:false, envoyer(o){ try{ dc.send(JSON.stringify(o)); }catch(e){} }};
-  dc.onopen = () => { c.pret = true; surOuverture(); };
-  dc.onclose = surFermeture;
-  dc.onerror = surFermeture;
-  dc.onmessage = e => { try{ surMessage(JSON.parse(e.data)); }catch(err){} };
+  var c = {pret:false, idx:null, envoyer:function(o){ try{ dc.send(JSON.stringify(o)); }catch(e){} }};
+  dc.onopen = function(){ c.pret = true; surOuverture(c); };
+  dc.onclose = function(){ surFermeture(c); };
+  dc.onerror = function(){ surFermeture(c); };
+  dc.onmessage = function(e){ try{ surMessage(JSON.parse(e.data), c); }catch(err){} };
   return c;
 }
 
-/* --- mode par code : PeerJS --- */
-const CDN = ["https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js",
-             "https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"];
-let peerChargement = null;
+/* --- mise en relation par code (PeerJS) --- */
+var CDN = ["https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js",
+           "https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"];
+var peerChargement = null;
 function chargerPeer(){
   if(window.Peer) return Promise.resolve(true);
   if(peerChargement) return peerChargement;
-  peerChargement = new Promise(res => {
-    let n = 0;
-    const suivant = () => {
+  peerChargement = new Promise(function(res){
+    var n = 0;
+    var suivantCDN = function(){
       if(n >= CDN.length) return res(false);
-      const s = document.createElement("script");
+      var s = document.createElement("script");
       s.src = CDN[n++];
-      s.onload = () => res(true);
-      s.onerror = suivant;
+      s.onload = function(){ res(true); };
+      s.onerror = suivantCDN;
       document.head.appendChild(s);
     };
-    suivant();
+    suivantCDN();
   });
   return peerChargement;
 }
-const idPeer = code => "huit-americain-" + code;
+function idPeer(code){ return "huit-americain-v2-" + code; }
 function codeAleatoire(){
-  const a = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  return Array.from({length:4}, () => a[Math.floor(Math.random()*a.length)]).join("");
+  var a = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", r = "";
+  for(var i=0;i<4;i++) r += a[Math.floor(Math.random()*a.length)];
+  return r;
 }
-function canalDepuisConn(conn){
-  const c = {pret:false, envoyer(o){ try{ conn.send(o); }catch(e){} }};
-  conn.on("open", () => { c.pret = true; surOuverture(); });
-  conn.on("data", surMessage);
-  conn.on("close", surFermeture);
-  conn.on("error", surFermeture);
-  return c;
+function nouveauJoueur(nom, bot){
+  return {nom:nom, points:0, parties:0, sorti:false, rang:null, sursis:false, parti:false, bot:!!bot};
 }
 
-async function creerParCode(){
-  const msg = $("msg-hote"); msg.className = "msg"; msg.textContent = "Connexion au service de mise en relation\u2026";
+function creerParCode(){
+  var msg = $("msg-hote");
+  msg.className = "msg"; msg.textContent = "Mise en relation…";
   $("btn-creer").disabled = true;
-  const ok = await chargerPeer();
-  if(!ok){ msg.textContent = "La biblioth\u00e8que de connexion n'a pas pu se charger. Passe par l'onglet copier-coller."; $("btn-creer").disabled = false; return; }
-  monNom = ($("nom-hote").value || "H\u00f4te").trim().slice(0,14);
-  estHote = true;
-  G = nouvelleTable(monNom, {
-    as:$("o-as").checked, cumul:$("o-cumul").checked, valet:$("o-valet").checked, dix:$("o-dix").checked,
-    sept:$("o-sept").checked, pasDeHuitFinal:$("o-huit").checked, contre:$("o-contre").checked
+  chargerPeer().then(function(ok){
+    if(!ok){
+      msg.textContent = "La bibliothèque de connexion n'a pas pu se charger. Passez par l'onglet sans serveur.";
+      $("btn-creer").disabled = false; return;
+    }
+    monNom = ($("nom-hote").value || "Hôte").trim().slice(0, 14) || "Hôte";
+    estHote = true; modeLocal = false; monIndex = 0;
+    G = nouvelleTable(monNom, {objectif: parseInt($("objectif").value, 10)});
+    var essais = 0;
+    var tenter = function(){
+      var code = codeAleatoire();
+      var peer = new window.Peer(idPeer(code), {debug:0});
+      peer.on("open", function(){
+        $("code-affiche").textContent = code;
+        $("code-zone").classList.remove("cache");
+        msg.className = "msg ok";
+        msg.textContent = "Table ouverte. Transmettez le code " + code + ".";
+        V = vuePour(G, 0);
+        rendre();
+        peer.on("connection", function(conn){ canaux.push(canalDepuisConn(conn)); });
+      });
+      peer.on("error", function(err){
+        if(err && err.type === "unavailable-id" && essais++ < 5){ peer.destroy(); tenter(); return; }
+        if(err && err.type === "peer-unavailable") return;
+        msg.className = "msg";
+        msg.textContent = "Le service de mise en relation ne répond pas. Utilisez l'onglet sans serveur.";
+        $("btn-creer").disabled = false;
+      });
+    };
+    tenter();
   });
-  let essais = 0;
-  const tenter = () => {
-    const code = codeAleatoire();
-    const peer = new window.Peer(idPeer(code), {debug:0});
-    peer.on("open", () => {
+}
+function rejoindreParCode(){
+  var msg = $("msg-invite");
+  msg.className = "msg";
+  var code = ($("code-saisi").value || "").trim().toUpperCase();
+  if(code.length !== 4){ msg.textContent = "Le code fait quatre caractères."; return; }
+  $("btn-rejoindre").disabled = true;
+  msg.textContent = "Connexion…";
+  chargerPeer().then(function(ok){
+    if(!ok){
+      msg.textContent = "La bibliothèque de connexion n'a pas pu se charger. Passez par l'onglet sans serveur.";
+      $("btn-rejoindre").disabled = false; return;
+    }
+    monNom = ($("nom-invite").value || "Invité").trim().slice(0, 14) || "Invité";
+    estHote = false; modeLocal = false;
+    var peer = new window.Peer({debug:0});
+    peer.on("open", function(){
+      var conn = peer.connect(idPeer(code), {reliable:true});
+      canal = canalDepuisConn(conn);
       $("code-affiche").textContent = code;
       $("code-zone").classList.remove("cache");
-      msg.className = "msg ok";
-      msg.textContent = "Table ouverte. Transmets le code " + code + " \u00e0 ton adversaire.";
-      ouvrirTable(); rendre();
-      peer.on("connection", conn => { net = canalDepuisConn(conn); });
+      setTimeout(function(){
+        if(canal && !canal.pret){
+          msg.textContent = "Aucune table à ce code, ou l'hôte a fermé la page.";
+          $("btn-rejoindre").disabled = false;
+        }
+      }, 9000);
     });
-    peer.on("error", err => {
-      if(err && err.type === "unavailable-id" && essais++ < 5){ peer.destroy(); tenter(); return; }
-      if(err && (err.type === "peer-unavailable")) return;
-      msg.className = "msg";
-      msg.textContent = "Le service de mise en relation ne r\u00e9pond pas. Utilise l'onglet copier-coller.";
-      $("btn-creer").disabled = false;
+    peer.on("error", function(err){
+      msg.textContent = err && err.type === "peer-unavailable" ? "Aucune table à ce code."
+                                                              : "Connexion impossible. Essayez l'onglet sans serveur.";
+      $("btn-rejoindre").disabled = false;
     });
-  };
-  tenter();
-}
-
-async function rejoindreParCode(){
-  const msg = $("msg-invite"); msg.className = "msg";
-  const code = ($("code-saisi").value || "").trim().toUpperCase();
-  if(code.length !== 4){ msg.textContent = "Le code fait quatre caract\u00e8res."; return; }
-  $("btn-rejoindre").disabled = true;
-  msg.textContent = "Connexion\u2026";
-  const ok = await chargerPeer();
-  if(!ok){ msg.textContent = "La biblioth\u00e8que de connexion n'a pas pu se charger. Passe par l'onglet copier-coller."; $("btn-rejoindre").disabled = false; return; }
-  monNom = ($("nom-invite").value || "Invit\u00e9").trim().slice(0,14);
-  estHote = false;
-  const peer = new window.Peer({debug:0});
-  peer.on("open", () => {
-    const conn = peer.connect(idPeer(code), {reliable:true});
-    net = canalDepuisConn(conn);
-    $("code-affiche").textContent = code;
-    $("code-zone").classList.remove("cache");
-    setTimeout(() => { if(net && !net.pret){ msg.textContent = "Aucune table \u00e0 ce code, ou l'h\u00f4te a ferm\u00e9 la page."; $("btn-rejoindre").disabled = false; } }, 9000);
-  });
-  peer.on("error", err => {
-    msg.textContent = err && err.type === "peer-unavailable"
-      ? "Aucune table \u00e0 ce code."
-      : "Connexion impossible. Utilise l'onglet copier-coller.";
-    $("btn-rejoindre").disabled = false;
   });
 }
 
-/* --- mode secours : WebRTC manuel --- */
-const ICE = {iceServers:[{urls:"stun:stun.l.google.com:19302"},{urls:"stun:stun1.l.google.com:19302"}]};
-const encoder = d => btoa(unescape(encodeURIComponent(JSON.stringify({t:d.type, s:d.sdp}))));
-const decoder = b => { const o = JSON.parse(decodeURIComponent(escape(atob(b.trim())))); return {type:o.t, sdp:o.s}; };
+/* --- table locale --- */
+var NOMS_AUTO = ["Blanche", "Milou", "Bernard", "Odette", "Gaspard", "Lucie"];
+function lancerLocale(){
+  monNom = ($("nom-local").value || "").trim().slice(0, 14) || "Joueur";
+  var n = parseInt($("nb-joueurs").value, 10);
+  modeLocal = true; estHote = true; monIndex = 0;
+  G = nouvelleTable(monNom, {objectif: parseInt($("objectif-local").value, 10)});
+  for(var i=1;i<n;i++){ G.joueurs.push(nouveauJoueur(NOMS_AUTO[i-1], true)); G.mains.push([]); }
+  lancer(G);
+  V = vuePour(G, 0);
+  dernierePhase = "partie";
+  rendre();
+  tourAuto();
+}
+
+/* --- secours : WebRTC manuel, deux joueurs --- */
+var ICE = {iceServers:[{urls:"stun:stun.l.google.com:19302"},{urls:"stun:stun1.l.google.com:19302"}]};
+function encoder(d){ return btoa(unescape(encodeURIComponent(JSON.stringify({t:d.type, s:d.sdp})))); }
+function decoder(b){ var o = JSON.parse(decodeURIComponent(escape(atob(b.trim())))); return {type:o.t, sdp:o.s}; }
 function attendreIce(pc){
-  return new Promise(res => {
+  return new Promise(function(res){
     if(pc.iceGatheringState === "complete") return res();
-    const fin = () => { pc.removeEventListener("icegatheringstatechange", v); res(); };
-    const v = () => { if(pc.iceGatheringState === "complete") fin(); };
+    var fin = function(){ pc.removeEventListener("icegatheringstatechange", v); res(); };
+    var v = function(){ if(pc.iceGatheringState === "complete") fin(); };
     pc.addEventListener("icegatheringstatechange", v);
     setTimeout(fin, 3500);
   });
 }
-let pcManuel = null;
-
-async function fabriquerOffre(){
-  const msg = $("msg-hote-m"); msg.className = "msg"; msg.textContent = "Pr\u00e9paration\u2026";
-  monNom = ($("nom-hote-m").value || "H\u00f4te").trim().slice(0,14);
-  estHote = true;
-  G = nouvelleTable(monNom, {as:true, cumul:true, valet:true, dix:true, sept:true, pasDeHuitFinal:true, contre:true});
+var pcManuel = null;
+function fabriquerOffre(){
+  var msg = $("msg-hote-m"); msg.className = "msg"; msg.textContent = "Préparation…";
+  monNom = ($("nom-hote-m").value || "Hôte").trim().slice(0, 14) || "Hôte";
+  estHote = true; modeLocal = false; monIndex = 0;
+  G = nouvelleTable(monNom, {objectif:5});
   pcManuel = new RTCPeerConnection(ICE);
-  const dc = pcManuel.createDataChannel("jeu", {ordered:true});
-  net = canalDepuisDataChannel(dc);
-  await pcManuel.setLocalDescription(await pcManuel.createOffer());
-  await attendreIce(pcManuel);
-  $("txt-offre").value = encoder(pcManuel.localDescription);
-  msg.className = "msg ok"; msg.textContent = "Envoie ce pav\u00e9 \u00e0 ton adversaire, puis colle sa r\u00e9ponse ci-dessous.";
+  var dc = pcManuel.createDataChannel("jeu", {ordered:true});
+  canaux.push(canalDepuisDataChannel(dc));
+  pcManuel.createOffer().then(function(o){ return pcManuel.setLocalDescription(o); })
+    .then(function(){ return attendreIce(pcManuel); })
+    .then(function(){
+      $("txt-offre").value = encoder(pcManuel.localDescription);
+      msg.className = "msg ok"; msg.textContent = "Envoyez ce pavé, puis collez la réponse ci-dessous.";
+      V = vuePour(G, 0);
+    });
 }
-async function validerReponse(){
-  const msg = $("msg-hote-m"); msg.className = "msg";
-  if(!pcManuel){ msg.textContent = "Cr\u00e9e d'abord l'invitation."; return; }
+function validerReponse(){
+  var msg = $("msg-hote-m"); msg.className = "msg";
+  if(!pcManuel){ msg.textContent = "Créez d'abord l'invitation."; return; }
   try{
-    await pcManuel.setRemoteDescription(decoder($("txt-reponse-hote").value));
-    msg.className = "msg ok"; msg.textContent = "R\u00e9ponse accept\u00e9e, ouverture de la table\u2026";
-  }catch(e){ msg.textContent = "Cette r\u00e9ponse est illisible. Recopie-la enti\u00e8rement."; }
+    pcManuel.setRemoteDescription(decoder($("txt-reponse-hote").value));
+    msg.className = "msg ok"; msg.textContent = "Réponse acceptée, ouverture de la table…";
+  }catch(e){ msg.textContent = "Cette réponse est illisible. Recopiez-la entièrement."; }
 }
-async function fabriquerReponse(){
-  const msg = $("msg-invite-m"); msg.className = "msg"; msg.textContent = "Pr\u00e9paration\u2026";
-  monNom = ($("nom-invite-m").value || "Invit\u00e9").trim().slice(0,14);
-  estHote = false;
+function fabriquerReponse(){
+  var msg = $("msg-invite-m"); msg.className = "msg"; msg.textContent = "Préparation…";
+  monNom = ($("nom-invite-m").value || "Invité").trim().slice(0, 14) || "Invité";
+  estHote = false; modeLocal = false;
   try{
     pcManuel = new RTCPeerConnection(ICE);
-    pcManuel.ondatachannel = e => { net = canalDepuisDataChannel(e.channel); };
-    await pcManuel.setRemoteDescription(decoder($("txt-offre-invite").value));
-    await pcManuel.setLocalDescription(await pcManuel.createAnswer());
-    await attendreIce(pcManuel);
-    $("txt-reponse").value = encoder(pcManuel.localDescription);
-    msg.className = "msg ok"; msg.textContent = "Renvoie cette r\u00e9ponse \u00e0 l'h\u00f4te. La table s'ouvrira toute seule.";
-  }catch(e){ msg.textContent = "Cette invitation est illisible. Recopie-la enti\u00e8rement."; }
+    pcManuel.ondatachannel = function(e){ canal = canalDepuisDataChannel(e.channel); };
+    pcManuel.setRemoteDescription(decoder($("txt-offre-invite").value))
+      .then(function(){ return pcManuel.createAnswer(); })
+      .then(function(a){ return pcManuel.setLocalDescription(a); })
+      .then(function(){ return attendreIce(pcManuel); })
+      .then(function(){
+        $("txt-reponse").value = encoder(pcManuel.localDescription);
+        msg.className = "msg ok"; msg.textContent = "Renvoyez cette réponse. La table s'ouvrira toute seule.";
+      });
+  }catch(e){ msg.textContent = "Cette invitation est illisible. Recopiez-la entièrement."; }
 }
 function copier(id, quoi){
-  const t = $(id);
-  if(!t.value){ toast("Rien \u00e0 copier pour l'instant."); return; }
+  var t = $(id);
+  if(!t.value){ toast("Rien à copier pour l'instant."); return; }
   t.select();
-  try{ document.execCommand("copy"); toast(quoi + " copi\u00e9" + (quoi.endsWith("n")?"e":"") + "."); }catch(e){ toast("Copie manuelle n\u00e9cessaire."); }
+  try{ document.execCommand("copy"); toast(quoi + " copié."); }catch(e){ toast("Copie manuelle nécessaire."); }
   window.getSelection().removeAllRanges();
 }
 
-/* ===================== branchements ===================== */
-$("ong-code").onclick = () => {
-  $("ong-code").setAttribute("aria-selected","true"); $("ong-manuel").setAttribute("aria-selected","false");
-  $("vue-code").classList.remove("cache"); $("vue-manuel").classList.add("cache");
-};
-$("ong-manuel").onclick = () => {
-  $("ong-manuel").setAttribute("aria-selected","true"); $("ong-code").setAttribute("aria-selected","false");
-  $("vue-manuel").classList.remove("cache"); $("vue-code").classList.add("cache");
-};
+/* ---------------- branchements ---------------- */
+function onglet(actif, vues){
+  Object.keys(vues).forEach(function(id){
+    $(id).setAttribute("aria-selected", id === actif ? "true" : "false");
+    $(vues[id]).classList.toggle("cache", id !== actif);
+  });
+}
+var VUES = {"ong-code":"vue-code", "ong-locale":"vue-locale", "ong-manuel":"vue-manuel"};
+Object.keys(VUES).forEach(function(id){ $(id).onclick = function(){ onglet(id, VUES); }; });
+
+var VOLETS = {"ong-marque":"volet-marque", "ong-journal":"volet-journal", "ong-chat":"volet-chat"};
+Object.keys(VOLETS).forEach(function(id){
+  $(id).onclick = function(){
+    Object.keys(VOLETS).forEach(function(k){
+      $(k).setAttribute("aria-selected", k === id ? "true" : "false");
+      $(VOLETS[k]).classList.toggle("visible", k === id);
+    });
+    ongletChat = (id === "ong-chat");
+    if(ongletChat){
+      chatNonLu = false; $("puce-chat").classList.add("cache");
+      var f = $("fil-chat"); f.scrollTop = f.scrollHeight;
+      $("saisie-chat").focus();
+    }
+  };
+});
+
 $("btn-creer").onclick = creerParCode;
 $("btn-rejoindre").onclick = rejoindreParCode;
+$("btn-local").onclick = lancerLocale;
+$("btn-lancer").onclick = function(){ agir({t:"lancer"}); };
 $("btn-offre").onclick = fabriquerOffre;
 $("btn-valide-reponse").onclick = validerReponse;
 $("btn-repondre").onclick = fabriquerReponse;
-$("btn-copie-offre").onclick = () => copier("txt-offre","Invitation");
-$("btn-copie-reponse").onclick = () => copier("txt-reponse","R\u00e9ponse");
-$("btn-piocher").onclick = () => agir({t:"piocher"});
-$("btn-pioche").onclick = () => agir({t:"piocher"});
-$("btn-contre").onclick = () => agir({t:"contre"});
-$("btn-manche").onclick = () => agir({t:"manche"});
+$("btn-copie-offre").onclick = function(){ copier("txt-offre", "Invitation"); };
+$("btn-copie-reponse").onclick = function(){ copier("txt-reponse", "Réponse"); };
+$("btn-piocher").onclick = function(){ agir({t:"piocher"}); };
+$("btn-pioche").onclick = function(){ agir({t:"piocher"}); };
+$("btn-manche").onclick = function(){ agir({t:"suite"}); };
 $("btn-regles").onclick = afficherRegles;
-$("btn-quitter").onclick = () => location.reload();
-$("code-affiche").onclick = () => {
-  const t = document.createElement("textarea");
-  t.value = $("code-affiche").textContent; document.body.appendChild(t); t.select();
-  try{ document.execCommand("copy"); toast("Code copi\u00e9."); }catch(e){}
+$("btn-quitter").onclick = function(){ if(confirm("Quitter la table ?")) location.reload(); };
+$("btn-envoyer").onclick = function(){ envoyerChat($("saisie-chat").value); };
+$("saisie-chat").addEventListener("keydown", function(e){ if(e.key === "Enter") envoyerChat(e.target.value); });
+$("chips").innerHTML = CHIPS.map(function(t){ return '<button data-t="' + echapper(t) + '">' + echapper(t) + '</button>'; }).join("");
+$("chips").addEventListener("click", function(e){
+  var b = e.target.closest("button");
+  if(b) envoyerChat(b.dataset.t);
+});
+$("code-affiche").onclick = function(){
+  var t = document.createElement("textarea");
+  t.value = $("code-affiche").textContent;
+  document.body.appendChild(t); t.select();
+  try{ document.execCommand("copy"); toast("Code copié."); }catch(e){}
   t.remove();
 };
-$("code-saisi").addEventListener("keydown", e => { if(e.key === "Enter") rejoindreParCode(); });
-$("ma-main").addEventListener("click", e => { const el = e.target.closest(".carte.jouable"); if(el) clicCarte(el.dataset.c); });
-$("ma-main").addEventListener("keydown", e => {
-  if(e.key !== "Enter" && e.key !== " ") return;
-  const el = e.target.closest(".carte.jouable");
-  if(el){ e.preventDefault(); clicCarte(el.dataset.c); }
+$("code-saisi").addEventListener("keydown", function(e){ if(e.key === "Enter") rejoindreParCode(); });
+$("ma-main").addEventListener("click", function(e){
+  var el = e.target.closest(".carte");
+  if(el) clicCarte(el);
 });
-document.addEventListener("keydown", e => { if(e.key === "Escape") fermerModale(); });
+$("ma-main").addEventListener("keydown", function(e){
+  if(e.key !== "Enter" && e.key !== " ") return;
+  var el = e.target.closest(".carte");
+  if(el){ e.preventDefault(); clicCarte(el); }
+});
+document.addEventListener("keydown", function(e){ if(e.key === "Escape") fermerModale(); });
+window.addEventListener("resize", function(){ if(V) rendre(); });
 
-const params = new URLSearchParams(location.search);
-if(params.get("table")){ $("code-saisi").value = params.get("table").toUpperCase().slice(0,4); $("nom-invite").focus(); }
+var params = new URLSearchParams(location.search);
+if(params.get("table")){
+  $("code-saisi").value = params.get("table").toUpperCase().slice(0, 4);
+  $("nom-invite").focus();
+}
 })();
 </script>
 </body>
