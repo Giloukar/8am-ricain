@@ -517,34 +517,101 @@
     opacity:.62;overflow:hidden}
   .troupe::before{content:"";position:absolute;left:0;right:0;bottom:8px;height:1px;
     background:linear-gradient(90deg, transparent, rgba(234,217,190,.22) 12%, rgba(234,217,190,.22) 88%, transparent)}
-  .bonhomme{position:absolute;bottom:6px;width:24px;height:34px;transform-origin:50% 100%;
-    animation:sautille var(--v) ease-in-out infinite;animation-delay:var(--d)}
-  .bonhomme svg{width:100%;height:100%;overflow:visible}
-  .bonhomme path,.bonhomme circle,.bonhomme rect{stroke:var(--teinte,#EDDDC4);stroke-width:1.7;fill:none;
-    stroke-linecap:round;stroke-linejoin:round}
-  .bonhomme circle.tete{fill:var(--teinte,#EDDDC4);fill-opacity:.22}
-  .bonhomme .bras{transform-box:fill-box;transform-origin:50% 10%;
-    animation:bras var(--v) ease-in-out infinite alternate;animation-delay:var(--d)}
-  .bonhomme .jambes{transform-box:fill-box;transform-origin:50% 0%;
-    animation:jambes var(--v) ease-in-out infinite alternate;animation-delay:var(--d)}
-  .bonhomme .chapeau{fill:var(--teinte,#EDDDC4);fill-opacity:.35}
-  .bonhomme .cartouche{fill:rgba(246,240,227,.5);stroke-width:1.2;
-    transform-box:fill-box;transform-origin:50% 50%;animation:agite var(--v) linear infinite}
-  @keyframes sautille{0%,100%{transform:translateY(0) scaleY(1)}
-    45%{transform:translateY(-7px) scaleY(1.06)}70%{transform:translateY(0) scaleY(.94)}}
-  @keyframes bras{from{transform:rotate(-24deg)}to{transform:rotate(26deg)}}
-  @keyframes jambes{from{transform:skewX(-11deg)}to{transform:skewX(11deg)}}
-  @keyframes agite{to{transform:rotate(360deg)}}
-  .troupe.fete{opacity:1}
-  .troupe.fete .bonhomme{animation-duration:.34s}
-  .troupe.fete .bonhomme .bras,.troupe.fete .bonhomme .jambes{animation-duration:.34s}
-  .troupe.fete .bonhomme{--teinte:#EAD09B}
-  .troupe.pressee .bonhomme,.troupe.pressee .bonhomme .bras,.troupe.pressee .bonhomme .jambes{animation-duration:.5s}
+  .danseur{position:absolute;bottom:5px;width:30px;height:42px;transform-origin:50% 100%}
+  .danseur svg{width:100%;height:100%;overflow:visible}
+  .danseur path,.danseur circle,.danseur rect,.danseur ellipse,.danseur polygon{
+    stroke:var(--teinte,#EDDDC4);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .danseur .plein{fill:var(--teinte,#EDDDC4);fill-opacity:.3}
+  .danseur .oeil{fill:var(--teinte,#EDDDC4);fill-opacity:.95;stroke:none}
+  .danseur .corps{transform-box:fill-box;transform-origin:50% 100%}
+  .danseur .bras{transform-box:fill-box;transform-origin:50% 12%}
+  .danseur .brasG,.danseur .brasD{transform-box:fill-box}
+  .danseur .brasG{transform-origin:100% 20%}
+  .danseur .brasD{transform-origin:0% 20%}
+  .danseur .jambes{transform-box:fill-box;transform-origin:50% 0%}
+  .danseur .jambeG{transform-box:fill-box;transform-origin:100% 0%}
+  .danseur .jambeD{transform-box:fill-box;transform-origin:0% 0%}
+  .danseur .tignasse,.danseur .antenne{transform-box:fill-box;transform-origin:50% 100%;
+    animation:tignasse .32s ease-in-out infinite alternate}
+  @keyframes tignasse{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+
+  /* --- le floss --- */
+  .d-floss{animation:flossCorps .46s ease-in-out infinite}
+  .d-floss .brasG,.d-floss .brasD{animation:flossBras .46s ease-in-out infinite alternate}
+  .d-floss .brasD{animation-direction:alternate-reverse}
+  @keyframes flossCorps{0%,100%{transform:translateX(-3px) rotate(-4deg)}50%{transform:translateX(3px) rotate(4deg)}}
+  @keyframes flossBras{from{transform:rotate(-46deg)}to{transform:rotate(46deg)}}
+  /* --- le robot --- */
+  .d-robot{animation:robotCorps .9s steps(4) infinite}
+  .d-robot .brasG,.d-robot .brasD{animation:robotBras .6s steps(3) infinite alternate}
+  .d-robot .brasD{animation-delay:.3s}
+  @keyframes robotCorps{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-4px) rotate(6deg)}
+    50%{transform:translateY(0) rotate(0)}75%{transform:translateY(-4px) rotate(-6deg)}}
+  @keyframes robotBras{from{transform:rotate(0)}to{transform:rotate(-84deg)}}
+  /* --- le french cancan --- */
+  .d-cancan{animation:cancanCorps .38s ease-in-out infinite}
+  .d-cancan .jambeG{animation:kick .76s ease-in-out infinite}
+  .d-cancan .jambeD{animation:kick .76s ease-in-out infinite;animation-delay:.38s}
+  .d-cancan .bras{animation:brasHaut .76s ease-in-out infinite}
+  @keyframes cancanCorps{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  @keyframes kick{0%,55%,100%{transform:rotate(0)}25%{transform:rotate(-72deg)}}
+  @keyframes brasHaut{0%,100%{transform:rotate(-8deg) translateY(-2px)}50%{transform:rotate(8deg) translateY(-4px)}}
+  /* --- le twist --- */
+  .d-twist{animation:twist .6s ease-in-out infinite}
+  .d-twist .bras{animation:twistBras .6s ease-in-out infinite alternate}
+  @keyframes twist{0%,100%{transform:rotate(-12deg) scaleX(1)}50%{transform:rotate(12deg) scaleX(.9)}}
+  @keyframes twistBras{from{transform:rotate(-30deg)}to{transform:rotate(30deg)}}
+  /* --- le pogo --- */
+  .d-pogo{animation:pogo .42s cubic-bezier(.3,.1,.5,1) infinite}
+  .d-pogo .bras{animation:brasHaut .42s ease-in-out infinite}
+  @keyframes pogo{0%,100%{transform:translateY(0) scaleY(.9) scaleX(1.08)}
+    40%{transform:translateY(-26px) scaleY(1.12) scaleX(.92) rotate(8deg)}
+    70%{transform:translateY(-6px) scaleY(1) scaleX(1)}}
+  /* --- le moonwalk --- */
+  .d-moonwalk{animation:moonCorps .8s ease-in-out infinite}
+  .d-moonwalk .jambeG{animation:moonJambe .8s ease-in-out infinite}
+  .d-moonwalk .jambeD{animation:moonJambe .8s ease-in-out infinite;animation-delay:.4s}
+  @keyframes moonCorps{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(-6deg) translateY(-3px)}}
+  @keyframes moonJambe{0%,100%{transform:rotate(16deg)}50%{transform:rotate(-16deg)}}
+  /* --- le break, sur la tête --- */
+  .d-break{animation:breakDanse 1s linear infinite}
+  .d-break .bras{animation:twistBras .5s ease-in-out infinite alternate}
+  @keyframes breakDanse{0%{transform:rotate(0) translateY(0)}
+    50%{transform:rotate(180deg) translateY(-10px)}100%{transform:rotate(360deg) translateY(0)}}
+  /* --- la moquerie : il pointe du doigt et se plie de rire --- */
+  .d-moque{animation:moque .3s ease-in-out infinite}
+  .d-moque .brasD{transform:rotate(-72deg)}
+  @keyframes moque{0%,100%{transform:rotate(-14deg) translateY(0)}50%{transform:rotate(-20deg) translateY(-4px)}}
+  /* --- la panique : il court en tous sens --- */
+  .d-panique{animation:panique .18s ease-in-out infinite}
+  .d-panique .bras{animation:brasHaut .18s ease-in-out infinite}
+  @keyframes panique{0%,100%{transform:rotate(-9deg) translateY(-2px)}50%{transform:rotate(9deg) translateY(-8px)}}
   .minou{position:absolute;bottom:4px;width:44px;height:26px;pointer-events:none}
   .minou svg{width:100%;height:100%;overflow:visible}
   .minou path{stroke:var(--craie-faible);stroke-width:1.6;fill:none;stroke-linecap:round}
   .minou .queue{transform-box:fill-box;transform-origin:0% 100%;animation:queue .8s ease-in-out infinite alternate}
   @keyframes queue{from{transform:rotate(-16deg)}to{transform:rotate(26deg)}}
+  /* --- liseré vivant quand la parole est à vous --- */
+  .tapis.a-vous::after,.tapis.a-vous::before{content:"";position:absolute;left:10px;right:10px;height:2px;
+    pointer-events:none;border-radius:2px;background-repeat:no-repeat;background-size:38% 100%;
+    background-image:linear-gradient(90deg, transparent, var(--or-pale), transparent)}
+  .tapis.a-vous::after{top:-1px;animation:glisseNeon 3.1s linear infinite}
+  .tapis.a-vous::before{bottom:-1px;animation:glisseNeon 3.1s linear infinite reverse}
+  @keyframes glisseNeon{from{background-position:-45% 0}to{background-position:145% 0}}
+  /* --- le feutre se crispe sous l'attaque --- */
+  .tapis.tendu{animation:tapisTendu 1.15s ease-in-out infinite}
+  @keyframes tapisTendu{0%,100%{box-shadow:inset 0 0 0 6px rgba(43,16,16,.5), inset 0 0 40px rgba(0,0,0,.5)}
+    50%{box-shadow:inset 0 0 0 6px rgba(122,20,36,.65), inset 0 0 60px rgba(190,32,51,.42)}}
+  /* --- compteur de série --- */
+  .combo{position:fixed;z-index:81;pointer-events:none;font-family:'Oswald',sans-serif;font-weight:600;
+    font-size:clamp(26px,5vw,60px);color:#FFE9B8;letter-spacing:.02em;
+    text-shadow:0 3px 0 #6B1220, 0 10px 26px rgba(0,0,0,.65), 0 0 26px rgba(234,208,155,.7)}
+  /* --- poussière et étoiles filantes --- */
+  .poussiere{position:fixed;z-index:73;pointer-events:none;width:6px;height:6px;border-radius:50%;
+    background:rgba(246,240,227,.7)}
+  .filante{position:fixed;z-index:1;pointer-events:none;width:3px;height:3px;border-radius:50%;
+    background:#FFF6E2;box-shadow:0 0 10px 3px rgba(255,238,198,.85)}
+
   .murmure{position:absolute;bottom:34px;font-family:'Karla',sans-serif;font-size:12px;font-style:italic;
     color:var(--craie-faible);white-space:nowrap;pointer-events:none}
 
@@ -1321,7 +1388,7 @@ var pointsVus = [], partiesVues = [];
 var derniereCouleur = null, ongletChat = false, chatNonLu = false, dernierChatVu = 0, animer = true;
 var dernierSens = null, dernierRebat = null;
 var survols = {}, minuteriesSurvol = {}, dernierSurvolEnvoye = null;
-var derniereClameur = 0, dernierMonTour = false, comptesVus = [], dernierTsChat = 0;
+var derniereClameur = 0, dernierMonTour = false, comptesVus = [], dernierTsChat = 0, mancheAnnoncee = -1;
 var persos = [];
 try{
   var brut = window.localStorage.getItem("p8-persos");
@@ -1420,13 +1487,28 @@ function volCarte(html, de, vers, opts){
   var rot = (grain(html) * 24 - 12);
   var f0 = "translate(" + dx + "px," + dy + "px) perspective(900px) rotate(" + rot + "deg) rotateY(" + (opts.flip ? 180 : 0) + "deg) scale(.8)";
   var f1 = "translate(" + (dx*0.4) + "px," + (dy*0.4 - 26) + "px) perspective(900px) rotate(" + (rot/2) + "deg) rotateY(" + (opts.flip ? 92 : 0) + "deg) scale(1.1)";
-  var a = w.animate(
-    [{transform:f0, offset:0}, {transform:f1, offset:.55}, {transform:"none", offset:1}],
-    {duration:opts.duree || 480, delay:opts.delai || 0, easing:"cubic-bezier(.22,.75,.3,1)", fill:"backwards"}
-  );
+  var cadres = [{transform:f0, offset:0}, {transform:f1, offset:.55}, {transform:"none", offset:1}];
+  var reglage = {duration:opts.duree || 480, delay:opts.delai || 0, easing:"cubic-bezier(.22,.75,.3,1)", fill:"backwards"};
+  var a = w.animate(cadres, reglage);
   var fin = function(){ if(w.parentNode) w.remove(); if(opts.apres) opts.apres(); };
   a.onfinish = fin; a.oncancel = fin;
   setTimeout(fin, (opts.duree || 480) + (opts.delai || 0) + 400);
+  /* fantômes qui traînent derrière la carte */
+  if(opts.trainee){
+    for(var g=1;g<=2;g++){
+      (function(g){
+        var f = w.cloneNode(true);
+        f.style.opacity = (0.3 / g).toFixed(2);
+        f.style.filter = "blur(" + (g * 1.6) + "px)";
+        $("scene").appendChild(f);
+        var af = f.animate(cadres, {duration:reglage.duration, delay:reglage.delay + g*55,
+          easing:reglage.easing, fill:"backwards"});
+        var finf = function(){ if(f.parentNode) f.remove(); };
+        af.onfinish = finf; af.oncancel = finf;
+        setTimeout(finf, reglage.duration + reglage.delay + g*55 + 400);
+      })(g);
+    }
+  }
   return a;
 }
 function zoneJoueur(i){
@@ -1517,9 +1599,10 @@ function animerPose(d){
   sourceVol = null;
   cible.style.visibility = "hidden";
   var revoir = function(){ cible.style.visibility = ""; };
-  var a = volCarte(carteHTML(d.carte, ""), source, rv, {flip: d.joueur !== V.moi, duree:520, apres:function(){
-    revoir(); onde($("talon"));
-  }});
+  var a = volCarte(carteHTML(d.carte, ""), source, rv, {flip: d.joueur !== V.moi, duree:520, trainee:true,
+    apres:function(){
+      revoir(); onde($("talon")); poussiere($("talon"), 10);
+    }});
   if(!a) revoir();
   setTimeout(revoir, 950);
   var t = texteEffet(d.carte), v = val(d.carte);
@@ -1530,7 +1613,10 @@ function animerPose(d){
     effet(t[0], t[1], 380);
   }
   if(t[1] && d.joueur !== V.moi && V.tour === V.moi) setTimeout(secouer, 700);
-  if(v === "JK"){ eclair(); pluieCartes(10, 1700); sfx.joker(); murmure("le joker\u2026"); }
+  if(v === "JK"){
+    eclair(); pluieCartes(10, 1700); sfx.joker(); murmure("le joker\u2026");
+    troupeEntre("d-robot", 2, 2600);
+  }
   else if(v === "A"){ sfx.attaque(V.pioche); }
   else if(v === "8"){ sfx.huit(); }
   else if(v === "J"){ sfx.sens(); }
@@ -1540,6 +1626,7 @@ function animerPose(d){
   var tal = $("talon");
   tal.classList.remove("choc"); void tal.offsetWidth; tal.classList.add("choc");
   setTimeout(function(){ tal.classList.remove("choc"); }, 500);
+  if(d.serie >= 2) setTimeout(function(){ combo(d.serie); }, 300);
   if(d.serie >= 3){
     var nom = V.joueurs[d.joueur] ? V.joueurs[d.joueur].nom : "";
     setTimeout(function(){ banniere(nom + " \u00b7 s\u00e9rie de " + d.serie, false, 16); }, 260);
@@ -1571,6 +1658,7 @@ function animerPioche(d){
   if(n >= 4) sfx.attaque(n); else sfx.pioche();
   if(n >= 4){
     murmure(auHasard(MURMURES_OH));
+    troupeEntre("d-moque", d.joueur === V.moi ? 3 : 2, 2600);
     if(d.joueur === V.moi){ flashRouge(n); secouer(); }
     banniere("+" + n + " pour " + (V.joueurs[d.joueur] ? V.joueurs[d.joueur].nom : "?"), true, 18);
   }
@@ -1581,7 +1669,7 @@ function animerDonne(){
   if(!dep) return;
   balayage();
   souffle(0, .5, .05);
-  feteTroupe(1400);
+  troupeEntre("d-cancan", 2, 2000);
   var n = V.joueurs.length, i, mains = [], max = 0;
   for(i=0;i<n;i++){ mains[i] = cartesDe(i); if(mains[i].length > max) max = mains[i].length; }
   var ordre = [], t;
@@ -1812,7 +1900,8 @@ function grandeClameur(c){
   $("scene").appendChild(d);
   secouer(); coupDePoing();
   sfx.clameur();
-  feteTroupe(4200);
+  troupeEntre("d-break", 5, 3400);
+  setTimeout(function(){ troupeEntre("*", 3, 2200); }, 900);
   confettis();
   pluieCartes(26, 2400);
   gerbe(window.innerWidth/2, window.innerHeight*0.46, ["#FFD05A","#EAD09B","#D8283C","#F6F0E3"], 40);
@@ -1826,35 +1915,95 @@ function grandeClameur(c){
 /* =========================================================================
    LA TROUPE — petits bonshommes qui dansent sur le rebord du tapis
    ========================================================================= */
-var TEINTES_TROUPE = ["#EDDDC4", "#EAD09B", "#E7A9B2", "#C8B58C", "#D9C4A0", "#F0C98A"];
-function bonhommeSVG(k){
-  var chapeau = (k % 5 === 1) ? '<rect class="chapeau" x="7.5" y="-1" width="9" height="3.4" rx="1"/>' +
-                                '<path d="M6 2.4 H18"/>' : "";
-  var carte = (k % 5 === 3) ? '<rect class="cartouche" x="17" y="6" width="5.5" height="7.5" rx="1"/>' : "";
-  return '<svg viewBox="0 0 24 34">' + chapeau +
-    '<circle class="tete" cx="12" cy="6" r="4.2"/>' +
-    '<path d="M12 10.4 V20.6"/>' +
-    '<g class="bras"><path d="M12 13 L4.6 9.4"/><path d="M12 13 L19.4 9.4"/></g>' + carte +
-    '<g class="jambes"><path d="M12 20.6 L7 31"/><path d="M12 20.6 L17 31"/></g>' +
-    '</svg>';
-}
-function installerTroupe(){
-  var t = $("troupe"), n = 7, h = "", k;
-  for(k=0;k<n;k++){
-    var x = (100 / (n + 1)) * (k + 1) + (Math.random()*5 - 2.5);
-    var ech = (0.82 + Math.random()*0.5).toFixed(2);
-    h += '<div class="bonhomme" style="left:' + x.toFixed(1) + '%;transform:scale(' + ech +
-      ');--v:' + (0.62 + Math.random()*0.5).toFixed(2) + 's;--d:-' + (Math.random()*0.8).toFixed(2) +
-      's;--teinte:' + TEINTES_TROUPE[k % TEINTES_TROUPE.length] + '">' + bonhommeSVG(k) + '</div>';
+var TEINTES_TROUPE = ["#EDDDC4", "#EAD09B", "#E7A9B2", "#C8B58C", "#9FD8C4", "#F0C98A", "#D8A0F0"];
+var DANSES = ["d-floss", "d-robot", "d-cancan", "d-twist", "d-pogo", "d-moonwalk", "d-break", "d-moque", "d-panique"];
+/* sept silhouettes, chacune son allure */
+function danseurSVG(k){
+  var tete = "", coiffe = "", corps, extra = "";
+  switch(k % 7){
+    case 0: /* le monsieur au haut-de-forme et à la moustache */
+      coiffe = '<rect class="plein" x="8" y="-3.5" width="10" height="5" rx=".8"/><path d="M5.5 1.6 H20.5"/>';
+      extra = '<path d="M9.6 9.4 q2.4 1.6 3.4 0 q1 -1.6 3.4 0"/>';
+      break;
+    case 1: /* la couronne */
+      coiffe = '<polygon class="plein" points="7.5,1.4 9,-2.6 11.5,.6 13,-3.4 14.5,.6 17,-2.6 18.5,1.4"/>';
+      break;
+    case 2: /* le nœud papillon et le petit ventre */
+      extra = '<polygon class="plein" points="10.4,12 13,13.6 10.4,15.2"/>' +
+              '<polygon class="plein" points="15.6,12 13,13.6 15.6,15.2"/>' +
+              '<path d="M9.6 17 q3.4 4.4 6.8 0"/>';
+      break;
+    case 3: /* le grand dadais aux bras interminables */
+      extra = '<path d="M6.5 3.2 q6.5 -4 13 0"/>';
+      break;
+    case 4: /* celui qui agite une carte */
+      extra = '<rect class="cartouche" x="20" y="6.5" width="6" height="8" rx="1"/>';
+      break;
+    case 5: /* l'extraterrestre à antennes et lunettes */
+      coiffe = '<path class="antenne" d="M10 2.4 L8 -3"/><path class="antenne" d="M16 2.4 L18 -3"/>' +
+               '<circle class="plein" cx="8" cy="-3.6" r="1.5"/><circle class="plein" cx="18" cy="-3.6" r="1.5"/>';
+      tete = '<circle cx="10.6" cy="7" r="2.2"/><circle cx="15.4" cy="7" r="2.2"/><path d="M12.8 7 H13.2"/>';
+      break;
+    default: /* la tignasse en pétard */
+      coiffe = '<path class="tignasse" d="M7.4 4 L5 -1.4 M10 2.2 L9 -3.4 M13 1.8 L13.6 -3.8 ' +
+               'M16 2.2 L17.4 -3.2 M18.6 4 L21 -1"/>';
   }
-  t.innerHTML = h;
+  if(!tete) tete = '<circle class="oeil" cx="10.8" cy="6.6" r=".95"/><circle class="oeil" cx="15.2" cy="6.6" r=".95"/>';
+  corps = '<circle class="tete plein" cx="13" cy="7" r="5.2"/>' + tete +
+    '<path d="M13 12.2 V22.4"/>';
+  var bras = (k % 7 === 3)
+    ? '<g class="bras"><g class="brasG"><path d="M13 14.4 L2 12"/></g><g class="brasD"><path d="M13 14.4 L24 12"/></g></g>'
+    : '<g class="bras"><g class="brasG"><path d="M13 14.4 L5.6 10.6"/></g><g class="brasD"><path d="M13 14.4 L20.4 10.6"/></g></g>';
+  return '<svg viewBox="0 0 26 38">' + coiffe + corps + bras + extra +
+    '<g class="jambes"><g class="jambeG"><path d="M13 22.4 L7.6 34"/></g>' +
+    '<g class="jambeD"><path d="M13 22.4 L18.4 34"/></g></g></svg>';
 }
-function feteTroupe(ms){
+/* une petite bande débarque, danse, puis s'éclipse */
+var troupeEnScene = 0;
+function troupeEntre(danse, nb, duree){
+  if(!animer) return;
   var t = $("troupe");
-  if(!t) return;
-  t.classList.add("fete");
-  setTimeout(function(){ t.classList.remove("fete"); }, ms || 2600);
+  if(!t || troupeEnScene > 10) return;
+  nb = nb || 3;
+  duree = duree || 3200;
+  for(var k=0;k<nb;k++){
+    (function(k){
+      var d = document.createElement("div");
+      var type = Math.floor(Math.random()*7);
+      var dnse = danse === "*" ? DANSES[Math.floor(Math.random()*DANSES.length)] : danse;
+      var ech = (0.85 + Math.random()*0.55).toFixed(2);
+      var x = nb === 1 ? (18 + Math.random()*64) : (100/(nb+1))*(k+1) + (Math.random()*8 - 4);
+      d.className = "danseur " + dnse;
+      d.style.left = x.toFixed(1) + "%";
+      d.style.setProperty("--teinte", TEINTES_TROUPE[Math.floor(Math.random()*TEINTES_TROUPE.length)]);
+      d.style.zoom = ech;
+      d.innerHTML = danseurSVG(type);
+      t.appendChild(d);
+      troupeEnScene++;
+      /* il jaillit du rebord */
+      d.animate([
+        {transform:"translateY(46px) scale(.5)", opacity:0},
+        {transform:"translateY(-8px) scale(1.12)", opacity:1, offset:.55},
+        {transform:"translateY(0) scale(1)", opacity:1}
+      ], {duration:420, delay:k*110, easing:"cubic-bezier(.2,1.4,.4,1)", fill:"backwards"});
+      var partir = function(){
+        if(!d.parentNode) return;
+        var a = d.animate([
+          {transform:"translateY(0) scale(1) rotate(0)", opacity:1},
+          {transform:"translateY(-16px) scale(1.1) rotate(" + (Math.random()*40-20).toFixed(0) + "deg)", opacity:1, offset:.3},
+          {transform:"translateY(52px) scale(.55) rotate(" + (Math.random()*90-45).toFixed(0) + "deg)", opacity:0}
+        ], {duration:500, easing:"cubic-bezier(.5,-.4,.7,1)"});
+        a.onfinish = function(){ d.remove(); troupeEnScene--; };
+        setTimeout(function(){ if(d.parentNode){ d.remove(); troupeEnScene--; } }, 900);
+      };
+      setTimeout(partir, duree + k*130);
+      setTimeout(function(){ if(d.parentNode){ d.remove(); troupeEnScene--; } }, duree + k*130 + 2200);
+    })(k);
+  }
 }
+function installerTroupe(){ $("troupe").innerHTML = ""; }
+/* compatibilité : la fête pioche une danse au hasard */
+function feteTroupe(ms){ troupeEntre("*", 3, Math.max(1400, (ms || 2600) - 500)); }
 /* un mot lâché depuis le rebord */
 var MURMURES_OH = ["ohhh\u2026", "a\u00efe\u2026", "oulah", "\u00e7a pique", "brutal", "sans piti\u00e9"];
 var MURMURES_BRAVO = ["bravo !", "ol\u00e9 !", "quelle main", "chapeau", "\u00e9norme", "wesh"];
@@ -2006,6 +2155,67 @@ function basculerSon(){
   $("btn-son").textContent = sonActif ? "\u266a" : "\u2716";
   $("btn-son").title = sonActif ? "Couper le son" : "Remettre le son";
   if(sonActif) sfx.huit();
+}
+
+/* petit nuage de poussière quand une carte se pose */
+function poussiere(cible, nb){
+  if(!animer) return;
+  var r = rect(cible);
+  if(!r) return;
+  for(var k=0;k<(nb || 9);k++){
+    (function(){
+      var d = document.createElement("div");
+      d.className = "poussiere";
+      d.style.left = (r.left + r.width*Math.random()) + "px";
+      d.style.top = (r.top + r.height - 4) + "px";
+      $("scene").appendChild(d);
+      var a = d.animate([
+        {transform:"translate(0,0) scale(1)", opacity:.8},
+        {transform:"translate(" + (Math.random()*70-35).toFixed(0) + "px," +
+          (-16 - Math.random()*26).toFixed(0) + "px) scale(.2)", opacity:0}
+      ], {duration:520 + Math.random()*320, easing:"ease-out"});
+      a.onfinish = function(){ d.remove(); };
+      setTimeout(function(){ if(d.parentNode) d.remove(); }, 1100);
+    })();
+  }
+}
+/* compteur de série au-dessus du talon */
+function combo(n){
+  if(!animer) return;
+  var r = rect($("talon"));
+  if(!r) return;
+  var d = document.createElement("div");
+  d.className = "combo";
+  d.textContent = "\u00d7" + n;
+  $("scene").appendChild(d);
+  d.style.left = (r.left + r.width + 16) + "px";
+  d.style.top = (r.top - 22) + "px";
+  var a = d.animate([
+    {transform:"scale(.2) rotate(-34deg)", opacity:0},
+    {transform:"scale(1.4) rotate(9deg)", opacity:1, offset:.28},
+    {transform:"scale(1) rotate(-4deg)", opacity:1, offset:.58},
+    {transform:"scale(1.7) translateY(-46px)", opacity:0}
+  ], {duration:1250, easing:"cubic-bezier(.2,.9,.3,1)"});
+  a.onfinish = function(){ d.remove(); };
+  setTimeout(function(){ if(d.parentNode) d.remove(); }, 1800);
+}
+/* une étoile file dans le fond */
+function filante(){
+  if(!animer) return;
+  var d = document.createElement("div");
+  d.className = "filante";
+  var y = Math.random() * window.innerHeight * .55;
+  d.style.left = "-20px";
+  d.style.top = y + "px";
+  $("scene").appendChild(d);
+  var a = d.animate([
+    {transform:"translate(0,0) scale(.4)", opacity:0},
+    {opacity:1, offset:.15},
+    {transform:"translate(" + (window.innerWidth + 60) + "px," + (110 + Math.random()*140).toFixed(0) +
+      "px) scale(1.1)", opacity:0}
+  ], {duration:1500 + Math.random()*900, easing:"cubic-bezier(.4,0,.7,1)"});
+  a.onfinish = function(){ d.remove(); };
+  setTimeout(function(){ if(d.parentNode) d.remove(); }, 3000);
 }
 
 /* secousse et coup de zoom sur toute l'application */
@@ -2190,7 +2400,7 @@ function bulleVolante(texte, nom, mien){
     })(k);
   }
   sfx.chat(niveau);
-  if(niveau >= 2) feteTroupe(900 + niveau * 260);
+  if(niveau >= 2) troupeEntre("d-floss", Math.min(niveau, 4), 1200 + niveau * 320);
   if(niveau === 3) banniere("\u00e7a spamme", false, 62);
   if(niveau >= 5){ secouer(); pluieCartes(8, 1600); }
   if(niveau >= 6) gerbe(window.innerWidth/2, window.innerHeight*0.5, ["#FFD05A","#D8283C","#F6F0E3"], 30);
@@ -2443,7 +2653,16 @@ function rendre(){
     mm.classList.remove("vague"); void mm.offsetWidth; mm.classList.add("vague");
     setTimeout(function(){ mm.classList.remove("vague"); }, 1100);
   }
-  $("troupe").classList.toggle("pressee", monTour && !finie);
+  var feutre = document.querySelector(".tapis");
+  if(feutre){
+    feutre.classList.toggle("a-vous", monTour && !finie);
+    feutre.classList.toggle("tendu", V.pioche > 0 && !finie);
+  }
+  if(monTour && !finie && mancheAnnoncee !== V.manche){
+    mancheAnnoncee = V.manche;
+    banniere("\u00e0 vous de jouer", false, 46);
+  }
+  if(frais && !finie && Math.random() < .05) troupeEntre("*", 1, 3400);
   dernierMonTour = monTour;
 
   /* alerte dès qu'un joueur tombe à une seule carte */
@@ -2452,7 +2671,7 @@ function rendre(){
     if(comptesVus[i] !== undefined && comptesVus[i] > 1 && nbi === 1 && !V.joueurs[i].sorti){
       banniere(V.joueurs[i].nom + " \u00b7 derni\u00e8re carte", true, 30);
       murmure(auHasard(MURMURES_OH));
-      feteTroupe(1200);
+      troupeEntre("d-panique", 2, 2000);
       note(880, 0, .12, "square", .07); note(1175, .12, .2, "square", .08);
       if(i !== moi) secouer();
     }
@@ -2607,7 +2826,8 @@ function finDeManche(){
     setTimeout(function(){ banniere(gagnant.nom + " remporte la manche", false, 12); }, 420);
   }
   if(gagnant && V.ordreSortie[0] === V.moi) confettis();
-  feteTroupe(V.phase === "finPartie" ? 6000 : 3200);
+  troupeEntre(jeGagne ? "d-cancan" : "d-moque", V.phase === "finPartie" ? 5 : 3,
+    V.phase === "finPartie" ? 5200 : 3000);
   murmure(jeGagne ? auHasard(MURMURES_BRAVO) : auHasard(MURMURES_OH));
   if(V.phase === "finPartie"){
     feuArtifice(); pluieCartes(22, 2600); coupDePoing();
@@ -3255,6 +3475,7 @@ installerTroupe();
 $("btn-son").textContent = sonActif ? "\u266a" : "\u2716";
 $("btn-son").onclick = basculerSon;
 setTimeout(passageDuChat, 25000 + Math.random() * 25000);
+setInterval(function(){ if(Math.random() < .5) filante(); }, 26000);
 setInterval(function(){ if(Math.random() < .45) passageDuChat(); }, 95000);
 
 var params = new URLSearchParams(location.search);
