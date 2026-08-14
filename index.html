@@ -320,11 +320,17 @@
   .mon-carre.large{grid-template-columns:repeat(3,1fr)}
 
   /* ---------- cartes ---------- */
+  /* aucune sélection possible : un cliquer-glisser ne peut rien mettre en surbrillance */
+  .tapis,.tapis *,.abattage,.abattage *{user-select:none;-webkit-user-select:none;-moz-user-select:none;
+    -ms-user-select:none;-webkit-touch-callout:none;-webkit-user-drag:none}
+  .tapis ::selection,.abattage ::selection{background:transparent;color:inherit}
+  .tapis ::-moz-selection,.abattage ::-moz-selection{background:transparent;color:inherit}
   .emplacement{position:relative;width:var(--cl);height:var(--ch);perspective:700px}
   .emplacement.mini{--cl:40px;--ch:56px;width:40px;height:56px}
   .flip{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.3,.8,.3,1)}
   .emplacement.face .flip{transform:rotateY(180deg)}
-  .face-av,.face-ar{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r)}
+  .face-av,.face-ar{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:var(--r);overflow:hidden}
   .face-ar{transform:rotateY(180deg)}
   .carte{width:100%;height:100%;border-radius:var(--r);background:var(--ivoire);color:var(--encre);
     position:relative;font-family:'Oswald',Impact,sans-serif;user-select:none;
@@ -1387,14 +1393,16 @@ function carteHTML(c, classes){
     '<span class="coin bas"><b>' + etiq(c) + '</b><i>' + co.sym + '</i></span></div>';
 }
 var dosHTML = '<div class="dos"></div>';
-function emplacementHTML(c, montre, classes, mini){
+function emplacementHTML(c, montre, classes, mini, attrs){
   var connue = typeof c === "string";
   var presente = !!c;
   var face = montre && connue;
+  /* La carte n'est ins\u00e9r\u00e9e dans le document QUE si le joueur a le droit de la voir.
+     Une face cach\u00e9e ne contient rien \u00e0 r\u00e9v\u00e9ler, ni par s\u00e9lection, ni par inspection. */
   return '<div class="emplacement' + (mini ? " mini" : "") + (face ? " face" : "") +
-    (presente ? "" : " vide-place") + " " + (classes || "") + '">' +
+    (presente ? "" : " vide-place") + " " + (classes || "") + '" ' + (attrs || "") + '>' +
     '<div class="flip"><div class="face-av">' + (presente ? dosHTML : '<div class="vide"></div>') + '</div>' +
-    '<div class="face-ar">' + (connue ? carteHTML(c, "") : "") + '</div></div></div>';
+    '<div class="face-ar">' + (face ? carteHTML(c, "") : "") + '</div></div></div>';
 }
 function ouvrirTable(){
   $("ecran-lobby").classList.add("cache");
@@ -1415,7 +1423,8 @@ function rendreAdversaires(){
     var j = V.joueurs[k], cartes = "";
     var decouvert = V.phase === "finManche" || V.phase === "finPartie";
     for(m=0;m<j.cartes.length;m++){
-      cartes += emplacementHTML(j.cartes[m], decouvert, 'data-j="' + k + '" data-k="' + m + '"', true);
+      cartes += emplacementHTML(j.cartes[m], decouvert, "", true,
+        'data-j="' + k + '" data-k="' + m + '"');
     }
     h += '<div class="siege' + (V.tour === k && V.phase === "manche" ? " actif" : "") +
       (V.annonceur === k ? " cactus" : "") + '" data-j="' + k + '">' +
@@ -1432,10 +1441,10 @@ function rendreMonCarre(){
   for(k=0;k<j.cartes.length;k++){
     var c = j.cartes[k];
     var montre = !!c && (!!revelees[k] || V.phase === "finManche" || V.phase === "finPartie");
-    var cl = 'data-k="' + k + '"';
+    var cl = "";
     if(c && (peutChoisir || (V.opts.jet && V.phase === "manche"))) cl += " choisissable";
     if(c && j.vues[k]) cl += " souvenir";
-    h += emplacementHTML(c, montre, cl, false);
+    h += emplacementHTML(c, montre, cl, false, 'data-k="' + k + '"');
   }
   $("mon-carre").innerHTML = h;
   $("mon-carre").className = "mon-carre" + (j.cartes.length > 4 ? " large" : "");
@@ -1682,7 +1691,7 @@ function montrerAbattage(){
   var a = V.abattage;
   var lignes = a.lignes.map(function(L){
     var cartes = L.cartes.map(function(c){
-      return c ? emplacementHTML(c, true, "", true) : "";
+      return c ? emplacementHTML(c, true, "", true, "") : "";
     }).join("");
     var mention = L.royal ? "cactus royal" : (L.rate ? "annonce rat\u00e9e" : (L.gagne ? "gagne la manche" : (L.cactus ? "a cactus" : "")));
     return '<div class="ligne ' + (L.gagne ? "gagne" : (L.rate ? "rate" : "")) + '">' +
@@ -2228,6 +2237,12 @@ $("chips").addEventListener("click", function(e){
   envoyerChat(b.dataset.t);
 });
 document.addEventListener("keydown", function(e){ if(e.key === "Escape") fermerModale(); });
+/* le glisser-d\u00e9poser et la s\u00e9lection sont d\u00e9sactiv\u00e9s sur toute la zone de jeu */
+["dragstart", "selectstart"].forEach(function(ev){
+  document.addEventListener(ev, function(e){
+    if(e.target && e.target.closest && e.target.closest(".tapis, .abattage")) e.preventDefault();
+  });
+});
 rendreChips();
 setInterval(function(){ if(V && V.phase === "manche" && Math.random() < .22) haie("c-vague", 1, 3600); }, 26000);
 
@@ -5869,6 +5884,27 @@ if(params.get("table")){
   .infobulle .tag{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--or-pale);display:block;margin-top:5px}
 
+  /* choix du nombre de pas */
+  .choix-des{display:flex;gap:8px;flex-wrap:wrap}
+  .choix-des button{position:relative;min-width:92px;padding:9px 12px;border-radius:9px;text-align:left;
+    border:1px solid rgba(200,155,60,.5);background:rgba(0,0,0,.3);line-height:1.25}
+  .choix-des button:hover:not(:disabled){background:rgba(200,155,60,.2);border-color:var(--or-pale);
+    transform:translateY(-3px)}
+  .choix-des button b{display:block;font-family:'Bodoni Moda',Georgia,serif;font-size:21px;color:var(--or-pale)}
+  .choix-des button span{display:block;font-size:11px;color:var(--craie-faible)}
+  .choix-des button.bon{border-color:var(--vert-pale);background:rgba(127,192,142,.16)}
+  .choix-des button.bon span{color:var(--vert-pale)}
+  .choix-des button.mauvais{border-color:rgba(216,40,60,.7);background:rgba(190,32,51,.18)}
+  .choix-des button.mauvais span{color:#F0A8B0}
+  .choix-des button.conseil::after{content:"\2605";position:absolute;top:4px;right:6px;font-size:11px;color:var(--or-pale)}
+  .bourse{font-family:'Space Mono',monospace;font-size:12px;color:var(--or-pale)}
+  .bourse i{font-style:normal;margin-right:9px}
+
+  /* grains dorés semés sur le parcours */
+  .grain{fill:#FFE9A8;stroke:#C89B3C;stroke-width:.3;filter:drop-shadow(0 0 1.6px rgba(255,220,140,.9))}
+  .case-groupe .grain{animation:scintille 1.9s ease-in-out infinite}
+  @keyframes scintille{0%,100%{opacity:.65;transform:translateY(0)}50%{opacity:1;transform:translateY(-.7px)}}
+
   /* réglages de vue */
   .reglages{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--craie-faible)}
   .reglages label{display:flex;align-items:center;gap:5px;cursor:pointer;
@@ -6065,7 +6101,8 @@ if(params.get("table")){
       </div>
       <div class="panneau">
         <h2>Les règles en bref</h2>
-        <p class="aide">On avance de la somme de deux dés. Les treize oies relancent d'autant, le pont propulse, l'auberge endort, le puits et la prison retiennent, le labyrinthe ramène en arrière et la tête de mort renvoie au départ. Il faut tomber pile sur la 63.</p>
+        <p class="aide">On lance deux dés, puis on décide : avancer de la somme, ou d'un seul des deux. Les treize oies relancent d'autant, le pont propulse, l'auberge endort, le puits et la prison retiennent, le labyrinthe ramène en arrière et la tête de mort renvoie au départ. Il faut tomber pile sur la 63.</p>
+        <p class="aide">Deux plumes en poche pour relancer un mauvais tirage, huit grains dorés à ramasser en chemin, et un duel de dés dès qu'on croise un adversaire.</p>
         <button class="discret" id="btn-regles-2">Tout le détail</button>
       </div>
     </div>
@@ -6076,6 +6113,7 @@ if(params.get("table")){
         <p class="aide">Vous recevez un code à quatre caractères. Les autres le saisissent de leur côté, chacun sur son ordinateur.</p>
         <label class="champ" for="nom-hote">Votre nom</label>
         <input type="text" id="nom-hote" maxlength="14" placeholder="Mathis">
+        <div class="opt"><input type="checkbox" id="o-aventure" checked> Mode aventure : choix des dés, plumes, grains, duels</div>
         <div class="opt"><input type="checkbox" id="o-premier" checked> Règle du 9 au premier lancer (6+3 → 26, 5+4 → 53)</div>
         <div class="opt"><input type="checkbox" id="o-echange" checked> Échange de place quand on tombe sur un pion</div>
         <div class="opt"><input type="checkbox" id="o-exact" checked> Il faut la case 63 pile, sinon on recule</div>
@@ -6149,11 +6187,14 @@ if(params.get("table")){
           <div class="total" id="total">—</div>
           <div class="consigne" id="consigne">En attente…</div>
           <button class="principal" id="btn-lancer">Lancer les dés</button>
+          <div class="choix-des cache" id="choix-des"></div>
+          <button class="discret cache" id="btn-relancer">Relancer (1 plume)</button>
           <button class="principal cache" id="btn-suite">Nouvelle partie</button>
         </div>
         <div class="reglages">
           <label><input type="checkbox" id="o-camera" checked> Suivre le pion de près</label>
           <label><input type="checkbox" id="o-apercu" checked> Montrer les cases atteignables</label>
+          <span class="bourse" id="bourse"></span>
           <span id="apercu-note"></span>
         </div>
       </div>
@@ -6254,13 +6295,19 @@ var TEINTES = ["#E4B33C","#BE2033","#4E93C4","#7FC08E","#B07BC8","#E8834A"];
    ========================================================================= */
 function nouveauJoueur(nom, bot){
   return {nom:nom, bot:!!bot, parti:false, pos:0, sauts:0, bloque:null, arrive:false,
-    lancers:0, oies:0, pieges:0, recule:0, mieux:0};
+    lancers:0, oies:0, pieges:0, recule:0, mieux:0,
+    plumes:2, grains:0, duels:0, duelsGagnes:0, choixSimples:0};
 }
+var OPTS_DEFAUT = {premier:true, echange:true, exact:true, auberge:2,
+  aventure:true, plumes:true, grains:true, duel:true};
 function nouvellePartie(nomHote, opts){
+  var o = opts || {}, q;
+  for(q in OPTS_DEFAUT) if(o[q] === undefined) o[q] = OPTS_DEFAUT[q];
   var s = {
-    v:1, phase:"attente", opts:opts || {premier:true, echange:true, exact:true, auberge:2},
+    v:1, phase:"attente", opts:o,
     joueurs:[nouveauJoueur(nomHote, false)], tour:0, evt:0, dernier:null,
-    journal:[], chat:[], gagnant:null, debut:Date.now(), coups:0, oiesTotal:0, piegesTotal:0
+    journal:[], chat:[], gagnant:null, debut:Date.now(), coups:0, oiesTotal:0, piegesTotal:0,
+    attente:null, grains:[], duel:null
   };
   noter(s, "Table dress\u00e9e. Les pions attendent au d\u00e9part.");
   return s;
@@ -6352,16 +6399,46 @@ function effets(s, i, n, etapes, prof){
   }
   croisement(s, i, etapes.depart != null ? etapes.depart : p, etapes);
 }
-/* échange de place avec un pion déjà là */
+/* rencontre sur une case : duel de dés en mode aventure, échange sec sinon */
 function croisement(s, i, depart, etapes){
   if(!s.opts.echange) return;
   var j = s.joueurs[i], p = j.pos;
   if(p <= 0 || estPiege(p)) return;
   var k = occupant(s, p, i);
   if(k < 0) return;
+  if(s.opts.aventure && s.opts.duel){
+    /* les deux pions se toisent : un d\u00e9 chacun, le d\u00e9fenseur garde la case \u00e0 \u00e9galit\u00e9 */
+    var da = 1 + Math.floor(Math.random()*6), db = 1 + Math.floor(Math.random()*6);
+    j.duels++; s.joueurs[k].duels++;
+    if(da > db){
+      j.duelsGagnes++;
+      s.joueurs[k].pos = depart;
+      etapes.push({t:"duel", i:i, autre:k, da:da, db:db, vainqueur:i, a:p, b:depart});
+      noter(s, "Duel en " + p + " : " + j.nom + " sort " + da + " contre " + db +
+        " et chasse " + s.joueurs[k].nom + " en " + depart + ".");
+    } else {
+      s.joueurs[k].duelsGagnes++;
+      j.pos = depart;
+      etapes.push({t:"duel", i:i, autre:k, da:da, db:db, vainqueur:k, a:depart, b:p});
+      noter(s, "Duel en " + p + " : " + s.joueurs[k].nom + " tient bon avec " + db +
+        " contre " + da + ". " + j.nom + " retourne en " + depart + ".");
+    }
+    return;
+  }
   s.joueurs[k].pos = depart;
   etapes.push({t:"echange", i:i, autre:k, a:p, b:depart});
   noter(s, j.nom + " d\u00e9loge " + s.joueurs[k].nom + ", qui recule en " + depart + ".");
+}
+/* ramasser un grain sur la case où l'on s'arrête */
+function ramasserGrain(s, i, etapes){
+  if(!s.opts.grains) return;
+  var j = s.joueurs[i], q = s.grains.indexOf(j.pos);
+  if(q < 0) return;
+  s.grains.splice(q, 1);
+  j.grains++;
+  j.plumes++;
+  etapes.push({t:"grain", i:i, case:j.pos, plumes:j.plumes});
+  noter(s, j.nom + " ramasse un grain dor\u00e9 en " + j.pos + " et gagne une plume.");
 }
 function avancer(s, i, depart, n, etapes, prof){
   var j = s.joueurs[i], cible = depart + n;
@@ -6381,6 +6458,7 @@ function avancer(s, i, depart, n, etapes, prof){
   effets(s, i, n, etapes, prof || 0);
 }
 function passerLaMain(s){
+  s.attente = null;
   var libre = actifs(s), tours = 0, i;
   if(!libre.length){ s.phase = "fin"; return; }
   while(tours < 60){
@@ -6410,16 +6488,61 @@ function passerLaMain(s){
   }
   s.phase = "fin";
 }
-function lancerDes(s, i, forceA, forceB){
-  if(s.phase !== "partie" || s.tour !== i) return false;
+function peutJouer(s, i){
   var j = s.joueurs[i];
-  if(j.parti || j.arrive || j.bloque || j.sauts > 0) return false;
+  return !!j && s.phase === "partie" && s.tour === i && !j.parti && !j.arrive && !j.bloque && j.sauts <= 0;
+}
+/* case d'arrivée si l'on avançait de n, rebond compris */
+function cibleDe(s, depart, n){
+  var c = depart + n;
+  if(c > NB && s.opts.exact) c = NB - (c - NB);
+  else if(c > NB) c = NB;
+  return c < 0 ? 0 : c;
+}
+/* Mode aventure : le lancer ne déplace plus rien, il ouvre un choix.
+   On avance de la somme, ou d'un seul des deux dés. */
+function lancerDes(s, i, forceA, forceB){
+  if(!peutJouer(s, i)) return false;
+  if(s.attente) return false;
+  var j = s.joueurs[i];
   var a = forceA || (1 + Math.floor(Math.random()*6));
   var b = forceB || (1 + Math.floor(Math.random()*6));
-  var n = a + b, etapes = [];
   j.lancers++; s.coups++;
-  noter(s, j.nom + " am\u00e8ne " + a + " et " + b + ", soit " + n + ".");
-  if(j.lancers === 1 && n === 9 && s.opts.premier && j.pos === 0){
+  noter(s, j.nom + " am\u00e8ne " + a + " et " + b + ".");
+  if(!s.opts.aventure) return resoudre(s, i, a, b, a + b);
+  s.attente = {i:i, des:[a, b], relances:0};
+  s.evt++;
+  s.dernier = {n:s.evt, joueur:i, des:[a, b], etapes:[], attente:true};
+  return true;
+}
+/* une plume permet de relancer les deux dés */
+function relancerDes(s, i){
+  if(!s.attente || s.attente.i !== i || !peutJouer(s, i)) return false;
+  var j = s.joueurs[i];
+  if(!s.opts.plumes || j.plumes <= 0) return false;
+  j.plumes--;
+  s.attente.des = [1 + Math.floor(Math.random()*6), 1 + Math.floor(Math.random()*6)];
+  s.attente.relances++;
+  noter(s, j.nom + " d\u00e9pense une plume et relance : " + s.attente.des[0] + " et " + s.attente.des[1] + ".");
+  s.evt++;
+  s.dernier = {n:s.evt, joueur:i, des:s.attente.des.slice(), etapes:[{t:"plume", i:i, reste:j.plumes}], attente:true};
+  return true;
+}
+/* le joueur retient un nombre de pas parmi ceux que les dés autorisent */
+function choisir(s, i, n){
+  if(!s.attente || s.attente.i !== i || !peutJouer(s, i)) return false;
+  var d = s.attente.des, choix = [d[0], d[1], d[0] + d[1]];
+  if(choix.indexOf(n) < 0) return false;
+  var j = s.joueurs[i];
+  if(n !== d[0] + d[1]) j.choixSimples++;
+  s.attente = null;
+  return resoudre(s, i, d[0], d[1], n);
+}
+/* déroulement effectif du déplacement */
+function resoudre(s, i, a, b, n){
+  var j = s.joueurs[i], etapes = [];
+  noter(s, j.nom + " avance de " + n + ".");
+  if(j.lancers === 1 && (a + b) === 9 && n === 9 && s.opts.premier && j.pos === 0){
     var but = (a === 6 || b === 6) ? 26 : 53;
     j.pos = but;
     if(but > j.mieux) j.mieux = but;
@@ -6430,10 +6553,20 @@ function lancerDes(s, i, forceA, forceB){
   } else {
     avancer(s, i, j.pos, n, etapes, 0);
   }
+  if(s.phase === "partie" && !j.arrive) ramasserGrain(s, i, etapes);
   s.evt++;
-  s.dernier = {n:s.evt, joueur:i, des:[a, b], etapes:etapes.slice()};
+  s.dernier = {n:s.evt, joueur:i, des:[a, b], choix:n, etapes:etapes.slice()};
   if(s.phase === "partie") passerLaMain(s);
   return true;
+}
+/* on sème les grains dorés sur des cases anodines : les ramasser rapporte une plume */
+function semerGrains(s){
+  s.grains = [];
+  if(!s.opts.grains) return;
+  var libres = [], q, r, x;
+  for(q=2;q<NB;q++) if(!estOie(q) && !estPiege(q) && q !== PONT) libres.push(q);
+  for(q=libres.length-1;q>0;q--){ r = Math.floor(Math.random()*(q+1)); x = libres[q]; libres[q] = libres[r]; libres[r] = x; }
+  s.grains = libres.slice(0, 8).sort(function(a, b){ return a - b; });
 }
 function relancerPartie(s){
   var i;
@@ -6441,15 +6574,48 @@ function relancerPartie(s){
     var j = s.joueurs[i];
     j.pos = 0; j.sauts = 0; j.bloque = null; j.arrive = false;
     j.lancers = 0; j.oies = 0; j.pieges = 0; j.recule = 0; j.mieux = 0;
+    j.plumes = s.opts.plumes ? 2 : 0; j.grains = 0;
+    j.duels = 0; j.duelsGagnes = 0; j.choixSimples = 0;
   }
   s.phase = "partie"; s.gagnant = null; s.tour = 0; s.coups = 0;
   s.oiesTotal = 0; s.piegesTotal = 0; s.debut = Date.now();
+  s.attente = null; s.duel = null;
+  semerGrains(s);
   s.journal = []; s.evt++;
   s.dernier = {n:s.evt, joueur:0, des:null, etapes:[{t:"depart"}]};
   noter(s, "Nouvelle partie, tout le monde au d\u00e9part.");
   return true;
 }
-function coupDeBot(s, i){ return {t:"lancer"}; }
+/* valeur d'une case pour l'ordinateur : plus c'est haut, mieux c'est */
+function valeurCase(s, i, c){
+  var v = c * 1.0;
+  if(c === NB) return 1000;
+  if(estOie(c)) v += 26;            /* on rebondit et l'on rejoue d'autant */
+  if(c === PONT) v += 16;
+  if(s.opts.grains && s.grains.indexOf(c) >= 0) v += 12;
+  if(c === MORT) v -= 200;
+  if(c === LABYRINTHE) v -= 46;
+  if(c === PUITS || c === PRISON) v -= 70;
+  if(c === AUBERGE) v -= 26;
+  if(s.opts.echange && occupant(s, c, i) >= 0) v += s.opts.duel ? 6 : 14;
+  return v;
+}
+function coupDeBot(s, i){
+  if(!s.opts.aventure) return {t:"lancer"};
+  if(!s.attente || s.attente.i !== i) return {t:"lancer"};
+  var j = s.joueurs[i], d = s.attente.des;
+  var options = [d[0], d[1], d[0] + d[1]], k, best = null, bestV = -1e9;
+  for(k=0;k<options.length;k++){
+    var v = valeurCase(s, i, cibleDe(s, j.pos, options[k]));
+    if(v > bestV){ bestV = v; best = options[k]; }
+  }
+  /* un mauvais tirage vaut la peine d'une plume, mais on en garde une pour la fin */
+  if(s.opts.plumes && j.plumes > 0 && s.attente.relances < 2 && bestV < j.pos - 4 &&
+     (j.plumes > 1 || j.pos > 40) && Math.random() < .7){
+    return {t:"relancer"};
+  }
+  return {t:"choisir", n:best};
+}
 
 /* =========================================================================
    LE SON
@@ -6755,6 +6921,8 @@ function dessinerPlateau(){
     } else {
       h += '<text class="case-num" x="' + p.x.toFixed(2) + '" y="' + (p.y + .8).toFixed(2) + '">' + k + '</text>';
     }
+    h += '<circle class="grain" cx="' + (p.x + 2.1).toFixed(2) + '" cy="' + (p.y - 2.3).toFixed(2) +
+      '" r="0" data-grain="' + k + '"/>';
     h += '</g>';
   }
   $("fond").innerHTML = h;
@@ -6770,6 +6938,14 @@ function pionSVG(teinte){
     '<g class="chaine"><path d="M3 15 H19" stroke="#C9C4B8" stroke-width="1.6" stroke-dasharray="2 2"/>' +
     '<path d="M3 19 H19" stroke="#C9C4B8" stroke-width="1.6" stroke-dasharray="2 2"/></g>' +
     '</svg>';
+}
+/* les grains encore en jeu scintillent sur leur case */
+function majGrains(){
+  var g = document.querySelectorAll("[data-grain]"), k, liste = (V && V.grains) ? V.grains : [];
+  for(k=0;k<g.length;k++){
+    var n = parseInt(g[k].getAttribute("data-grain"), 10);
+    g[k].setAttribute("r", liste.indexOf(n) >= 0 ? "1.15" : "0");
+  }
 }
 function syncPions(){
   var c = $("pions"), n = V ? V.joueurs.length : 0, k;
@@ -7141,6 +7317,47 @@ async function jouerEtape(e){
     await Promise.all([saut(e.i, e.a, 520, 80), saut(e.autre, e.b, 520, 80)]);
     return;
   }
+  if(e.t === "grain"){
+    c = centreEcran(e.i);
+    sfx.oie();
+    note(1175, 0, .1, "sine", .07); note(1568, .09, .18, "sine", .07);
+    effet("\u2726 Grain dor\u00e9", "dore", c.x, c.y - 60);
+    gerbe(c.x, c.y, ["#FFE9A8","#E4B33C","#F6F0E3"], 18);
+    onde(c.x, c.y, "rgba(255,233,168,.9)");
+    etiquetteCase(e.i, "une plume de plus (" + e.plumes + ")");
+    basseCour("o-danse", 2, 1500);
+    majGrains();
+    return pause(360);
+  }
+  if(e.t === "plume"){
+    sfx.rebond();
+    effet("\uD83E\uDEB6 On relance", "", null, window.innerHeight*0.34);
+    plumes(5);
+    return pause(240);
+  }
+  if(e.t === "duel"){
+    var ca = centreEcran(e.i), cb = centreEcran(e.autre);
+    banniere("duel en " + Math.max(e.a, e.b) + " \u00b7 " + e.da + " contre " + e.db, true, 20);
+    sfx.des();
+    secouer();
+    /* les deux pions se chargent avant que le sort tranche */
+    var pa = $("pions").children[e.i], pb = $("pions").children[e.autre];
+    if(pa) pa.animate([{transform:pa.style.transform}, {transform:pa.style.transform + " scale(1.4) rotate(-14deg)"},
+      {transform:pa.style.transform}], {duration:520});
+    if(pb) pb.animate([{transform:pb.style.transform}, {transform:pb.style.transform + " scale(1.4) rotate(14deg)"},
+      {transform:pb.style.transform}], {duration:520});
+    effet(e.da + " \u2694 " + e.db, e.vainqueur === V.moi ? "dore" : "rouge",
+      (ca.x + cb.x)/2, (ca.y + cb.y)/2 - 50);
+    gerbe((ca.x + cb.x)/2, (ca.y + cb.y)/2, ["#F6F0E3","#E4B33C","#BE2033"], 20);
+    tremblePlateau();
+    await pause(560);
+    var perdant = e.vainqueur === e.i ? e.autre : e.i;
+    var vers = e.vainqueur === e.i ? e.b : e.a;
+    await saut(perdant, vers, 620, 90);
+    etiquetteCase(e.vainqueur, V.joueurs[e.vainqueur].nom + " tient la case");
+    basseCour("o-panique", 2, 1600);
+    return;
+  }
   if(e.t === "arrive"){
     c = centreEcran(e.i);
     banniere(nom + " gagne la partie", false, 16);
@@ -7197,6 +7414,7 @@ function montrerApercu(){
   if(!monTourDeJouer()) return;
   var j = V.joueurs[V.tour];
   if(!j || j.bloque || j.sauts > 0) return;
+  if(V.attente){ effacerApercu(); return; }
   var m = apercuCases(j.pos), k, meilleure = null, dur = 0;
   for(k in m){
     if(!m.hasOwnProperty(k)) continue;
@@ -7345,6 +7563,10 @@ function rendreStats(){
     caseStat(j.oies || 0, "oies trouv\u00e9es") +
     caseStat(j.pieges || 0, "pi\u00e8ges subis") +
     caseStat(j.mieux || 0, "votre meilleure case") +
+    caseStat(j.plumes || 0, "plumes en main") +
+    caseStat(j.grains || 0, "grains ramass\u00e9s") +
+    caseStat((j.duelsGagnes || 0) + "/" + (j.duels || 0), "duels gagn\u00e9s") +
+    caseStat(j.choixSimples || 0, "fois un seul d\u00e9") +
     caseStat(V.oiesTotal, "oies de la table") +
     caseStat(V.piegesTotal, "pi\u00e8ges de la table");
 }
@@ -7368,11 +7590,53 @@ function monTourDeJouer(){
   if(modeLocal) return !V.joueurs[V.tour].bot;
   return V.tour === V.moi;
 }
+function nomCourt(c){
+  if(c === NB) return "le jardin";
+  if(estOie(c)) return "une oie";
+  if(c === PONT) return "le pont";
+  if(c === AUBERGE) return "l'auberge";
+  if(c === PUITS) return "le puits";
+  if(c === LABYRINTHE) return "le labyrinthe";
+  if(c === PRISON) return "la prison";
+  if(c === MORT) return "la t\u00eate de mort";
+  if(V && V.grains && V.grains.indexOf(c) >= 0) return "un grain dor\u00e9";
+  if(c === 0) return "le d\u00e9part";
+  return "case " + c;
+}
+function rendreChoix(){
+  var zone = $("choix-des"), att = V ? V.attente : null;
+  var aMoi = att && V.phase === "partie" && monTourDeJouer() && !anime;
+  zone.classList.toggle("cache", !aMoi);
+  $("btn-lancer").classList.toggle("cache", !!att || !V || V.phase === "fin");
+  var j = V ? V.joueurs[V.tour] : null;
+  var peutRelancer = aMoi && V.opts.plumes && j && j.plumes > 0;
+  $("btn-relancer").classList.toggle("cache", !peutRelancer);
+  if(peutRelancer) $("btn-relancer").textContent = "Relancer (" + j.plumes + " plume" + (j.plumes > 1 ? "s" : "") + ")";
+  if(!aMoi){ zone.innerHTML = ""; return; }
+  var d = att.des, options = [], vus = {};
+  [d[0], d[1], d[0] + d[1]].forEach(function(n){ if(!vus[n]){ vus[n] = 1; options.push(n); } });
+  /* on montre où chaque option mène, et si c'est une bonne idée */
+  var best = null, bestV = -1e9;
+  options.forEach(function(n){
+    var v = valeurCase(V, V.tour, cibleDe(V, j.pos, n));
+    if(v > bestV){ bestV = v; best = n; }
+  });
+  zone.innerHTML = options.map(function(n){
+    var c = cibleDe(V, j.pos, n), nom = nomCourt(c), cl = "";
+    if(c === NB || estOie(c) || c === PONT || (V.grains && V.grains.indexOf(c) >= 0)) cl = "bon";
+    else if(estPiege(c)) cl = "mauvais";
+    if(n === best && options.length > 1) cl += " conseil";
+    var quoi = n === d[0] + d[1] ? "les deux d\u00e9s" : "un seul d\u00e9";
+    return '<button data-n="' + n + '" class="' + cl + '"><b>+' + n + "</b>" +
+      '<span>' + quoi + " \u2192 " + echapper(nom) + "</span></button>";
+  }).join("");
+}
 function majBoutons(){
-  var pret = V && V.phase === "partie" && !anime && monTourDeJouer();
+  var pret = V && V.phase === "partie" && !anime && monTourDeJouer() && !V.attente;
   $("btn-lancer").disabled = !pret;
-  $("btn-lancer").classList.toggle("cache", !V || V.phase === "fin");
+  $("btn-lancer").classList.toggle("cache", !V || V.phase === "fin" || !!(V && V.attente));
   $("btn-suite").classList.toggle("cache", !V || V.phase !== "fin" || (!estHote && !modeLocal));
+  rendreChoix();
 }
 function rendre(){
   if(!V) return;
@@ -7385,7 +7649,10 @@ function rendre(){
     posAff = V.joueurs.map(function(j){ return j.pos; });
     placerPions();
   }
-  rendreJoueurs(); rendreStats(); rendreChat();
+  rendreJoueurs(); rendreStats(); rendreChat(); majGrains();
+  var moi = V.joueurs[V.moi];
+  $("bourse").innerHTML = (V.opts.plumes ? "<i>\uD83E\uDEB6 " + moi.plumes + " plume" + (moi.plumes > 1 ? "s" : "") + "</i>" : "") +
+    (V.opts.grains ? "<i>\u2726 " + moi.grains + " grain" + (moi.grains > 1 ? "s" : "") + "</i>" : "");
   $("journal").innerHTML = V.journal.map(function(l){ return "<li>" + echapper(l) + "</li>"; }).join("");
 
   var cs = $("consigne");
@@ -7396,6 +7663,11 @@ function rendre(){
     cs.innerHTML = g ? ("<strong>" + echapper(g.nom) + "</strong> a atteint le jardin de l'oie.") : "Partie termin\u00e9e.";
   } else if(anime){
     cs.innerHTML = "Le pion avance\u2026";
+  } else if(V.attente && monTourDeJouer()){
+    cs.innerHTML = "<strong>" + V.attente.des[0] + " et " + V.attente.des[1] +
+      "</strong> : avancez de la somme, ou d'un seul d\u00e9.";
+  } else if(V.attente){
+    cs.innerHTML = "<strong>" + echapper(V.joueurs[V.attente.i].nom) + "</strong> choisit son nombre de pas\u2026";
   } else if(monTourDeJouer()){
     cs.innerHTML = modeLocal
       ? "\u00c0 <strong>" + echapper(V.joueurs[V.tour].nom) + "</strong> de lancer, depuis " + nomCase(V.joueurs[V.tour].pos) + "."
@@ -7468,7 +7740,12 @@ function afficherRegles(){
     '<li><code>42</code> le labyrinthe : retour en 30.</li>' +
     '<li><code>52</code> la prison : m\u00eame sort que le puits, on attend son rempla\u00e7ant.</li>' +
     '<li><code>58</code> la t\u00eate de mort : tout est \u00e0 recommencer depuis le d\u00e9part.</li></ul>' +
-    '<h4>Variantes</h4><p>L\'h\u00f4te choisit la dur\u00e9e de l\'auberge, l\'\u00e9change de place, la r\u00e8gle du compte exact et celle du 9 d\'entr\u00e9e.</p>' +
+    '<h4>Le mode aventure</h4><ul>' +
+    '<li><strong>Le choix des d\u00e9s.</strong> On lance les deux d\u00e9s, puis on d\u00e9cide : avancer de leur somme, ou d\'un seul des deux. Chaque tour devient une d\u00e9cision, plus un simple tirage.</li>' +
+    '<li><strong>Les plumes.</strong> Chacun d\u00e9marre avec deux plumes. Une plume relance les deux d\u00e9s quand le tirage ne vous convient pas.</li>' +
+    '<li><strong>Les grains dor\u00e9s.</strong> Huit grains sont s\u00e9m\u00e9s sur le parcours. S\'arr\u00eater dessus le ramasse et rapporte une plume.</li>' +
+    '<li><strong>Les duels.</strong> Tomber sur un pion adverse ne le chasse plus d\'office : chacun lance un d\u00e9, le plus fort garde la case, le perdant recule. \u00c0 \u00e9galit\u00e9, celui qui \u00e9tait l\u00e0 tient bon.</li></ul>' +
+    '<h4>Variantes</h4><p>L\'h\u00f4te choisit la dur\u00e9e de l\'auberge, l\'\u00e9change de place, la r\u00e8gle du compte exact, celle du 9 d\'entr\u00e9e, et peut couper le mode aventure pour retrouver les r\u00e8gles strictes.</p>' +
     '</div><div class="modale-actions"><button class="principal" id="fermer-regles">Fermer</button></div>');
   $("fermer-regles").onclick = fermerModale;
 }
@@ -7480,6 +7757,7 @@ function estAutorite(){ return estHote || modeLocal; }
 function vuePour(s, i){
   var c = JSON.parse(JSON.stringify(s));
   c.moi = i;
+  c.grains = (s.grains || []).slice();
   c.journal = s.journal.slice(0, 24);
   c.chat = s.chat.slice(-60);
   return c;
@@ -7496,6 +7774,8 @@ function appliquer(a, i){
   if(!G || i == null) return;
   var ok = false;
   if(a.t === "lancer") ok = lancerDes(G, i);
+  else if(a.t === "choisir") ok = choisir(G, i, a.n);
+  else if(a.t === "relancer") ok = relancerDes(G, i);
   else if(a.t === "suite"){ if(G.phase === "fin") ok = relancerPartie(G); }
   else if(a.t === "chat") ok = ajouterChat(G, i, a.texte);
   if(!ok) return;
@@ -7514,9 +7794,13 @@ function relancerBot(){
   clearTimeout(minuterieBot);
   var j = G.joueurs[G.tour];
   if(j && j.bot && !j.parti && !j.arrive){
+    var attente = G.attente && G.attente.i === G.tour;
     minuterieBot = setTimeout(function(){
-      if(G && G.phase === "partie" && G.joueurs[G.tour] && G.joueurs[G.tour].bot && !anime) appliquer({t:"lancer"}, G.tour);
-    }, 1100);
+      if(!G || G.phase !== "partie" || anime) return;
+      var q = G.joueurs[G.tour];
+      if(!q || !q.bot) return;
+      appliquer(coupDeBot(G, G.tour), G.tour);
+    }, attente ? 850 : 1000);
   }
 }
 function surMessage(m, ch){
@@ -7610,10 +7894,19 @@ function codeAleatoire(){
 }
 var monNom = "Joueur";
 function optionsChoisies(){
+  var av = $("o-aventure").checked;
   return {premier:$("o-premier").checked, echange:$("o-echange").checked,
-    exact:$("o-exact").checked, auberge:parseInt($("o-auberge").value, 10) || 2};
+    exact:$("o-exact").checked, auberge:parseInt($("o-auberge").value, 10) || 2,
+    aventure:av, plumes:av, grains:av, duel:av};
 }
 function demarrer(){
+  var q;
+  if(!G.grains || !G.grains.length) semerGrains(G);
+  for(q=0;q<G.joueurs.length;q++){
+    G.joueurs[q].plumes = G.opts.plumes ? 2 : 0;
+    G.joueurs[q].grains = 0;
+  }
+  G.attente = null;
   posAff = G.joueurs.map(function(j){ return j.pos; });
   dernierAnime = 0; finAffichee = false;
   V = vuePour(G, monIndex);
@@ -7780,6 +8073,12 @@ $("btn-repondre").onclick = fabriquerReponse;
 $("btn-copie-offre").onclick = function(){ copier("txt-offre"); };
 $("btn-copie-reponse").onclick = function(){ copier("txt-reponse"); };
 $("btn-lancer").onclick = function(){ if(!anime) agir({t:"lancer"}); };
+$("btn-relancer").onclick = function(){ if(!anime) agir({t:"relancer"}); };
+$("choix-des").addEventListener("click", function(e){
+  var b = e.target.closest("button[data-n]");
+  if(!b || anime) return;
+  agir({t:"choisir", n:parseInt(b.dataset.n, 10)});
+});
 $("btn-suite").onclick = function(){ agir({t:"suite"}); };
 $("btn-regles").onclick = afficherRegles;
 $("btn-regles-2").onclick = afficherRegles;
@@ -7844,6 +8143,8 @@ window.__OIE = {
   nouvellePartie:nouvellePartie, nouveauJoueur:nouveauJoueur, lancerDes:lancerDes, appliquer:appliquer,
   relancerPartie:relancerPartie, vuePour:vuePour, rendre:rendre, dessinerPlateau:dessinerPlateau,
   POS:POS, OIES:OIES, NB:NB, basseCour:basseCour, feuArtifice:feuArtifice, plumes:plumes,
+  choisir:choisir, relancerDes:relancerDes, coupDeBot:coupDeBot, cibleDe:cibleDe,
+  valeurCase:valeurCase, semerGrains:semerGrains, majGrains:majGrains, rendreChoix:rendreChoix,
   apercuCases:apercuCases, detailCase:detailCase, montrerApercu:montrerApercu, effacerApercu:effacerApercu,
   poserCamera:poserCamera, suivrePion:suivrePion, relacherCamera:relacherCamera, bulleCase:bulleCase,
   chiffreVolant:chiffreVolant, etiquetteCase:etiquetteCase, tangage:tangage,
