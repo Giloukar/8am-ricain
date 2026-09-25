@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- La table de jeux — version du 24 septembre 2026.
+<!-- La table de jeux — version du 25 septembre 2026.
 Fichier autonome : CSS, moteurs, musique et PeerJS sont intégrés.
 Salons de 2 à 8 joueurs au choix (2 à 6 au Rummikub), tous sur cette version.
 Métropole est une variante immobilière originale : ses règles détaillées sont accessibles dans le jeu.
@@ -324,6 +324,34 @@ html[data-motion="on"] .suite-slot.just-played{animation:suite-arrive .45s cubic
 @media(max-width:600px){.felt.ninety-table,.felt.yam-table{padding:18px 12px}.ninety-stage{gap:25px}.ninety-counter{min-width:125px}.ninety-counter strong{font-size:66px}.ninety-cards{gap:18px}.ninety-hand{--cardw:64px;--cardh:92px}.ninety-card>span{font-size:10px}.yam-dice{gap:4px;padding-top:20px}.yam-die{padding:4px;border-radius:11px}.yam-die .die,.die-placeholder{width:43px;height:43px}.yam-die .die{padding:8px;gap:4px}.yam-die small{font-size:8px}.yam-category{padding:10px;gap:5px;min-height:84px}.yam-category strong{font-size:12px}.yam-category small{font-size:9px}.yam-category>b{font-size:23px;min-width:23px}.yam-instruction{font-size:11px}.yam-categories{gap:6px}}
 @media(max-width:350px){.yam-die{padding:2px}.yam-die .die,.die-placeholder{width:36px;height:36px}.yam-dice{gap:3px}.ninety-stage{gap:17px}.ninety-cards{gap:12px}.ninety-hand{--cardw:58px;--cardh:83px}}
 @media(prefers-reduced-motion:reduce){.yam-die{transition:none}}
+
+/* Collection : contrôles indépendants, zones tactiles et focus visibles. */
+.catalog-item{position:relative;min-width:0;display:flex}
+.catalog-item .game-card{width:100%;height:100%;min-width:0}
+.catalog-item .art-badge{max-width:calc(100% - 80px)}
+.catalog-star{position:absolute;right:12px;top:12px;z-index:2;width:44px;height:44px;display:grid;place-items:center;border:1px solid #b0bea877;border-radius:50%;background:#14251eed;color:#f3efe3;font-size:27px;box-shadow:0 3px 12px #0004;transition:background .2s,transform .2s;touch-action:manipulation}
+.catalog-star[aria-pressed="true"]{color:#1c2c22;background:var(--lime);border-color:var(--lime)}
+.catalog-star:hover{transform:scale(1.08)}
+.catalog-tools{display:flex;align-items:end;flex-wrap:wrap;gap:12px;padding:18px;background:#1a2920;border:1px solid var(--line);border-radius:16px}
+.catalog-tools label{display:grid;gap:6px;flex:1 1 160px;font-size:12px;color:#c6d0c2;min-width:0}
+.catalog-tools select{width:100%;min-height:44px;padding:10px 30px 10px 12px;background:#111f18;color:var(--ink);border:1px solid #586b51;border-radius:9px;font-size:13px}
+.catalog-favorites{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 15px;border-radius:10px;border:1px solid #657b55;background:#213327;color:var(--ink);font-size:13px}
+.catalog-favorites[aria-pressed="true"]{background:var(--lime);color:#16251a}
+#favorite-count{font-size:11px;font-variant-numeric:tabular-nums;min-width:21px;border:1px solid currentColor;border-radius:50%;padding:1px 4px}
+.catalog-results{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 18px;font-size:12px;color:#c3cfbc}
+.catalog-reset{background:none;color:var(--lime);text-decoration:underline;text-underline-offset:4px;min-height:44px;padding:8px;flex-shrink:0}
+.catalog-empty{grid-column:1/-1;padding:40px 20px;text-align:center;border:1px dashed #607353;border-radius:18px;background:#1a2920}
+.catalog-empty>span{display:block;font:44px Georgia;color:var(--lime);margin-bottom:12px}
+.catalog-empty h3{font:25px var(--serif)}
+.catalog-empty p{max-width:440px;margin:12px auto 20px;color:#bdcbb8;line-height:1.7}
+.catalog-recent{display:flex;gap:18px;align-items:center;margin:22px 0;padding:18px 20px;border:1px solid #536846;border-radius:15px;background:linear-gradient(110deg,#263922,#19281f)}
+.catalog-recent>div:first-child{flex-shrink:0}.catalog-recent strong{font:21px var(--serif);display:block}.catalog-recent>div>span{color:#c0cdb6;font-size:11px}
+.recent-games{display:flex;gap:8px;flex-wrap:wrap;min-width:0}.recent-games button{min-height:44px;padding:10px 13px;background:#14251d;border:1px solid #526649;border-radius:10px;text-align:left;font-size:12px}.recent-games button span{color:var(--lime);margin-left:5px}
+.catalog-item:focus-within{z-index:3}
+@media(max-width:600px){.catalog-tools{gap:12px;padding:14px}.catalog-tools label{flex-basis:calc(50% - 12px)}.catalog-favorites{flex-basis:100%}.catalog-recent{align-items:start;flex-direction:column;gap:12px}.catalog-results{font-size:11px}.catalog-star{right:10px;top:10px}.catalog-empty{padding:30px 14px}}
+@media(prefers-reduced-motion:reduce){.catalog-star{transition:none}.catalog-star:hover{transform:none}}
+@media(max-width:360px){.catalog-tools label{flex-basis:100%}}
+html[data-motion="off"] .catalog-star{transition:none}html[data-motion="off"] .catalog-star:hover{transform:none}
 
 </style></head><body><a class="skip" href="#main">Aller au contenu</a><div id="app"></div><dialog id="dialog" aria-label="Options de la table"></dialog><div id="toasts"></div><div id="announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><noscript><main style="max-width:600px;margin:10vh auto;padding:30px;font-family:system-ui"><h1>La table de jeux</h1><p>Pour distribuer les cartes et lancer les dés, activez JavaScript dans votre navigateur. Le solo et le jeu sur le même écran fonctionnent hors connexion ; les salons à distance nécessitent Internet.</p></main></noscript><!-- PeerJS 1.5.5 — MIT License
 Copyright (c) 2015 Michelle Bu and Eric Zhang, http://peerjs.com
@@ -2066,6 +2094,46 @@ refreshSelection=function(){if(S?.id!=='quatrevingtdixneuf')return V13_REFRESH()
 document.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled||!canPlay())return;if(b.dataset.action==='ninety-card'&&S.id==='quatrevingtdixneuf'){const chosen=selection.has(b.dataset.id);selection.clear();if(!chosen)selection.add(b.dataset.id);refreshSelection();}if(b.dataset.action==='yam-category'&&S.id==='yam'){selection.clear();selection.add(b.dataset.category);renderGame(false);document.querySelector('[data-action="yam-category"][data-category="'+b.dataset.category+'"]')?.focus({preventScroll:true});}});
 document.addEventListener('keydown',e=>{if(S?.id!=='quatrevingtdixneuf'||!canPlay()||$('dialog').open||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;const cards=[...document.querySelectorAll('[data-action="ninety-card"]')],i=cards.indexOf(e.target);if(i<0)return;e.preventDefault();cards[e.key==='Home'?0:e.key==='End'?cards.length-1:(i+(e.key==='ArrowRight'?1:-1)+cards.length)%cards.length]?.focus();});
 playSceneAction=function(ctx){V13_SCENE(ctx);if(!ctx||ctx.id!==S?.id||!motionOn()||gate)return;if(S.id==='quatrevingtdixneuf'&&ctx.type==='card'){if(sceneMotion()){const after=sceneSnapshot||sceneCapture({type:ctx.type,actor:ctx.actor},true);if(after)scenePlayCards(ctx,after);scenePulse('.ninety-counter',GAMES.quatrevingtdixneuf.accent);}const counter=document.querySelector('.ninety-counter strong');if(counter)uiAnimate(counter,[{transform:'scale(.82)',opacity:.65},{transform:'scale(1.08)',opacity:1},{transform:'scale(1)'}],{duration:motionDuration(430),easing:MOTION_SOFT},'counter');}if(S.id==='yam'&&ctx.type==='roll')document.querySelectorAll('.yam-die:not(.held) .die').forEach((el,i)=>{const duration=motionDuration(540+i*65);uiAnimate(el,[{transform:'translateY(-18px) rotate(-24deg)',opacity:.45},{transform:'translateY(3px) rotate(14deg)',offset:.55,opacity:1},{transform:'translateY(-3px) rotate(-5deg)',offset:.8},{transform:'none'}],{duration,easing:MOTION_SOFT},'yam-roll');markMotionEnd(duration);});};
+
+/* Collection personnelle : données locales, sans modifier les règles ou le protocole réseau. */
+function catalogIDs(value){return Array.isArray(value)?[...new Set(value.filter(id=>typeof id==='string'&&Object.hasOwn(GAMES,id)))].slice(0,Object.keys(GAMES).length):[];}
+let catalogFavorites=catalogIDs(storage.get('favorites',[]));
+let catalogRecent=catalogIDs(storage.get('recent',[])).slice(0,6);
+let catalogOptions={favorites:false,players:0,minutes:0,sort:'collection'};
+function catalogClean(value){return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[’']/g,' ').replace(/[^a-z0-9]+/g,' ').trim();}
+function catalogDuration(game){return Math.max(...(game.time.match(/\d+/g)||['0']).map(Number));}
+function catalogEntries(){
+ const words=catalogClean(query).split(' ').filter(Boolean);
+ const entries=Object.entries(GAMES).filter(([id,g])=>{
+  const text=catalogClean([g.name,g.kind,g.desc,g.category,g.category==='arcade'?'défis arcade réflexion':'',id==='yam'?'yahtzee yams dés':'',id==='rummikub'?'rummi suites tuiles':''].join(' '));
+  return (filter==='all'||g.category===filter)&&(!catalogOptions.favorites||catalogFavorites.includes(id))&&(!catalogOptions.players||g.min<=catalogOptions.players&&g.max>=catalogOptions.players)&&(!catalogOptions.minutes||catalogDuration(g)<=catalogOptions.minutes)&&words.every(word=>text.includes(word));
+ });
+ if(catalogOptions.sort==='name')entries.sort((a,b)=>a[1].name.localeCompare(b[1].name,'fr'));
+ if(catalogOptions.sort==='duration')entries.sort((a,b)=>catalogDuration(a[1])-catalogDuration(b[1]));
+ if(catalogOptions.sort==='recent')entries.sort((a,b)=>(catalogRecent.includes(a[0])?catalogRecent.indexOf(a[0]):99)-(catalogRecent.includes(b[0])?catalogRecent.indexOf(b[0]):99));
+ return entries;
+}
+function catalogRemember(id){if(!Object.hasOwn(GAMES,id)||catalogRecent[0]===id)return;catalogRecent=[id,...catalogRecent.filter(x=>x!==id)].slice(0,6);storage.set('recent',catalogRecent);}
+function catalogToggleFavorite(id){if(!Object.hasOwn(GAMES,id))return false;catalogFavorites=catalogFavorites.includes(id)?catalogFavorites.filter(x=>x!==id):[...catalogFavorites,id];return storage.set('favorites',catalogFavorites);}
+function catalogResultText(){const n=catalogEntries().length;return `${n} jeu${n===1?'':'x'} ${n===1?'disponible':'disponibles'} sur ${Object.keys(GAMES).length}${catalogOptions.favorites?' · vos favoris':''}`;}
+function catalogControlsHTML(){return `<div class="catalog-tools" aria-label="Affiner la collection"><button type="button" class="catalog-favorites" data-action="catalog-favorites" aria-pressed="${catalogOptions.favorites}"><span aria-hidden="true">★</span> Mes favoris <span id="favorite-count">${catalogFavorites.length}</span></button><label>À combien ?<select id="catalog-players"><option value="0">Tous les effectifs</option>${Array.from({length:7},(_,i)=>i+2).map(n=>`<option value="${n}" ${catalogOptions.players===n?'selected':''}>${n} joueurs</option>`).join('')}</select></label><label>Durée prévue<select id="catalog-minutes">${[[0,'Toutes les durées'],[5,'Jusqu’à 5 min'],[10,'Jusqu’à 10 min'],[15,'Jusqu’à 15 min'],[30,'Jusqu’à 30 min']].map(([n,label])=>`<option value="${n}" ${catalogOptions.minutes===n?'selected':''}>${label}</option>`).join('')}</select></label><label>Trier par<select id="catalog-sort">${[['collection','La collection'],['name','Nom A → Z'],['duration','Les plus courts'],['recent','Joués récemment']].map(([id,label])=>`<option value="${id}" ${catalogOptions.sort===id?'selected':''}>${label}</option>`).join('')}</select></label></div><div class="catalog-results"><p id="catalog-status" role="status" aria-live="polite" aria-atomic="true">${catalogResultText()}</p><button type="button" class="catalog-reset" data-action="catalog-reset">Tout afficher</button></div>`;}
+function catalogRecentHTML(){return catalogRecent.length?`<nav class="catalog-recent" aria-label="Vos derniers jeux"><div><strong>Une autre manche ?</strong><span>Vos derniers jeux lancés</span></div><div class="recent-games">${catalogRecent.map(id=>`<button type="button" data-action="setup" data-id="${id}" aria-label="Rejouer à ${esc(GAMES[id].name)}">${esc(GAMES[id].name)} <span aria-hidden="true">↗</span></button>`).join('')}</div></nav>`:'';}
+const V14_HOME=homeHTML,V14_CATALOG=renderCatalog,V14_RENDER_GAME=renderGame;
+openSetup=function(id){if(!Object.hasOwn(GAMES,id))return;const g=GAMES[id],count=view==='home'&&catalogOptions.players>=g.min&&catalogOptions.players<=g.max?catalogOptions.players:id==='vingtetun'?1:Math.min(3,g.max);setup={id,mode:'solo',count,names:[]};renderSetup();};
+homeHTML=function(){return V14_HOME().replace('<div class="filters">',catalogRecentHTML()+'<div class="filters">').replace('<div class="games-grid" id="games-grid">',catalogControlsHTML()+'<div class="games-grid" id="games-grid">');};
+gameCardsHTML=function(){const entries=catalogEntries();return entries.length?entries.map(([id,g],i)=>`<article class="catalog-item" data-motion-key="catalog-${id}"><button type="button" class="game-card" data-action="setup" data-id="${id}" aria-label="Jouer à ${esc(g.name)}" style="--i:${i};--art-bg:${g.bg};--accent:${g.accent}"><div class="game-art" aria-hidden="true"><span class="art-badge">${g.kind}</span>${art(id)}<span class="art-index">${String(Object.keys(GAMES).indexOf(id)+1).padStart(2,'0')}</span></div><div class="card-copy"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="card-meta"><span>${icon('users')} ${g.min}–${g.max} joueurs</span><span>${icon('clock')} ${g.time}</span></div><div class="card-cta">Prendre place ${icon('arrow')}</div></div></button><button type="button" class="catalog-star" data-action="catalog-star" data-id="${id}" aria-label="${catalogFavorites.includes(id)?'Retirer':'Ajouter'} ${esc(g.name)} ${catalogFavorites.includes(id)?'des':'aux'} favoris" aria-pressed="${catalogFavorites.includes(id)}" title="${catalogFavorites.includes(id)?'Retirer des favoris':'Ajouter aux favoris'}"><span aria-hidden="true">${catalogFavorites.includes(id)?'★':'☆'}</span></button></article>`).join(''):`<div class="catalog-empty"><span aria-hidden="true">${catalogOptions.favorites?'☆':'♧'}</span><h3>${catalogOptions.favorites&&!catalogFavorites.length?'Vos favoris vous attendent':'Aucun jeu avec ces critères'}</h3><p>${catalogOptions.favorites&&!catalogFavorites.length?'Ajoutez une étoile aux jeux que vous aimez pour les retrouver ici.':'Essayez moins de filtres, une autre durée ou un autre nom.'}</p><button type="button" class="btn secondary" data-action="catalog-reset">Voir tous les jeux ${icon('arrow')}</button></div>`;};
+renderCatalog=function(){V14_CATALOG();if($('catalog-status'))$('catalog-status').textContent=catalogResultText();if($('favorite-count'))$('favorite-count').textContent=catalogFavorites.length;};
+renderGame=function(...args){if(S&&view==='game'&&!net.spectator)catalogRemember(S.id);return V14_RENDER_GAME(...args);};
+function catalogReset(){filter='all';query='';catalogOptions={favorites:false,players:0,minutes:0,sort:'collection'};if($('search-games'))$('search-games').value='';for(const id of ['players','minutes','sort'])if($('catalog-'+id))$('catalog-'+id).value=id==='sort'?'collection':'0';document.querySelectorAll('.filter').forEach(b=>{b.classList.toggle('active',b.dataset.filter==='all');b.setAttribute('aria-pressed',String(b.dataset.filter==='all'));});document.querySelector('[data-action="catalog-favorites"]')?.setAttribute('aria-pressed','false');renderCatalog();}
+document.addEventListener('change',e=>{if(view!=='home')return;const id=e.target.id;if(id==='catalog-players')catalogOptions.players=[0,2,3,4,5,6,7,8].includes(Number(e.target.value))?Number(e.target.value):0;else if(id==='catalog-minutes')catalogOptions.minutes=[0,5,10,15,30].includes(Number(e.target.value))?Number(e.target.value):0;else if(id==='catalog-sort')catalogOptions.sort=['collection','name','duration','recent'].includes(e.target.value)?e.target.value:'collection';else return;renderCatalog();});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-action]');if(!b||b.disabled||view!=='home')return;const action=b.dataset.action;
+ if(action==='random'){e.preventDefault();e.stopImmediatePropagation();const choices=catalogEntries();if(!choices.length){toast('Aucun jeu avec ces critères. Utilisez « Tout afficher » pour élargir le choix.');return;}openSetup(choices[Math.floor(Math.random()*choices.length)][0]);return;}
+ if(!['catalog-star','catalog-favorites','catalog-reset'].includes(action))return;e.preventDefault();e.stopImmediatePropagation();
+ if(action==='catalog-star'){const id=b.dataset.id,stars=[...document.querySelectorAll('[data-action="catalog-star"]')],index=stars.indexOf(b);const persisted=catalogToggleFavorite(id);renderCatalog();const next=document.querySelector('[data-action="catalog-star"][data-id="'+id+'"]')||document.querySelectorAll('[data-action="catalog-star"]')[Math.max(0,index-1)]||document.querySelector('[data-action="catalog-favorites"]');next?.focus({preventScroll:true});toast((catalogFavorites.includes(id)?'Ajouté aux favoris.':'Retiré des favoris.')+(persisted?'':' Conservation impossible dans ce navigateur : valable pour cette visite.'));return;}
+ if(action==='catalog-favorites'){catalogOptions.favorites=!catalogOptions.favorites;b.setAttribute('aria-pressed',String(catalogOptions.favorites));renderCatalog();return;}
+ catalogReset();document.querySelector('[data-action="catalog-reset"]')?.focus({preventScroll:true});
+},true);
 
 validateSaved();applyPrefs();showHome();bootOnlineInvite();musicMount();
 </script></body></html>
