@@ -353,6 +353,17 @@ html[data-motion="on"] .suite-slot.just-played{animation:suite-arrive .45s cubic
 @media(max-width:360px){.catalog-tools label{flex-basis:100%}}
 html[data-motion="off"] .catalog-star{transition:none}html[data-motion="off"] .catalog-star:hover{transform:none}
 
+.setup-recap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 14px;margin:4px 0 8px;padding:12px 14px;border:1px solid #5c704b;border-radius:12px;background:#263821;color:#e3edce;font-size:12px}
+.setup-recap>span{display:flex;align-items:center;gap:7px}.setup-recap .icon{width:16px;height:16px}
+.setup-remember-note{font-size:11px;color:#b7c9ad;line-height:1.6;margin:0 0 16px}
+.setup-rules{margin:0 0 20px;border:1px solid #4c6045;border-radius:12px;background:#16271d;overflow:hidden}
+.setup-rules summary{cursor:pointer;min-height:48px;padding:13px 15px;color:#e1ecc6;font-size:13px;list-style-position:inside;line-height:1.6}
+.setup-rules summary>span{display:block;margin-left:18px;color:#b7c9ad;font-size:11px}
+.setup-rules[open] summary{border-bottom:1px solid #43583a;background:#273c25}
+.setup-rules-body{padding:16px;color:#d4dfcc;font-size:12px;line-height:1.85}.setup-rules-body>p{color:#aebeab;margin-bottom:12px}.setup-rules-body ol{padding-left:20px;margin:0}.setup-rules-body li+li{margin-top:12px}
+.setup-rules summary:focus-visible{outline-offset:-4px;border-radius:10px}
+@media(max-width:400px){.setup-recap{font-size:11px;padding:11px}.setup-rules-body{padding:13px}}
+
 </style></head><body><a class="skip" href="#main">Aller au contenu</a><div id="app"></div><dialog id="dialog" aria-label="Options de la table"></dialog><div id="toasts"></div><div id="announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><noscript><main style="max-width:600px;margin:10vh auto;padding:30px;font-family:system-ui"><h1>La table de jeux</h1><p>Pour distribuer les cartes et lancer les dés, activez JavaScript dans votre navigateur. Le solo et le jeu sur le même écran fonctionnent hors connexion ; les salons à distance nécessitent Internet.</p></main></noscript><!-- PeerJS 1.5.5 — MIT License
 Copyright (c) 2015 Michelle Bu and Eric Zhang, http://peerjs.com
 
@@ -2134,6 +2145,45 @@ document.addEventListener('click',e=>{
  if(action==='catalog-favorites'){catalogOptions.favorites=!catalogOptions.favorites;b.setAttribute('aria-pressed',String(catalogOptions.favorites));renderCatalog();return;}
  catalogReset();document.querySelector('[data-action="catalog-reset"]')?.focus({preventScroll:true});
 },true);
+
+/* Préparation des parties : règles sur place et préférences par jeu. */
+function normalizeTableChoice(id,raw){
+ if(!Object.hasOwn(GAMES,id))return null;
+ const g=GAMES[id],mode=['solo','local','online'].includes(raw?.mode)?raw.mode:'solo',min=mode==='solo'?g.min:Math.max(2,g.min);
+ const fallback=id==='vingtetun'&&mode==='solo'?1:Math.min(3,g.max);
+ return {mode,count:Number.isInteger(raw?.count)?Math.max(min,Math.min(g.max,raw.count)):Math.max(min,fallback)};
+}
+function cleanTableChoices(raw){return Object.fromEntries(Object.keys(GAMES).filter(id=>raw&&typeof raw==='object'&&Object.hasOwn(raw,id)).map(id=>[id,normalizeTableChoice(id,raw[id])]));}
+let tableChoices=cleanTableChoices(storage.get('tableChoices',{})),catalogReturn=null;
+function rememberTableChoice(id,mode,count){const choice=normalizeTableChoice(id,{mode,count});if(!choice)return false;if(tableChoices[id]?.mode===choice.mode&&tableChoices[id]?.count===choice.count)return true;tableChoices[id]=choice;return storage.set('tableChoices',tableChoices);}
+function preferredTableChoice(id,count=0){const choice=normalizeTableChoice(id,tableChoices[id]);if(!choice)return null;const min=choice.mode==='solo'?GAMES[id].min:Math.max(2,GAMES[id].min);if(Number.isInteger(count)&&count>=min&&count<=GAMES[id].max)choice.count=count;return choice;}
+function setupRulesHTML(id){const g=GAMES[id];if(!g)return '';return `<details class="setup-rules" id="setup-rules" data-game="${id}"><summary>Règles · ${esc(g.name)} <span>À lire avant de jouer</span></summary><div class="setup-rules-body"><p>Les règles de cette version, identiques en solo, sur le même écran et en ligne.</p><ol>${g.rules.map(rule=>`<li>${esc(rule)}</li>`).join('')}</ol></div></details>`;}
+function setupRecapHTML(id,mode,count){const g=GAMES[id];return `<div class="setup-recap" id="setup-recap"><span>${icon('users')} ${mode==='solo'?(count===1?'Vous contre la banque':'Vous + '+(count-1)+' IA'):count+' joueurs · '+(mode==='online'?'chacun son écran':'même écran')}</span><span>${icon('clock')} ${esc(g.time)}</span></div><p class="setup-remember-note">Mode et nombre de joueurs mémorisés pour ce jeu, sur cet appareil.</p>`;}
+const V15_SETUP=renderSetup,V15_HOME=showHome;
+const V15_MODE_TABS=setupModeTabs;
+setupModeTabs=function(){return V15_MODE_TABS().replace('En ligne · 2–8','En ligne · 2–'+(GAMES[setup.id]?.max||8));};
+openSetup=function(id){
+ if(!Object.hasOwn(GAMES,id))return;
+ if(view==='home')catalogReturn={id,top:window.scrollY||0,recent:!!document.activeElement?.closest?.('.catalog-recent')};
+ const choice=preferredTableChoice(id,view==='home'?catalogOptions.players:0);setup={id,...choice,names:[]};renderSetup();
+};
+renderSetup=function(){
+ V15_SETUP();
+ if(setup.mode==='online'&&$('online-capacity'))$('online-capacity').value=String(Math.max(2,Math.min(GAMES[setup.id].max,setup.count)));
+ const id=setup.mode==='online'?$('online-game')?.value||setup.id:setup.id,count=setup.mode==='online'?Number($('online-capacity')?.value)||setup.count:setup.count;
+ rememberTableChoice(id,setup.mode,count);
+ const anchor=setup.mode==='online'?document.querySelector('.online-create-panel'):document.querySelector('#setup-form');
+ anchor?.insertAdjacentHTML('afterbegin',setupRecapHTML(id,setup.mode,count)+setupRulesHTML(id));
+ if(setup.mode==='local'&&['yam','oie','metropole','bataille'].includes(id)){const note=document.querySelector('#setup-form .mode-note');if(note)note.textContent='À chacun son tour sur le même écran. Les actions et le plateau sont visibles de tous.';}
+};
+showHome=function(){const returning=view==='game',point=catalogReturn;V15_HOME();if(!returning||!point)return;window.scrollTo({top:point.top,behavior:'instant'});const scope=point.recent?'.catalog-recent ':'.games-grid ';const target=document.querySelector(scope+'[data-action="setup"][data-id="'+point.id+'"]')||$('search-games');target?.focus({preventScroll:true});};
+document.addEventListener('change',e=>{
+ if(modalKind!=='setup'||!['online-game','online-capacity'].includes(e.target.id))return;
+ const id=$('online-game').value;setup.id=id;setup.count=Number($('online-capacity').value);rememberTableChoice(id,'online',setup.count);
+ const tab=document.querySelector('[data-action="mode"][data-mode="online"]');if(tab)tab.textContent='En ligne · 2–'+GAMES[id].max;
+ const recap=$('setup-recap');if(recap)recap.outerHTML=setupRecapHTML(id,'online',setup.count).replace(/<p class="setup-remember-note">[\s\S]*?<\/p>/,'');
+ const rules=$('setup-rules');if(rules&&rules.dataset.game!==id)rules.outerHTML=setupRulesHTML(id);
+});
 
 validateSaved();applyPrefs();showHome();bootOnlineInvite();musicMount();
 </script></body></html>
