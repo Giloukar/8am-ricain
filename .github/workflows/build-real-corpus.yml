@@ -1,0 +1,42 @@
+name: Build real LexiMind corpus
+on:
+  push:
+    branches: [corpus-fill-run]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[corpus output]')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: corpus-fill-run
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download Lexique 4
+        run: |
+          curl -L --fail --retry 4 --retry-delay 3             https://lexique.org/databases/Lexique400/Lexique400.tsv             -o /tmp/Lexique400.tsv
+          test $(stat -c%s /tmp/Lexique400.tsv) -gt 30000000
+      - name: Download French Wiktionary extraction
+        run: |
+          curl -L --fail --retry 4 --retry-delay 5             https://kaikki.org/frwiktionary/raw-wiktextract-data.jsonl.gz             -o /tmp/frwiktionary.jsonl.gz
+          test $(stat -c%s /tmp/frwiktionary.jsonl.gz) -gt 500000000
+      - name: Build 6000 ready entries
+        run: |
+          rm -rf data/real-corpus
+          python scripts/build_real_corpus.py /tmp/Lexique400.tsv /tmp/frwiktionary.jsonl.gz data/real-corpus 6000
+          cat data/real-corpus/manifest.json
+          test $(find data/real-corpus -name 'batch_*.sql' | wc -l) -ge 15
+      - name: Commit generated corpus
+        run: |
+          git config user.name "Le Salon Corpus Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/real-corpus
+          git commit -m "[corpus output] Generate 6000 ready LexiMind entries"
+          git push origin HEAD:corpus-fill-run
