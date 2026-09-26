@@ -22,9 +22,9 @@ Published discovery rows must also have a non-empty definition and one of the su
 After the 26 September 2026 corpus-quality pass:
 
 - `lexicon`: **14,807** rows total;
-- `ready`: **10,787**;
-- `hidden`: **4,020**;
-- standard advanced discovery (difficulty 4–5, clean definition/POS): **9,449**;
+- `ready`: **10,780**;
+- `hidden`: **4,027**;
+- standard advanced discovery (difficulty 4–5, clean definition/POS): **9,442**;
 - ready rows with a blank definition: **0**;
 - ready same-word + same-POS duplicate groups: **0**.
 
@@ -36,6 +36,8 @@ The source breakdown is:
 - `Le Salon starter lexicon`: 79 ready / 1 hidden.
 
 The QA pass preserves provenance and rows rather than deleting uncertain data. Pure spelling redirects, terse abbreviation/ellipsis redirects, audited malformed definitions and imported duplicates of curated starter entries are hidden until they can be rehydrated from a trustworthy lexical source.
+
+A database constraint now prevents future `ready` rows from being published without both a non-empty definition and a supported POS. Audited extraction fragments are repaired only when the surviving text is already source-backed; otherwise they stay hidden.
 
 ## Rebuild
 
