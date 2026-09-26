@@ -1,0 +1,5 @@
+(function(){
+function show(msg="Connexion au lexique indisponible"){let id="lexiOffline",x=document.getElementById(id);if(!x){x=document.createElement("div");x.id=id;x.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;background:#171c28;border:1px solid #384158;border-radius:14px;padding:10px 14px;color:#fff;box-shadow:0 12px 35px #0008";document.body.appendChild(x)}x.innerHTML=msg+' <button id="lexiRetry" style="margin-left:8px">Réessayer</button>';x.querySelector("#lexiRetry").onclick=()=>{x.remove();window.dispatchEvent(new Event("lexi:retry"))}}
+function hide(){document.getElementById("lexiOffline")?.remove()}
+window.LexiOffline={show,hide};window.addEventListener("offline",()=>show("Mode hors ligne · les nouvelles cartes sont en pause"));window.addEventListener("online",hide);
+})();
