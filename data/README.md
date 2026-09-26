@@ -49,7 +49,7 @@ Curation is persisted directly on each lexicon row:
 - `rejected`: reviewed and intentionally excluded, with a machine-readable reason;
 - `curation_source_url`: Wiktionary page used as evidence when available.
 
-Current reviewed state: **1,677 pending / 28 approved / 231 rejected**.
+Current reviewed state: **1,673 pending / 28 approved / 235 rejected**.
 
 1. Add a reviewed JSON batch under `data/leximind-curation-reviewed-batch-XXX.json`. Batch 001 remains backward-compatible with the original hydration-only format.
 2. Mark each new record `approved` or `rejected`. Approved rows need a definition and Wiktionary URL; rejected rows need a controlled reason and may include an evidence URL.
@@ -63,6 +63,8 @@ The validator rejects unsupported POS values, blank or suspiciously short/long a
 A conservative automatic canonicalization pass is also allowed for spelling-only hyphen differences. It rejects a pending row only when a `ready` row of the same POS already exists, has a non-empty definition and Wiktionary source URL, and both spellings become identical after removing hyphens. The chosen canonical row's source URL is persisted as curation evidence. The first pass resolved **40** such variants.
 
 A second conservative automatic pass handles nominal plurals only when the pending form is at least seven characters long and equals an already published, Wiktionary-sourced noun plus a final `s`. This resolved **120** clear plural forms without changing the published corpus.
+
+A third exact plural pass handles forms that are the canonical sourced word plus a final `x`. It resolved **4** additional forms (`couvre-feux`, `pare-feux`, `porte-manteaux`, `vivaneaux`).
 
 ## Rebuild
 
