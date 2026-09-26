@@ -9,8 +9,7 @@ def clean(s):
  s=re.sub(r"\{\{[^{}]*\}\}","",s);s=re.sub(r"'{2,5}","",s);s=re.sub(r"<[^>]+>","",s)
  return html.unescape(re.sub(r"\s+"," ",s)).strip(" ;:.")+"."
 def definition(wikitext):
- m=re.search(r"==\s*\{\{langue\|fr\}\}\s*==(?P<x>.*?)(?=
-==[^=]|\Z)",wikitext,re.S)
+ m=re.search(r"==\s*\{\{langue\|fr\}\}\s*==(?P<x>.*?)(?=\n==[^=]|\Z)",wikitext,re.S)
  if not m:return None
  for line in m.group("x").splitlines():
   if not re.match(r"^#(?![:*#])\s+",line):continue
@@ -20,8 +19,7 @@ def definition(wikitext):
  return None
 def fetch(words):
  params={"action":"query","format":"json","formatversion":"2","prop":"revisions","rvprop":"content","rvslots":"main","redirects":"1","titles":"|".join(words)}
- payload=urllib.parse.urlencode(params).encode("utf-8")
- req=urllib.request.Request(API,data=payload,headers={"User-Agent":"LeSalon-LexiMind/1.0 (educational vocabulary corpus)","Content-Type":"application/x-www-form-urlencoded"})
+ req=urllib.request.Request(API+"?"+urllib.parse.urlencode(params),headers={"User-Agent":"LeSalon-LexiMind/1.0 (educational vocabulary corpus)"})
  data=json.load(urllib.request.urlopen(req,timeout=60));out={}
  for p in data.get("query",{}).get("pages",[]):
   if p.get("missing"):continue
