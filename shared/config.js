@@ -1,1 +1,1 @@
-window.SALON_CONFIG={SUPABASE_URL:"",SUPABASE_PUBLISHABLE_KEY:""};
+window.SALON_CONFIG={SUPABASE_URL:"https://mayfxudelmwhubgccmkc.supabase.co",SUPABASE_PUBLISHABLE_KEY:"sb_publishable_mAgVC0-Kuvs8XpaG9DeVVg_2vaeZ2Uu"};
