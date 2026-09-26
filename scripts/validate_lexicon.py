@@ -8,7 +8,7 @@ for r in ready:
  if not re.fullmatch(r"[a-zàâäçéèêëîïôöùûüÿœæ-]{4,30}",w):reasons.append("word")
  if len(d)<12 or len(d)>420:reasons.append("definition_length")
  if w in seen:reasons.append("duplicate")
- if r.get("difficulty",0)<3:reasons.append("difficulty")
+ if r.get("difficulty",0)<3:reasons.append("difficulty")\n if not r.get("word") or r.get("word") != r.get("lemma"): reasons.append("lemma")
  if not r.get("source_url"):reasons.append("provenance")
  seen.add(w)
  if reasons:bad.append((w,reasons))
