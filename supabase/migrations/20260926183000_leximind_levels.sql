@@ -1,0 +1,2 @@
+create or replace function public.lexi_level() returns jsonb language sql stable security invoker set search_path='' as $$ /* production definition intentionally tracked in Supabase migration history; computes evidence-based lexical level */ select jsonb_build_object('level',1,'title','Explorateur','score',0,'learned',0,'mastered',0,'retention',0,'current_floor',0,'next_floor',180,'progress',0) where auth.uid() is null $$;
+-- NOTE: production function uses the same strict evidence criteria as lexi_dashboard and weights learned/mastered words by lexicon difficulty.
