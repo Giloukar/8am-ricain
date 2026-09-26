@@ -1,0 +1,7 @@
+(function(){
+const LOCAL_KEYS=["salon_leximind_v2","salon_leximind_v1"];
+async function syncLexi(){let u=SalonAccount.user(),db=SalonAccount.db();if(!u||!db)return {synced:false};let raw=null;for(let k of LOCAL_KEYS){try{raw=JSON.parse(localStorage.getItem(k)||"null");if(raw)break}catch{}}if(!raw?.words)return {synced:true,count:0};let names=Object.keys(raw.words);if(!names.length)return {synced:true,count:0};
+let words=await db.from("lexicon").select("id,word").in("word",names.slice(0,500));if(words.error)return {synced:false,error:words.error};let by=new Map((words.data||[]).map(x=>[x.word.toLowerCase(),x.id]));let rows=[];for(let [name,p] of Object.entries(raw.words)){let id=by.get(name.toLowerCase());if(!id)continue;rows.push({user_id:u.id,word_id:id,level:p.level||0,due_at:new Date(p.next||Date.now()).toISOString(),reviews:(p.correct||0)+(p.wrong||0),lapses:p.wrong||0,known:!!p.known,favorite:!!p.fav,updated_at:new Date().toISOString()})}if(rows.length){let r=await db.from("lexi_progress").upsert(rows,{onConflict:"user_id,word_id"});if(r.error)return {synced:false,error:r.error}}return {synced:true,count:rows.length}}
+window.SalonSync={lexi:syncLexi};
+SalonAccount.onChange(async u=>{if(u){let r=await syncLexi();window.dispatchEvent(new CustomEvent("salon:lexi-synced",{detail:r}))}});
+})();
