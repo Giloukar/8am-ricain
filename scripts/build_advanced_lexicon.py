@@ -1,31 +1,34 @@
 #!/usr/bin/env python3
 import argparse,csv,json,math,re,urllib.request,pathlib
-URL="https://lexique.org/databases/Lexique400/Lexique400.tsv"
+URL="https://www.lexique.org/databases/Lexique400/Lexique400.tsv"
 KEEP={"NOM","ADJ","VER","ADV"}
 def num(x):
  try:return float(str(x or "0").replace(",","."))
  except:return 0.0
+def pick(row,*names):
+ for n in names:
+  if row.get(n) not in (None,""): return row[n]
+ return ""
 def main():
- p=argparse.ArgumentParser();p.add_argument("--input");p.add_argument("--output",default="data/leximind-advanced-candidates.json");p.add_argument("--limit",type=int,default=8000);a=p.parse_args()
+ ap=argparse.ArgumentParser();ap.add_argument("--input");ap.add_argument("--output",default="data/leximind-candidates.json");ap.add_argument("--limit",type=int,default=7000);a=ap.parse_args()
  src=a.input or "/tmp/Lexique400.tsv"
  if not a.input:
-  req=urllib.request.Request(URL,headers={"User-Agent":"LeSalon-LexiMind/1.0"});pathlib.Path(src).write_bytes(urllib.request.urlopen(req,timeout=90).read())
- best={}
+  req=urllib.request.Request(URL,headers={"User-Agent":"LeSalon-LexiMind/1.0"});open(src,"wb").write(urllib.request.urlopen(req,timeout=120).read())
  with open(src,encoding="utf-8-sig") as h:
-  reader=csv.DictReader(h,delimiter="\t")
-  for r in reader:
-   lemma=(r.get("4_Lemme") or r.get("lemme") or "").strip().lower();word=(r.get("1_Mot") or r.get("ortho") or "").strip().lower();pos=(r.get("5_Cgram") or r.get("cgram") or "").strip().upper()
-   if pos not in KEEP or not lemma or word!=lemma or not 5<=len(lemma)<=18 or not re.fullmatch(r"[a-zàâäçéèêëîïôöùûüÿœæ-]+",lemma):continue
-   freq=num(r.get("12_FreqLemme") or r.get("freqlemfilms2") or r.get("freqlemlivres"));cd=num(r.get("13_CD") or r.get("CD"));prev=num(r.get("prevalence") or r.get("Prevalence"))
-   if not 0.02<=freq<=3 or "-" in lemma:continue
-   difficulty_score=max(0,min(100,52+11*math.log10(18/max(freq,.01))+min(12,max(0,len(lemma)-7)*1.2)))
-   breadth=min(1,cd/8) if cd else min(1,freq/3); prevalence=min(1,prev/0.65) if prev else .55
-   target=.65
-   band=max(0,1-abs(math.log10(freq)-math.log10(target))/1.35)
-   value=max(0,min(100,difficulty_score*.55+band*35+prevalence*10))
-   difficulty=5 if difficulty_score>=78 else 4 if difficulty_score>=64 else 3
-   row=dict(word=lemma,lemma=lemma,pos=pos,frequency=round(freq,4),native_score=round(difficulty_score,2),learning_value=round(value,2),contextual_diversity=round(cd,4) if cd else None,prevalence=round(prev,4) if prev else None,difficulty=difficulty)
-   if lemma not in best or value>best[lemma]["learning_value"]:best[lemma]=row
+  rd=csv.DictReader(h,delimiter="\t"); best={}
+  for r in rd:
+   word=pick(r,"1_Mot","ortho").strip().lower();lemma=pick(r,"4_Lemme","lemme").strip().lower();pos=pick(r,"5_Cgram","cgram").strip().upper()
+   if not lemma: lemma=word
+   if pos not in KEEP or word!=lemma or len(word)<6 or len(word)>24 or not re.fullmatch(r"[a-zàâäçéèêëîïôöùûüÿœæ-]+",word):continue
+   freq=num(pick(r,"12_FreqLemme","freqlemfilms2","freqlemlivres"));cd=num(pick(r,"13_CD","CD","cd"));prev=num(pick(r,"14_Prevalence","Prevalence","prevalence"))
+   if freq<=0 or freq>22:continue
+   rarity=max(0,min(100,48+12*math.log10(22/max(freq,.01))+min(12,max(0,len(word)-7)*1.1)))
+   breadth=min(1,cd/8) if cd else min(1,freq/3); prevalence=min(1,prev/0.65) if prev else .5
+   value=max(0,min(100,rarity*.55+breadth*28+prevalence*17))
+   difficulty=5 if rarity>=80 else 4 if rarity>=65 else 3
+   x={"word":word,"lemma":lemma,"pos":pos,"frequency":round(freq,5),"contextual_diversity":round(cd,5) if cd else None,"prevalence":round(prev,5) if prev else None,"native_score":round(rarity,2),"learning_value":round(value,2),"difficulty":difficulty}
+   if word not in best or value>best[word]["learning_value"]:best[word]=x
  rows=sorted(best.values(),key=lambda x:(-x["learning_value"],-x["native_score"],x["frequency"],x["word"]))[:a.limit]
- pathlib.Path(a.output).parent.mkdir(parents=True,exist_ok=True);pathlib.Path(a.output).write_text(json.dumps(rows,ensure_ascii=False),encoding="utf-8");print("candidates",len(rows))
+ pathlib.Path(a.output).parent.mkdir(parents=True,exist_ok=True);json.dump(rows,open(a.output,"w",encoding="utf-8"),ensure_ascii=False)
+ print("candidates",len(rows),"sample",[x["word"] for x in rows[:20]])
 if __name__=="__main__":main()
