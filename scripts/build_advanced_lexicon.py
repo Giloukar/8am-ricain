@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import argparse,csv,json,math,re,urllib.request,pathlib
 URL="https://lexique.org/databases/Lexique400/Lexique400.tsv"
-KEEP={"NOM","ADJ","VER","ADV"}\nADVANCED_MIN_NATIVE=72.0\nEXPERT_MIN_NATIVE=84.0
+KEEP={"NOM","ADJ","VER","ADV"}
+ADVANCED_MIN_NATIVE=72.0
+EXPERT_MIN_NATIVE=84.0
 
 def num(x):
     try:return float(str(x or "0").replace(",","."))
