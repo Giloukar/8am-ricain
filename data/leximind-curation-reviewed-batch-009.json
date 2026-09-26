@@ -1,0 +1,30 @@
+[
+  {
+    "word": "magyar",
+    "pos": "ADJ",
+    "decision": "approved",
+    "definition": "Hongrois ; relatif aux Magyars ou à la Hongrie.",
+    "source_url": "https://fr.wiktionary.org/wiki/magyar"
+  },
+  {
+    "word": "hawaiien",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/hawaiien"
+  },
+  {
+    "word": "hawaiien",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/hawaiien"
+  },
+  {
+    "word": "bêtabloquant",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/b%C3%AAta-bloquant"
+  }
+]
