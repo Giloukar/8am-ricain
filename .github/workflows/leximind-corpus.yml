@@ -6,26 +6,34 @@ on:
         description: Candidate lemmas
         required: false
         default: "8000"
+  push:
+    branches: ["leximind-real-corpus"]
+    paths:
+      - "scripts/build_advanced_lexicon.py"
+      - "scripts/enrich_wiktionary.py"
+      - ".github/workflows/leximind-corpus.yml"
 jobs:
   corpus:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - name: Build candidates
-        run: python scripts/build_advanced_lexicon.py --limit ${{ inputs.limit }}
-      - name: Hydrate definitions
-        run: python scripts/hydrate_wiktionary.py data/leximind-advanced-candidates.json --output data/leximind-hydrated.json
-      - name: Validate and build SQL
+      - name: Build 8000 advanced candidates from Lexique 4
+        run: python scripts/build_advanced_lexicon.py --limit ${{ inputs.limit || '8000' }}
+      - name: Hydrate French definitions from Wiktionary
+        run: python scripts/enrich_wiktionary.py --input data/leximind-advanced-candidates.json --output data/leximind-hydrated.json
+      - name: Validate and build idempotent SQL batches
         run: |
           python scripts/validate_lexicon.py data/leximind-hydrated.json
-          python scripts/make_lexicon_sql.py data/leximind-hydrated.json
+          python scripts/make_lexicon_sql.py data/leximind-hydrated.json --batch 250
       - uses: actions/upload-artifact@v4
         with:
           name: leximind-corpus
+          retention-days: 7
           path: |
             data/leximind-advanced-candidates.json
             data/leximind-hydrated.json
