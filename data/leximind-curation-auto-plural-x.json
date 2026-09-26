@@ -1,0 +1,30 @@
+[
+  {
+    "word": "couvre-feux",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/couvre-feu"
+  },
+  {
+    "word": "pare-feux",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/pare-feu"
+  },
+  {
+    "word": "porte-manteaux",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/porte-manteau"
+  },
+  {
+    "word": "vivaneaux",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/vivaneau"
+  }
+]
