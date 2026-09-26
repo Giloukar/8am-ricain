@@ -1,0 +1,58 @@
+[
+  {
+    "word": "pelvis",
+    "pos": "NOM",
+    "decision": "approved",
+    "definition": "Anatomie. Bassin osseux, partie inférieure du tronc reliant la colonne vertébrale aux membres inférieurs.",
+    "source_url": "https://fr.wiktionary.org/wiki/pelvis"
+  },
+  {
+    "word": "ammonium",
+    "pos": "NOM",
+    "decision": "approved",
+    "definition": "Chimie. Ion positif NH₄⁺, présent notamment dans de nombreux sels d’ammonium.",
+    "source_url": "https://fr.wiktionary.org/wiki/ammonium"
+  },
+  {
+    "word": "signorina",
+    "pos": "NOM",
+    "decision": "approved",
+    "definition": "Jeune femme ou demoiselle italienne ; équivalent de « mademoiselle ».",
+    "source_url": "https://fr.wiktionary.org/wiki/signorina"
+  },
+  {
+    "word": "beluga",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/beluga"
+  },
+  {
+    "word": "beluga",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/beluga"
+  },
+  {
+    "word": "chateaubriand",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/chateaubriand"
+  },
+  {
+    "word": "pensionné",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "regional_low_value",
+    "evidence_url": "https://fr.wiktionary.org/wiki/pensionn%C3%A9"
+  },
+  {
+    "word": "sémite",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/s%C3%A9mite"
+  }
+]
