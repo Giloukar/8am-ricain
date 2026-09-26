@@ -1,0 +1,58 @@
+[
+  {
+    "word": "ramollo",
+    "pos": "ADJ",
+    "decision": "approved",
+    "definition": "Familier. Mou, ramolli ; qui manque de fermeté ou d’énergie.",
+    "source_url": "https://fr.wiktionary.org/wiki/ramollo"
+  },
+  {
+    "word": "maous",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/maous"
+  },
+  {
+    "word": "chnoque",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/chnoque"
+  },
+  {
+    "word": "schnoque",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/schnoque"
+  },
+  {
+    "word": "flicard",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/flicard"
+  },
+  {
+    "word": "donnant-donnant",
+    "pos": "ADV",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/donnant-donnant"
+  },
+  {
+    "word": "nonsense",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "no_stable_lexical_entry",
+    "evidence_url": "https://fr.wiktionary.org/wiki/nonsense"
+  },
+  {
+    "word": "poter",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "regional_low_value",
+    "evidence_url": "https://fr.wiktionary.org/wiki/poter"
+  }
+]
