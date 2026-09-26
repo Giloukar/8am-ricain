@@ -1,0 +1,37 @@
+[
+  {
+    "word": "gaspilleur",
+    "pos": "ADJ",
+    "decision": "approved",
+    "definition": "Qui gaspille, dépense ou consomme sans mesure.",
+    "source_url": "https://fr.wiktionary.org/wiki/gaspilleur"
+  },
+  {
+    "word": "inconvenable",
+    "pos": "ADJ",
+    "decision": "approved",
+    "definition": "Qui est inconvenant, inapproprié ou contraire aux convenances.",
+    "source_url": "https://fr.wiktionary.org/wiki/inconvenable"
+  },
+  {
+    "word": "cardio-respiratoire",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/cardio-respiratoire"
+  },
+  {
+    "word": "préenregistré",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/Conjugaison%3Afran%C3%A7ais/pr%C3%A9enregistrer"
+  },
+  {
+    "word": "surjoué",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/surjouer"
+  }
+]
