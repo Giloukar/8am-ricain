@@ -1,0 +1,126 @@
+[
+  {
+    "word": "instinctivement",
+    "pos": "ADV",
+    "decision": "approved",
+    "definition": "Par instinct, sous l’impulsion spontanée de l’instinct.",
+    "source_url": "https://fr.wiktionary.org/wiki/instinctivement"
+  },
+  {
+    "word": "férir",
+    "pos": "VER",
+    "decision": "approved",
+    "definition": "Frapper ; verbe ancien ou littéraire, surtout conservé dans quelques expressions.",
+    "source_url": "https://fr.wiktionary.org/wiki/f%C3%A9rir"
+  },
+  {
+    "word": "anti-terroriste",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/anti-terroriste"
+  },
+  {
+    "word": "terre-à-terre",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/terre-%C3%A0-terre"
+  },
+  {
+    "word": "vioque",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/vioque"
+  },
+  {
+    "word": "extrascolaire",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/extrascolaire"
+  },
+  {
+    "word": "socioéconomique",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/socio%C3%A9conomique"
+  },
+  {
+    "word": "contreproductif",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/contreproductif"
+  },
+  {
+    "word": "récrire",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/r%C3%A9crire"
+  },
+  {
+    "word": "désaouler",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/d%C3%A9saouler"
+  },
+  {
+    "word": "béqueter",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/b%C3%A9queter"
+  },
+  {
+    "word": "gratouiller",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/gratouiller"
+  },
+  {
+    "word": "jodler",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/jodler"
+  },
+  {
+    "word": "courre",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "archaic_or_redirect_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/courre"
+  },
+  {
+    "word": "neuroscientifique",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/neuroscientifique"
+  },
+  {
+    "word": "ressouvenir",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "pronominal_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/ressouvenir"
+  },
+  {
+    "word": "hémodynamique",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "no_stable_lexical_entry"
+  },
+  {
+    "word": "obsessivement",
+    "pos": "ADV",
+    "decision": "rejected",
+    "reason": "no_stable_lexical_entry"
+  }
+]
