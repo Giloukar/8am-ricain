@@ -565,7 +565,7 @@ function say(s,text){s.log.unshift(text);s.log=s.log.slice(0,35);s.message=text;
 function player(s,i=s.turn){return s.players[i];}
 function active(s){return s.players.map((p,i)=>i).filter(i=>s.players[i].hand.length);}
 function next(s,i=s.turn,eligible=()=>true,dir=1){for(let k=1;k<=s.players.length;k++){let n=(i+k*dir+s.players.length*10)%s.players.length;if(eligible(n))return n;}return i;}
-function finish(s,winners,reason){s.phase='over';s.winners=Array.isArray(winners)?winners:[winners];s.reason=reason;s.finishedAt=Date.now();say(s,reason);}
+function finish(s,winners,reason){s.phase='over';s.winners=Array.isArray(winners)?winners:[winners];s.reason=reason;s.finishedAt=Date.now();say(s,reason);try{window.dispatchEvent(new CustomEvent('salon:game-finished',{detail:{game:s.id,winners:s.winners,players:(s.players||[]).map((p,i)=>({index:i,name:p.name,score:(s.scores&&s.scores[i])??p.score??0})),reason:s.reason,mode:s.mode,finishedAt:s.finishedAt}}))}catch(e){}}
 function draw(s,n=1){const out=[];for(let i=0;i<n;i++){if(!s.deck.length&&s.discard&&s.discard.length>1){const top=s.discard.pop();s.deck=shuffle(s.discard);s.discard=[top];}if(s.deck.length)out.push(s.deck.pop());}return out;}
 function basic(s){s.turn=0;s.phase='play';s.moves=0;s.winners=[];s.log=[];s.message='La partie commence.';s.recorded=false;s.startedAt=Date.now();return s;}
 function createGame(id,config,old=null){
