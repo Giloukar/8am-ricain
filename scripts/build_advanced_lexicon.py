@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse,csv,json,math,re,urllib.request,pathlib
-URL="https://www.lexique.org/databases/Lexique400/Lexique400.tsv"
+URL="https://lexique.org/databases/Lexique400/Lexique400.tsv"
 KEEP={"NOM","ADJ","VER","ADV"}
 def num(x):
  try:return float(str(x or "0").replace(",","."))
