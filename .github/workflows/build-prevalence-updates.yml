@@ -1,0 +1,34 @@
+name: Build Lexique prevalence updates
+on:
+  push:
+    branches: [prevalence-score-run]
+permissions:
+  contents: write
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[prevalence output]')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: prevalence-score-run
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download Lexique 4
+        run: |
+          curl -L --fail --retry 4 https://lexique.org/databases/Lexique400/Lexique400.tsv -o /tmp/Lexique400.tsv
+          test $(stat -c%s /tmp/Lexique400.tsv) -gt 30000000
+      - name: Build prevalence updates
+        run: |
+          rm -rf data/prevalence-updates
+          python scripts/build_prevalence_updates.py /tmp/Lexique400.tsv data/prevalence-updates
+          cat data/prevalence-updates/manifest.json
+      - name: Commit updates
+        run: |
+          git config user.name "Le Salon Corpus Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/prevalence-updates
+          git commit -m "[prevalence output] Generate Lexique prevalence updates"
+          git push origin HEAD:prevalence-score-run
