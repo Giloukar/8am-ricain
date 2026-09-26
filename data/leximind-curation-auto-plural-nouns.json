@@ -1,0 +1,842 @@
+[
+  {
+    "word": "addictifs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/addictif"
+  },
+  {
+    "word": "aide-soignants",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/aide-soignant"
+  },
+  {
+    "word": "aller-retours",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/aller-retour"
+  },
+  {
+    "word": "allume-cigares",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/allume-cigare"
+  },
+  {
+    "word": "animatroniques",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/animatronique"
+  },
+  {
+    "word": "backrooms",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/backroom"
+  },
+  {
+    "word": "baltringues",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/baltringue"
+  },
+  {
+    "word": "banshees",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/banshee"
+  },
+  {
+    "word": "battles",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/battle"
+  },
+  {
+    "word": "birdies",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/birdie"
+  },
+  {
+    "word": "bitcoins",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/bitcoin"
+  },
+  {
+    "word": "blackouts",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/blackout"
+  },
+  {
+    "word": "blasters",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/blaster"
+  },
+  {
+    "word": "blockbusters",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/blockbuster"
+  },
+  {
+    "word": "blogues",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/blogue"
+  },
+  {
+    "word": "blogueurs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/blogueur"
+  },
+  {
+    "word": "bolchéviques",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/bolch%C3%A9vique"
+  },
+  {
+    "word": "bonnasses",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/bonnasse"
+  },
+  {
+    "word": "broncos",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/bronco"
+  },
+  {
+    "word": "brulures",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/brulure"
+  },
+  {
+    "word": "calzones",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/calzone"
+  },
+  {
+    "word": "cardios",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/cardio"
+  },
+  {
+    "word": "chasse-neiges",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/chasse-neige"
+  },
+  {
+    "word": "chaudasses",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/chaudasse"
+  },
+  {
+    "word": "cheerleaders",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/cheerleader"
+  },
+  {
+    "word": "cheyennes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/cheyenne"
+  },
+  {
+    "word": "chimichangas",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/chimichanga"
+  },
+  {
+    "word": "chimios",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/chimio"
+  },
+  {
+    "word": "chlamydias",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/chlamydia"
+  },
+  {
+    "word": "choupinettes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/choupinette"
+  },
+  {
+    "word": "comanches",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/comanche"
+  },
+  {
+    "word": "condensats",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/condensat"
+  },
+  {
+    "word": "conspirationnistes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/conspirationniste"
+  },
+  {
+    "word": "dealeurs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/dealeur"
+  },
+  {
+    "word": "dégoutantes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/d%C3%A9goutante"
+  },
+  {
+    "word": "dératiseurs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/d%C3%A9ratiseur"
+  },
+  {
+    "word": "djihadistes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/djihadiste"
+  },
+  {
+    "word": "dumplings",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/dumpling"
+  },
+  {
+    "word": "électros",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/%C3%A9lectro"
+  },
+  {
+    "word": "elfiques",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/elfique"
+  },
+  {
+    "word": "émoticônes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/%C3%A9motic%C3%B4ne"
+  },
+  {
+    "word": "enchiladas",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/enchilada"
+  },
+  {
+    "word": "entraineurs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/entraineur"
+  },
+  {
+    "word": "escort-girls",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/escort-girl"
+  },
+  {
+    "word": "expressos",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/expresso"
+  },
+  {
+    "word": "falafels",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/falafel"
+  },
+  {
+    "word": "fashionistas",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/fashionista"
+  },
+  {
+    "word": "firewalls",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/firewall"
+  },
+  {
+    "word": "flashbacks",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/flashback"
+  },
+  {
+    "word": "frittatas",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/frittata"
+  },
+  {
+    "word": "garde-meubles",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/garde-meuble"
+  },
+  {
+    "word": "hackeurs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/hackeur"
+  },
+  {
+    "word": "hacktivistes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/hacktiviste"
+  },
+  {
+    "word": "hashtags",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/hashtag"
+  },
+  {
+    "word": "hipsters",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/hipster"
+  },
+  {
+    "word": "interros",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/interro"
+  },
+  {
+    "word": "jetpacks",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/jetpack"
+  },
+  {
+    "word": "jihadistes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/jihadiste"
+  },
+  {
+    "word": "lacrymos",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/lacrymo"
+  },
+  {
+    "word": "lance-flammes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/lance-flamme"
+  },
+  {
+    "word": "lance-pierres",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/lance-pierre"
+  },
+  {
+    "word": "lance-roquettes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/lance-roquette"
+  },
+  {
+    "word": "lapinous",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/lapinou"
+  },
+  {
+    "word": "latinas",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/latina"
+  },
+  {
+    "word": "lèche-culs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/l%C3%A8che-cul"
+  },
+  {
+    "word": "lèche-vitrines",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/l%C3%A8che-vitrine"
+  },
+  {
+    "word": "leprechauns",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/leprechaun"
+  },
+  {
+    "word": "léviathans",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/l%C3%A9viathan"
+  },
+  {
+    "word": "macchiatos",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/macchiato"
+  },
+  {
+    "word": "magnets",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/magnet"
+  },
+  {
+    "word": "malwares",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/malware"
+  },
+  {
+    "word": "métamorphes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/m%C3%A9tamorphe"
+  },
+  {
+    "word": "méthamphétamines",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/m%C3%A9thamph%C3%A9tamine"
+  },
+  {
+    "word": "métrosexuels",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/m%C3%A9trosexuel"
+  },
+  {
+    "word": "milkshakes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/milkshake"
+  },
+  {
+    "word": "papattes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/papatte"
+  },
+  {
+    "word": "pepperonis",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/pepperoni"
+  },
+  {
+    "word": "pick-ups",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/pick-up"
+  },
+  {
+    "word": "pinottes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/pinotte"
+  },
+  {
+    "word": "pitounes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/pitoune"
+  },
+  {
+    "word": "playlists",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/playlist"
+  },
+  {
+    "word": "podcasts",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/podcast"
+  },
+  {
+    "word": "poltergeists",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/poltergeist"
+  },
+  {
+    "word": "porte-parapluies",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/porte-parapluie"
+  },
+  {
+    "word": "porte-paroles",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/porte-parole"
+  },
+  {
+    "word": "qualifs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/qualif"
+  },
+  {
+    "word": "quarterbacks",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/quarterback"
+  },
+  {
+    "word": "quesadillas",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/quesadilla"
+  },
+  {
+    "word": "rabat-joies",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/rabat-joie"
+  },
+  {
+    "word": "rafraichissements",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/rafraichissement"
+  },
+  {
+    "word": "réplicateurs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/r%C3%A9plicateur"
+  },
+  {
+    "word": "révolvers",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/r%C3%A9volver"
+  },
+  {
+    "word": "rockstars",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/rockstar"
+  },
+  {
+    "word": "runnings",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/running"
+  },
+  {
+    "word": "scampis",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/scampi"
+  },
+  {
+    "word": "sex-toys",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/sex-toy"
+  },
+  {
+    "word": "sextapes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/sextape"
+  },
+  {
+    "word": "shurikens",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/shuriken"
+  },
+  {
+    "word": "skaters",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/skater"
+  },
+  {
+    "word": "sniffeurs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/sniffeur"
+  },
+  {
+    "word": "soulards",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/soulard"
+  },
+  {
+    "word": "start-ups",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/start-up"
+  },
+  {
+    "word": "startups",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/startup"
+  },
+  {
+    "word": "sudokus",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/sudoku"
+  },
+  {
+    "word": "sundaes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/sundae"
+  },
+  {
+    "word": "suprémacistes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/supr%C3%A9maciste"
+  },
+  {
+    "word": "tafioles",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/tafiole"
+  },
+  {
+    "word": "tarlouzes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/tarlouze"
+  },
+  {
+    "word": "télénovelas",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/t%C3%A9l%C3%A9novela"
+  },
+  {
+    "word": "téléporteurs",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/t%C3%A9l%C3%A9porteur"
+  },
+  {
+    "word": "touchdowns",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/touchdown"
+  },
+  {
+    "word": "trackers",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/tracker"
+  },
+  {
+    "word": "traîne-savates",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/tra%C3%AEne-savate"
+  },
+  {
+    "word": "trippes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/trippe"
+  },
+  {
+    "word": "tupperwares",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/tupperware"
+  },
+  {
+    "word": "vide-ordures",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/vide-ordure"
+  },
+  {
+    "word": "walkies",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/walkie"
+  },
+  {
+    "word": "webisodes",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/webisode"
+  },
+  {
+    "word": "wiccans",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/wiccan"
+  },
+  {
+    "word": "windows",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/window"
+  }
+]
