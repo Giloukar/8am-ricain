@@ -17,6 +17,7 @@ ALLOWED_REASONS = {
     "archaic_or_redirect_form",
     "pos_mismatch",
     "pronominal_mismatch",
+    "inflected_form",
     "no_stable_lexical_entry",
     "regional_low_value",
 }
