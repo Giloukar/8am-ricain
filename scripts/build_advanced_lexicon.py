@@ -20,7 +20,9 @@ def main():
    if not 0.02<=freq<=3 or "-" in lemma:continue
    difficulty_score=max(0,min(100,52+11*math.log10(18/max(freq,.01))+min(12,max(0,len(lemma)-7)*1.2)))
    breadth=min(1,cd/8) if cd else min(1,freq/3); prevalence=min(1,prev/0.65) if prev else .55
-   target=.65\n   band=max(0,1-abs(math.log10(freq)-math.log10(target))/1.35)\n   value=max(0,min(100,difficulty_score*.55+band*35+prevalence*10))
+   target=.65
+   band=max(0,1-abs(math.log10(freq)-math.log10(target))/1.35)
+   value=max(0,min(100,difficulty_score*.55+band*35+prevalence*10))
    difficulty=5 if difficulty_score>=78 else 4 if difficulty_score>=64 else 3
    row=dict(word=lemma,lemma=lemma,pos=pos,frequency=round(freq,4),native_score=round(difficulty_score,2),learning_value=round(value,2),contextual_diversity=round(cd,4) if cd else None,prevalence=round(prev,4) if prev else None,difficulty=difficulty)
    if lemma not in best or value>best[lemma]["learning_value"]:best[lemma]=row
