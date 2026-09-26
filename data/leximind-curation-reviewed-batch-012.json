@@ -1,0 +1,37 @@
+[
+  {
+    "word": "petite-bourgeoise",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/petit-bourgeois"
+  },
+  {
+    "word": "sacrifiables",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/sacrifiable"
+  },
+  {
+    "word": "subspatiaux",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/subspatial"
+  },
+  {
+    "word": "hydro-électrique",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/hydro%C3%A9lectrique"
+  },
+  {
+    "word": "ultra-violet",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/ultraviolet"
+  }
+]
