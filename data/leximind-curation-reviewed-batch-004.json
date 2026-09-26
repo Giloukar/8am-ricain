@@ -1,0 +1,51 @@
+[
+  {
+    "word": "déconfit",
+    "pos": "ADJ",
+    "decision": "approved",
+    "definition": "Déçu, dépité ou décontenancé par un revers ou une contrariété.",
+    "source_url": "https://fr.wiktionary.org/wiki/d%C3%A9confit"
+  },
+  {
+    "word": "avenu",
+    "pos": "ADJ",
+    "decision": "approved",
+    "definition": "Advenu ; surtout employé dans des expressions négatives comme « non avenu ».",
+    "source_url": "https://fr.wiktionary.org/wiki/avenu"
+  },
+  {
+    "word": "converse",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/converse"
+  },
+  {
+    "word": "bipartite",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/bipartite"
+  },
+  {
+    "word": "époxy",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/%C3%A9poxy"
+  },
+  {
+    "word": "staccato",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/staccato"
+  },
+  {
+    "word": "occis",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "inflected_form",
+    "evidence_url": "https://fr.wiktionary.org/wiki/occis"
+  }
+]
