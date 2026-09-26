@@ -22,16 +22,16 @@ Published discovery rows must also have a non-empty definition and one of the su
 After the 26 September 2026 corpus-quality pass:
 
 - `lexicon`: **14,807** rows total;
-- `ready`: **10,805**;
-- `hidden`: **4,002**;
-- standard advanced discovery (difficulty 4–5, clean definition/POS): **9,467**;
+- `ready`: **10,807**;
+- `hidden`: **4,000**;
+- standard advanced discovery (difficulty 4–5, clean definition/POS): **9,469**;
 - ready rows with a blank definition: **0**;
 - ready same-word + same-POS duplicate groups: **0**.
 
 The source breakdown is:
 - `Lexique 4 + Wiktionnaire`: 6,560 ready / 28 hidden;
-- `Wiktionnaire fr + Lexique 4`: 4,166 ready / 36 hidden;
-- `Lexique 4`: 2,246 hidden rows, including 1,869 advanced candidates still pending source review;
+- `Wiktionnaire fr + Lexique 4`: 4,168 ready / 36 hidden;
+- `Lexique 4`: 2,244 hidden rows, including 1,864 advanced candidates still pending source review;
 - `Wiktionnaire/DBnary`: 1,691 hidden legacy rows pending selective QA;
 - `Le Salon starter lexicon`: 79 ready / 1 hidden.
 
@@ -49,7 +49,7 @@ Curation is persisted directly on each lexicon row:
 - `rejected`: reviewed and intentionally excluded, with a machine-readable reason;
 - `curation_source_url`: Wiktionary page used as evidence when available.
 
-Current reviewed state: **1,869 pending / 25 approved / 42 rejected**.
+Current reviewed state: **1,864 pending / 27 approved / 45 rejected**.
 
 1. Add a reviewed JSON batch under `data/leximind-curation-reviewed-batch-XXX.json`. Batch 001 remains backward-compatible with the original hydration-only format.
 2. Mark each new record `approved` or `rejected`. Approved rows need a definition and Wiktionary URL; rejected rows need a controlled reason and may include an evidence URL.
