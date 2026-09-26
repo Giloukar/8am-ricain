@@ -1,0 +1,10 @@
+{
+  "mapped_words": 21412,
+  "difficulty": {
+    "3": 17309,
+    "4": 2613,
+    "5": 1490
+  },
+  "prevalence_le_65": 4103,
+  "prevalence_le_50": 2778
+}
