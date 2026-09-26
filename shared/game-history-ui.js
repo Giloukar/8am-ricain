@@ -1,0 +1,5 @@
+(function(){
+async function open(){let rows=await SalonGameHistory.list(0,30),o=document.createElement("div");o.className="saPanel";o.innerHTML='<div class="saBox"><h2>Historique des parties</h2>'+(rows.length?rows.map(x=>'<div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #ffffff12"><span><b>'+x.game_key+'</b><br><small>'+new Date(x.created_at).toLocaleDateString("fr-FR")+'</small></span><span>'+(x.won?'🏆 Victoire':'Partie')+' · '+(x.score||0)+' pts</span></div>').join(""):'<p>Aucune partie synchronisée pour le moment.</p>')+'<button id="ghClose">Fermer</button></div>';document.body.appendChild(o);o.querySelector("#ghClose").onclick=()=>o.remove()}
+function boot(){let b=document.createElement("button");b.textContent="🕘 Historique";b.style.cssText="position:fixed;right:14px;top:146px;z-index:99997;border:1px solid #536846;border-radius:10px;padding:8px 11px;background:#172019ef;color:white;cursor:pointer";b.onclick=open;document.body.appendChild(b)}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
