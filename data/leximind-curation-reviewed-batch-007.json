@@ -1,0 +1,37 @@
+[
+  {
+    "word": "véhiculaire",
+    "pos": "ADJ",
+    "decision": "approved",
+    "definition": "Qui véhicule ou sert à transmettre ; notamment, en linguistique, qui permet la communication entre locuteurs de langues différentes.",
+    "source_url": "https://fr.wiktionary.org/wiki/v%C3%A9hiculaire"
+  },
+  {
+    "word": "émancipateur",
+    "pos": "ADJ",
+    "decision": "approved",
+    "definition": "Qui émancipe, libère d’une tutelle, d’une dépendance ou d’une contrainte.",
+    "source_url": "https://fr.wiktionary.org/wiki/%C3%A9mancipateur"
+  },
+  {
+    "word": "oxydant",
+    "pos": "ADJ",
+    "decision": "approved",
+    "definition": "Chimie. Qui oxyde ou favorise une réaction d’oxydation.",
+    "source_url": "https://fr.wiktionary.org/wiki/oxydant"
+  },
+  {
+    "word": "optronique",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/optronique"
+  },
+  {
+    "word": "apnéique",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/apn%C3%A9ique"
+  }
+]
