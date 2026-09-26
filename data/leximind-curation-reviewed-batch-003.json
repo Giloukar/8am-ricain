@@ -1,0 +1,86 @@
+[
+  {
+    "word": "escoffier",
+    "pos": "VER",
+    "decision": "approved",
+    "definition": "Tuer, dans un emploi vieilli.",
+    "source_url": "https://fr.wiktionary.org/wiki/escoffier"
+  },
+  {
+    "word": "fourgue",
+    "pos": "NOM",
+    "decision": "approved",
+    "definition": "En argot, recel ou personne qui reçoit et revend des objets volés.",
+    "source_url": "https://fr.wiktionary.org/wiki/fourgue"
+  },
+  {
+    "word": "gringue",
+    "pos": "NOM",
+    "decision": "approved",
+    "definition": "Séduction, notamment dans l’expression « faire du gringue ».",
+    "source_url": "https://fr.wiktionary.org/wiki/gringue"
+  },
+  {
+    "word": "pentacle",
+    "pos": "NOM",
+    "decision": "approved",
+    "definition": "Figure géométrique, souvent fondée sur un pentagramme, portant des inscriptions à valeur ésotérique.",
+    "source_url": "https://fr.wiktionary.org/wiki/pentacle"
+  },
+  {
+    "word": "bouillasse",
+    "pos": "NOM",
+    "decision": "approved",
+    "definition": "Boue épaisse et liquide, souvent mêlée de neige fondue ou d’eau.",
+    "source_url": "https://fr.wiktionary.org/wiki/bouillasse"
+  },
+  {
+    "word": "co-exister",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/co-exister"
+  },
+  {
+    "word": "reservir",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/reservir"
+  },
+  {
+    "word": "iodler",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/iodler"
+  },
+  {
+    "word": "tocade",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/tocade"
+  },
+  {
+    "word": "cuiter",
+    "pos": "VER",
+    "decision": "rejected",
+    "reason": "pronominal_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/cuiter"
+  },
+  {
+    "word": "rétracteur",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/r%C3%A9tracteur"
+  },
+  {
+    "word": "isolationniste",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/isolationniste"
+  }
+]
