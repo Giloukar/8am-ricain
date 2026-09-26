@@ -1,0 +1,86 @@
+[
+  {
+    "word": "extra-terrestre",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/extra-terrestre"
+  },
+  {
+    "word": "casse-pieds",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/casse-pieds"
+  },
+  {
+    "word": "casse-pieds",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/casse-pieds"
+  },
+  {
+    "word": "post-opératoire",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/post-op%C3%A9ratoire"
+  },
+  {
+    "word": "free-lance",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/free-lance"
+  },
+  {
+    "word": "free-lance",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/free-lance"
+  },
+  {
+    "word": "agro-alimentaire",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/agro-alimentaire"
+  },
+  {
+    "word": "socio-politique",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/socio-politique"
+  },
+  {
+    "word": "audio-visuel",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/audio-visuel"
+  },
+  {
+    "word": "après-rasage",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/apr%C3%A8s-rasage"
+  },
+  {
+    "word": "premier-né",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/premier-n%C3%A9"
+  },
+  {
+    "word": "vide-grenier",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/vide-grenier"
+  }
+]
