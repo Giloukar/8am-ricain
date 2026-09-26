@@ -49,7 +49,7 @@ Curation is persisted directly on each lexicon row:
 - `rejected`: reviewed and intentionally excluded, with a machine-readable reason;
 - `curation_source_url`: Wiktionary page used as evidence when available.
 
-Current reviewed state: **1,860 pending / 28 approved / 48 rejected**.
+Current reviewed state: **1,848 pending / 28 approved / 60 rejected**.
 
 1. Add a reviewed JSON batch under `data/leximind-curation-reviewed-batch-XXX.json`. Batch 001 remains backward-compatible with the original hydration-only format.
 2. Mark each new record `approved` or `rejected`. Approved rows need a definition and Wiktionary URL; rejected rows need a controlled reason and may include an evidence URL.
