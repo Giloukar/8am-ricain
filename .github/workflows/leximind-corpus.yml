@@ -1,32 +1,33 @@
-name: Build LexiMind corpus
+name: Build LexiMind production corpus
 on:
+  push:
+    branches: [main]
+    paths:
+      - scripts/build_advanced_lexicon.py
+      - scripts/hydrate_wiktionary_batch.py
+      - .github/workflows/leximind-corpus.yml
   workflow_dispatch:
-    inputs:
-      limit:
-        description: Candidate lemmas
-        required: false
-        default: "8000"
+permissions:
+  contents: write
 jobs:
   corpus:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: "3.12"}
-      - name: Build candidates
-        run: python scripts/build_advanced_lexicon.py --limit ${{ inputs.limit }}
-      - name: Hydrate definitions
-        run: python scripts/hydrate_wiktionary.py data/leximind-advanced-candidates.json --output data/leximind-hydrated.json
-      - name: Validate and build SQL
-        run: |
-          python scripts/validate_lexicon.py data/leximind-hydrated.json
-          python scripts/make_lexicon_sql.py data/leximind-hydrated.json
-      - uses: actions/upload-artifact@v4
         with:
-          name: leximind-corpus
-          path: |
-            data/leximind-advanced-candidates.json
-            data/leximind-hydrated.json
-            data/generated/*.sql
+          python-version: "3.12"
+      - name: Select 7000 advanced French lemmas
+        run: python scripts/build_advanced_lexicon.py --limit 7000
+      - name: Hydrate 4000 definitions from French Wiktionary
+        run: python scripts/hydrate_wiktionary_batch.py data/leximind-candidates.json --output data/leximind-production.json --target 4000
+      - name: Validate corpus
+        run: python scripts/validate_lexicon.py data/leximind-production.json
+      - name: Commit reproducible corpus
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/leximind-production.json data/leximind-candidates.json
+          git diff --cached --quiet || git commit -m "data: publish 4000-word LexiMind corpus [skip ci]"
+          git push
