@@ -2,6 +2,8 @@
 import argparse,csv,json,math,re,urllib.request,pathlib
 URL="https://lexique.org/databases/Lexique400/Lexique400.tsv"
 KEEP={"NOM","ADJ","VER","ADV"}
+ADVANCED_MIN_NATIVE=72.0
+EXPERT_MIN_NATIVE=84.0
 
 def num(x):
     try:return float(str(x or "0").replace(",","."))
@@ -59,7 +61,7 @@ def main():
         freq_utility=max(0,min(1,math.log10(1+freq*5)/math.log10(61)))
         value=max(0,min(100,native*.48+prev_utility*20+breadth*22+freq_utility*10))
         if value<48:continue
-        difficulty=5 if native>=80 else 4 if native>=65 else 3
+        difficulty=5 if native>=EXPERT_MIN_NATIVE else 4 if native>=ADVANCED_MIN_NATIVE else 3
         x={"word":word,"lemma":word,"pos":pos,"frequency":round(freq,5),"contextual_diversity":round(cd,5) if cd else None,"prevalence":round(prev,5) if prev else None,"native_score":round(native,2),"learning_value":round(value,2),"difficulty":difficulty}
         key=(word,pos)
         if key not in best or value>best[key]["learning_value"]:best[key]=x
@@ -68,6 +70,7 @@ def main():
     pathlib.Path(a.output).parent.mkdir(parents=True,exist_ok=True)
     with open(a.output,"w",encoding="utf-8") as f:json.dump(out,f,ensure_ascii=False,separators=(",",":"))
     print("eligible",len(best),"selected",len(out),"difficulty", {d:sum(x["difficulty"]==d for x in out) for d in (3,4,5)})
+    print("native thresholds",{"advanced":ADVANCED_MIN_NATIVE,"expert":EXPERT_MIN_NATIVE})
     print("sample",[x["word"] for x in out[:30]])
 
 if __name__=="__main__":main()

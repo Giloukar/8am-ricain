@@ -13,19 +13,29 @@ The native-speaker filter keeps nouns, adjectives, verbs and adverbs only. It re
 
 The score combines Lexique 4 lemma frequency, contextual diversity (`13_CDOrtho`), prevalence (`33_Preval`), lexical length and homograph penalties.
 
-Normal discovery serves **difficulty 4–5** by default. Difficulty-3 entries may remain in the database for compatibility/review history but are not part of the standard discovery feed.
+Normal discovery serves **difficulty 4–5** by default. For Lexique-derived entries, native-speaker difficulty is calibrated at **72+ for difficulty 4** and **84+ for difficulty 5**. Difficulty-3 entries remain in the database for compatibility/search/history but are not part of standard discovery.
 
-## Current production import
+Published discovery rows must also have a non-empty definition and one of the supported POS values (`NOM`, `ADJ`, `VER`, `ADV`). Review/quiz RPCs enforce the same publication guard so a word later hidden during corpus QA cannot leak back through an old progress record.
 
-On 26 September 2026 the mass import produced:
-- 6,588 new `ready` entries from Lexique 4 + French Wiktionary;
-- 2,271 rejected/hidden candidates with no sufficiently clean definition;
-- 1,691 existing Wiktionary/DBnary ready entries retained;
-- 80 original starter entries retained.
+## Current production state
 
-That leaves **8,359 ready entries** in production, including **7,844 difficulty-4/5 entries**.
+After the 26 September 2026 corpus-quality pass:
 
-Candidates are never exposed until their definition passes the hydration checks.
+- `lexicon`: **14,807** rows total;
+- `ready`: **10,787**;
+- `hidden`: **4,020**;
+- standard advanced discovery (difficulty 4–5, clean definition/POS): **9,449**;
+- ready rows with a blank definition: **0**;
+- ready same-word + same-POS duplicate groups: **0**.
+
+The source breakdown is:
+- `Lexique 4 + Wiktionnaire`: 6,564 ready / 24 hidden;
+- `Wiktionnaire fr + Lexique 4`: 4,144 ready / 33 hidden;
+- `Lexique 4`: 2,271 hidden rows awaiting a trustworthy definition;
+- `Wiktionnaire/DBnary`: 1,691 hidden legacy rows pending selective QA;
+- `Le Salon starter lexicon`: 79 ready / 1 hidden.
+
+The QA pass preserves provenance and rows rather than deleting uncertain data. Pure spelling redirects, terse abbreviation/ellipsis redirects, audited malformed definitions and imported duplicates of curated starter entries are hidden until they can be rehydrated from a trustworthy lexical source.
 
 ## Rebuild
 
