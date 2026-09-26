@@ -15,12 +15,12 @@ def main():
   reader=csv.DictReader(h,delimiter="\t")
   for r in reader:
    lemma=(r.get("4_Lemme") or r.get("lemme") or "").strip().lower();word=(r.get("1_Mot") or r.get("ortho") or "").strip().lower();pos=(r.get("5_Cgram") or r.get("cgram") or "").strip().upper()
-   if pos not in KEEP or not lemma or word!=lemma or not 5<=len(lemma)<=24 or not re.fullmatch(r"[a-zàâäçéèêëîïôöùûüÿœæ-]+",lemma):continue
+   if pos not in KEEP or not lemma or word!=lemma or not 5<=len(lemma)<=18 or not re.fullmatch(r"[a-zàâäçéèêëîïôöùûüÿœæ-]+",lemma):continue
    freq=num(r.get("12_FreqLemme") or r.get("freqlemfilms2") or r.get("freqlemlivres"));cd=num(r.get("13_CD") or r.get("CD"));prev=num(r.get("prevalence") or r.get("Prevalence"))
-   if not 0<freq<=18:continue
+   if not 0.02<=freq<=3 or "-" in lemma:continue
    difficulty_score=max(0,min(100,52+11*math.log10(18/max(freq,.01))+min(12,max(0,len(lemma)-7)*1.2)))
    breadth=min(1,cd/8) if cd else min(1,freq/3); prevalence=min(1,prev/0.65) if prev else .55
-   value=max(0,min(100,difficulty_score*.52+breadth*30+prevalence*18))
+   target=.65\n   band=max(0,1-abs(math.log10(freq)-math.log10(target))/1.35)\n   value=max(0,min(100,difficulty_score*.55+band*35+prevalence*10))
    difficulty=5 if difficulty_score>=78 else 4 if difficulty_score>=64 else 3
    row=dict(word=lemma,lemma=lemma,pos=pos,frequency=round(freq,4),native_score=round(difficulty_score,2),learning_value=round(value,2),contextual_diversity=round(cd,4) if cd else None,prevalence=round(prev,4) if prev else None,difficulty=difficulty)
    if lemma not in best or value>best[lemma]["learning_value"]:best[lemma]=row
