@@ -1,0 +1,13 @@
+{
+  "ready": 6000,
+  "difficulty": {
+    "4": 3511,
+    "5": 2475,
+    "3": 14
+  },
+  "sources": {
+    "Wiktionnaire fr + Lexique 4": 6000
+  },
+  "min_learning_value": 86.63,
+  "max_learning_value": 93.85
+}
