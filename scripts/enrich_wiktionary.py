@@ -19,7 +19,7 @@ def definition(wikitext):
  return None
 def fetch(words):
  params={"action":"query","format":"json","formatversion":"2","prop":"revisions","rvprop":"content","rvslots":"main","redirects":"1","titles":"|".join(words)}
- req=urllib.request.Request(API+"?"+urllib.parse.urlencode(params),headers={"User-Agent":"LeSalon-LexiMind/1.0 (educational vocabulary corpus)"})
+ payload=urllib.parse.urlencode(params).encode("utf-8")\n req=urllib.request.Request(API,data=payload,headers={"User-Agent":"LeSalon-LexiMind/1.0 (educational vocabulary corpus)","Content-Type":"application/x-www-form-urlencoded"})
  data=json.load(urllib.request.urlopen(req,timeout=60));out={}
  for p in data.get("query",{}).get("pages",[]):
   if p.get("missing"):continue
