@@ -1,0 +1,3 @@
+1_Mot	2_Phono	3_Phono_IPA	4_Lemme	5_Cgram	6_CgramOrtho	7_Genre	8_Nombre	9_InfoVER	10_FreqMot	11_FreqOrtho	12_FreqLemme	13_CDOrtho	14_IsLem	15_NbLettres	16_NbPhons	17_OLD20	18_PLD20	19_CVOrtho	20_CVPhono	21_VoisOrtho	22_VoisPhono	23_NbHomog	24_NbHomoph	25_SyllPhono	26_SyllNb	27_SyllCV	28_PUOrtho	29_PUPhon	30_MorphoBase	31_MorphoStruct	32_MorphoDecomp	33_Preval	34_PrevalNb	35_RT_FLP	36_zRT_FLP	37_Err_FLP
+pollacks	pOlak	pɔlak	pollacks	NOM	NOM	e	p		0.003	0.006	0.003	0.00306	1	8	5	2.7	1.8	CVCCVCCC	CVCVC	0	2	0	2	pO-lak	2	CV-CVC	8	5								
+disproportionnées	dispRopORsjone	dispʁopɔʁsjone	disproportionner	VER	VER,ADJ	f	p	par:pas:	0.041	0.085	0.339	0.04133	0	17	14	4.35	5.25	CVCCCVCVCCVVCCVVVC	CVCCCVCVCCYVCV	0	0	1	6	dis-pRo-pOR-sjo-ne	5	CVC-CCV-CVC-CYV-CV	0	12				100	26			
