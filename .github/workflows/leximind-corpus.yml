@@ -1,0 +1,32 @@
+name: Build LexiMind corpus
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: Candidate lemmas
+        required: false
+        default: "8000"
+jobs:
+  corpus:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Build candidates
+        run: python scripts/build_advanced_lexicon.py --limit ${{ inputs.limit }}
+      - name: Hydrate definitions
+        run: python scripts/hydrate_wiktionary.py data/leximind-advanced-candidates.json --output data/leximind-hydrated.json
+      - name: Validate and build SQL
+        run: |
+          python scripts/validate_lexicon.py data/leximind-hydrated.json
+          python scripts/make_lexicon_sql.py data/leximind-hydrated.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: leximind-corpus
+          path: |
+            data/leximind-advanced-candidates.json
+            data/leximind-hydrated.json
+            data/generated/*.sql
