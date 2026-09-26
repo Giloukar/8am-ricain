@@ -1,0 +1,4 @@
+(function(){
+async function record(gameKey,players,winnerId,metadata={}){let u=SalonAccount.user(),db=SalonAccount.db();if(!u||!db)return {saved:false,reason:"guest"};let r=await db.from("game_results").insert({game_key:gameKey,winner_id:winnerId||null,metadata}).select("id").single();if(r.error)return {saved:false,error:r.error};let rows=(players||[]).map((p,i)=>({result_id:r.data.id,user_id:p.user_id,placement:p.placement||i+1,score:p.score||0})).filter(x=>x.user_id);if(rows.length){let q=await db.from("game_players").insert(rows);if(q.error)return {saved:false,error:q.error}}return {saved:true,result_id:r.data.id}}
+window.SalonGames={record};
+})();
