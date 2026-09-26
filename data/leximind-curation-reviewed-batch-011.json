@@ -1,0 +1,44 @@
+[
+  {
+    "word": "ladite",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/ladite"
+  },
+  {
+    "word": "petit-enfant",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/petit-enfant"
+  },
+  {
+    "word": "outre-tombe",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "pos_mismatch",
+    "evidence_url": "https://fr.wiktionary.org/wiki/outre-tombe"
+  },
+  {
+    "word": "hippy",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/hippy"
+  },
+  {
+    "word": "hippy",
+    "pos": "NOM",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/hippy"
+  },
+  {
+    "word": "class",
+    "pos": "ADJ",
+    "decision": "rejected",
+    "reason": "orthographic_variant",
+    "evidence_url": "https://fr.wiktionary.org/wiki/class"
+  }
+]
