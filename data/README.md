@@ -22,22 +22,34 @@ Published discovery rows must also have a non-empty definition and one of the su
 After the 26 September 2026 corpus-quality pass:
 
 - `lexicon`: **14,807** rows total;
-- `ready`: **10,780**;
-- `hidden`: **4,027**;
-- standard advanced discovery (difficulty 4–5, clean definition/POS): **9,442**;
+- `ready`: **10,789**;
+- `hidden`: **4,018**;
+- standard advanced discovery (difficulty 4–5, clean definition/POS): **9,451**;
 - ready rows with a blank definition: **0**;
 - ready same-word + same-POS duplicate groups: **0**.
 
 The source breakdown is:
 - `Lexique 4 + Wiktionnaire`: 6,564 ready / 24 hidden;
-- `Wiktionnaire fr + Lexique 4`: 4,144 ready / 33 hidden;
-- `Lexique 4`: 2,271 hidden rows awaiting a trustworthy definition;
+- `Wiktionnaire fr + Lexique 4`: 4,153 ready / 33 hidden;
+- `Lexique 4`: 2,262 hidden rows awaiting a trustworthy definition;
 - `Wiktionnaire/DBnary`: 1,691 hidden legacy rows pending selective QA;
 - `Le Salon starter lexicon`: 79 ready / 1 hidden.
 
 The QA pass preserves provenance and rows rather than deleting uncertain data. Pure spelling redirects, terse abbreviation/ellipsis redirects, audited malformed definitions and imported duplicates of curated starter entries are hidden until they can be rehydrated from a trustworthy lexical source.
 
 A database constraint now prevents future `ready` rows from being published without both a non-empty definition and a supported POS. Audited extraction fragments are repaired only when the surviving text is already source-backed; otherwise they stay hidden.
+
+## Reviewed hydration workflow
+
+Hidden `Lexique 4` rows are not bulk-published just because a Wiktionary page exists. Each reviewed batch must confirm that the French lexical category matches the stored POS and that the chosen sense is a standalone, pedagogically useful definition.
+
+1. Add a reviewed JSON batch under `data/leximind-hydration-reviewed-batch-XXX.json`.
+2. Validate it with `python scripts/validate_hydration_batch.py <batch.json> --sql-out /tmp/hydration.sql`.
+3. Review the generated SQL and source URLs.
+4. Apply the migration by normalized word + POS, never by generated database ID.
+5. Re-run `lexicon_quality()` and the discovery/quiz smoke tests.
+
+The validator rejects unsupported POS values, blank or suspiciously short/long definitions, redirect-style definitions, extraction fragments, duplicate word+POS pairs and non-Wiktionary source URLs.
 
 ## Rebuild
 
