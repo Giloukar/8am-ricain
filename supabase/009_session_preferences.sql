@@ -1,0 +1,3 @@
+alter table public.user_settings add column if not exists session_word_goal integer default 20 check(session_word_goal between 1 and 1000);
+alter table public.user_settings add column if not exists min_word_difficulty integer default 1 check(min_word_difficulty between 1 and 5);
+alter table public.user_settings add column if not exists max_word_difficulty integer default 5 check(max_word_difficulty between 1 and 5);
