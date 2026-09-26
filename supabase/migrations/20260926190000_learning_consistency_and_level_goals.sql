@@ -1,0 +1,8 @@
+-- Centralize strict LexiMind evidence so dashboard, library, global stats,
+-- achievements and learner levels share the same learned/mastered semantics.
+-- Production definitions are deployed through Supabase migration history.
+-- learned: >=3 reviews, >=2 strong successes, >=2 exercise types, level >=2.
+-- mastered: >=5 reviews, >=4 strong successes, >=2 exercise types, level >=4,
+-- limited lapses and strong evidence spanning at least 12 hours.
+--
+-- lexi_level additionally returns points_to_next and approx_words_to_next.
